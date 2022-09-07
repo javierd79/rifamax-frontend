@@ -1,0 +1,81 @@
+$sidebar-bg: #d1d5db;
+$sidebar-text: black;
+$sidebar-header-height: 64px;
+$sidebar-footer-height: 64px;
+$border-color: rgba(#535d7d, 0.3);
+$hov-color: #3b82f6;
+$active-color: #1d4ed8;
+
+body.active {
+  .section {
+    margin-left: 0;
+    width: 100%;
+  }
+  .wrapper {
+    .sidebar {
+      left: -225px;
+    }
+  }
+}
+
+* { 
+  list-style: none; 
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.wrapper {
+  .sidebar{
+    background: $sidebar-bg;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 225px;
+    height: 100%;
+    padding: 20px 0;
+    border-radius: 0 15px 15px 0;
+    transition: all 0.5s ease;
+    .profile {
+      margin-bottom: 30px;
+      text-align: center;
+      .profile-pic {
+        display: block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 0 auto;
+      }
+      .profile-name {
+        color: $sidebar-text;
+        margin: 10px 0 5px;
+      }
+      .profile-role {
+        color: $sidebar-text;
+        font-size: 14px;
+      }
+    }
+    ul {
+      li {
+        .link {
+          display: block;
+          padding: 13px 30px;
+          border-bottom: 1px solid $border-color;
+          color: $sidebar-text;
+          font-size: 16px;
+          position: relative;
+        }
+        .link:hover, .link.active {
+          background: $hov-color;
+          color: $sidebar-text;
+        }
+  
+        .link:hover:before, .link.active:before {
+          display: block;
+        }
+      }
+    }
+  }
+}
