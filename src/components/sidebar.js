@@ -4,16 +4,17 @@ import Avatar from '../assets/images/avatar.png'
 import sidebar from '../assets/data/sidebar.json'
 import '../assets/scss/components/sidebar.scss'
 //import { useHistory } from "react-router-dom";
-import { logout, useAuthDispatch, useAuthState } from '../context/auth'
+// import { logout, useAuthDispatch, useAuthState } from '../context/auth'
+// import { useHistory } from 'react-router-dom';
 
 function Sidebar(props) {
-  const dispatch = useAuthDispatch();
-  const userDetails = useAuthState();
+  // const dispatch = useAuthDispatch();
+  // const userDetails = useAuthState();
+  // const history = useHistory();
 
-  const handleLogout = () => {
-          logout(dispatch);
-          //props.history.push('/login');
-  };
+  // const handleLogout = () => {
+  //         logout(dispatch);
+  // };
 
   return (
     <>
@@ -23,8 +24,8 @@ function Sidebar(props) {
             <div className='sidebar'>
               <div className='profile'>
                 <img src={Avatar} alt='profile' className='profile-pic' />
-                <h3 className='profile-name'>{userDetails.user.name}</h3>
-                <p className='profile-role'>{userDetails.role}</p>
+                <h3 className='profile-name'>Taquilla</h3>
+                <p className='profile-role'>Role: Taquilla</p>
               </div>
             <ul>
              {
@@ -32,13 +33,13 @@ function Sidebar(props) {
                 return (
                   <li key={index}>
                     <Link to={element.path} className="link">
-                        <span class="item">{element.name}</span>
+                        <span className="item">{element.name}</span>
                     </Link>
                   </li>
                   )
                 })
               }  
-              <button to='/login' className="link" onClick={handleLogout()}>
+              <button to='/login' className="link">
                 <span class="logout">Salir</span>
               </button>
             </ul>

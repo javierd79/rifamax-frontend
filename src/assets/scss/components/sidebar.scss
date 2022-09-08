@@ -20,6 +20,8 @@ $active-color: #1d4ed8;
     background: $sidebar-bg;
     position: fixed;
     top: 0;
+    border: 1px solid $border-color;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
     left: 0;
     width: 225px;
     height: 100%;

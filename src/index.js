@@ -6,18 +6,17 @@ import { BrowserRouter } from 'react-router-dom';
 import './assets/scss/index.scss';
 import { AuthProvider } from './context/auth';
 import { ChakraProvider } from '@chakra-ui/react';
-import './assets/scss/index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Suspense fallback={<div>Loading...</div>}>
       <ChakraProvider>
-        <AuthProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider>
             <App />
-          </BrowserRouter>
-        </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </ChakraProvider>
     </Suspense>
   </React.StrictMode>
