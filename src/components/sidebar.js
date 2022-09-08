@@ -18,10 +18,9 @@ function Sidebar(props) {
 
   return (
     <>
-      {
-        props.isOpen !== true ? null : (
+
           <div className='wrapper'>
-            <div className='sidebar'>
+            <div className={props.isOpen === true ? "sidebar open" : "sidebar close"}>
               <div className='profile'>
                 <img src={Avatar} alt='profile' className='profile-pic' />
                 <h3 className='profile-name'>Taquilla</h3>
@@ -45,8 +44,8 @@ function Sidebar(props) {
             </ul>
             </div>
           </div>
-        )
-      } 
+        
+      
     </>
   )
 }

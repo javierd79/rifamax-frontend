@@ -16,6 +16,15 @@ $active-color: #1d4ed8;
 }
 
 .wrapper {
+  .open {
+    transition: all 0.5s ease;
+    animation: slideIn 0.5s ease;
+  }
+  .close {
+    transition: all 0.7s ease;
+    animation: slideOut 0.7s ease;
+    margin-left: -245px;
+  }
   .sidebar{
     background: $sidebar-bg;
     position: fixed;
@@ -27,7 +36,6 @@ $active-color: #1d4ed8;
     height: 100%;
     padding: 20px 0;
     border-radius: 0 15px 15px 0;
-    transition: all 0.5s ease;
     .profile {
       margin-bottom: 30px;
       text-align: center;
@@ -88,5 +96,23 @@ $active-color: #1d4ed8;
       transition: all 1s ease;
 
     }
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    left: -225px;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -225px;
   }
 }
