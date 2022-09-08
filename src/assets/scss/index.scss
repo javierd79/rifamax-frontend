@@ -1,2 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
+body {
+  background-color: #eef5f9;
+}
+
+body.active {
+  .section {
+    margin-left: 0;
+    width: 100%;
+  }
+  .wrapper {
+    .sidebar {
+      left: -225px;
+    }
+  }
+}

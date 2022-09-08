@@ -12,7 +12,7 @@ function Sidebar(props) {
 
   const handleLogout = () => {
           logout(dispatch);
-          props.history.push('/login');
+          //props.history.push('/login');
   };
 
   return (

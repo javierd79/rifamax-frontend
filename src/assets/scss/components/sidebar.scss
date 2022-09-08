@@ -6,22 +6,6 @@ $border-color: rgba(#535d7d, 0.3);
 $hov-color: #3b82f6;
 $active-color: #1d4ed8;
 
-body {
-  background-color: #eef5f9;
-}
-
-body.active {
-  .section {
-    margin-left: 0;
-    width: 100%;
-  }
-  .wrapper {
-    .sidebar {
-      left: -225px;
-    }
-  }
-}
-
 * { 
   list-style: none; 
   text-decoration: none;

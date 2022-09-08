@@ -12,7 +12,7 @@ const Router = [
   {
     path: '/',
     component: Home,
-    isPrivate: true,
+    isPrivate: false,
   }
 ]
 
