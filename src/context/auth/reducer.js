@@ -31,13 +31,13 @@ export const AuthReducer = (initialState, action) => {
         loading: false,
         private: false,
       };
-    case "LOGOUT":
-      return {
-        ...initialState,
-        user: "",
-        token: "",
-        private: true,
-      };
+      case "LOGOUT":
+        return {
+          ...initialState,
+          user: "",
+          token: "",
+          private: true,
+        };
     case "LOGIN_ERROR":
       return {
         ...initialState,

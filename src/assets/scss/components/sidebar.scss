@@ -1,10 +1,14 @@
-$sidebar-bg: #d1d5db;
+$sidebar-bg: #ffffff;
 $sidebar-text: black;
 $sidebar-header-height: 64px;
 $sidebar-footer-height: 64px;
 $border-color: rgba(#535d7d, 0.3);
 $hov-color: #3b82f6;
 $active-color: #1d4ed8;
+
+body {
+  background-color: #eef5f9;
+}
 
 body.active {
   .section {
@@ -62,13 +66,13 @@ body.active {
         .link {
           display: block;
           padding: 13px 30px;
-          border-bottom: 1px solid $border-color;
+          //border-bottom: 1px solid $border-color;
           color: $sidebar-text;
           font-size: 16px;
           position: relative;
         }
         .link:hover, .link.active {
-          background: $hov-color;
+          background: #517ef795;
           color: $sidebar-text;
         }
   
@@ -76,6 +80,24 @@ body.active {
           display: block;
         }
       }
+    }
+    .logout {
+      position: absolute;
+      top: 90%;
+      left: 0;
+      width: 90%;
+      text-align: center;
+      padding: 10px 0;
+      background: transparent;
+      color: $sidebar-text;
+      margin: 20px 20px 0px 10px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+    .logout:hover {
+      background: #ff0000;
+      transition: all 1s ease;
+
     }
   }
 }
