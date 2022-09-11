@@ -1,23 +1,22 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { motion } from "framer-motion";
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import './assets/scss/index.scss';
 import { AuthProvider } from './context/auth';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider} from '@chakra-ui/react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Suspense fallback={<div className="loader"></div>}>
-      <ChakraProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <App />
-          </AuthProvider>
-        </BrowserRouter>
-      </ChakraProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </BrowserRouter>
     </Suspense>
   </React.StrictMode>
 );

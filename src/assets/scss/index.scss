@@ -4,6 +4,19 @@
   background-color: #eef5f9;
 }
 
+body {
+  margin: 0!important;
+  padding: 0!important;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 body.active {
   .section {
     margin-left: 0;
@@ -20,12 +33,12 @@ body.active {
 .openContainer {
   transition: all 0.5s ease;
   animation: slideIn 0.5s ease;
-  margin-left: 240px;
+  margin-left: 225px;
 }
 .closeContainer {
   transition: all 0.7s ease;
   animation: slideOut 0.7s ease;
-  margin: 0;
+  margin-left: 0;
 }
 
 .loader {
