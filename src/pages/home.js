@@ -8,11 +8,18 @@ import Header from "../components/header";
 import { BsFillPersonFill } from "react-icons/bs";
 import { StatusCard } from "../assets/data/statusCard.js";
 import axios from "axios";
+import Barcode from 'react-barcode';
 
 function Home() {
   const [isOpen, setIsOpen] = useState(true);
   const [isActive, setIsActive] = useState(null);
   const [allRifas, setAllRifas] = useState(null);
+
+  let config = {
+    displayValue: false,
+    height: 40,
+    margin: 0
+  };
 
   const userDetails = useAuthState();
 
@@ -114,20 +121,37 @@ function Home() {
                               onClick={handleAccordion.bind(this, index)}
                             >
                               <div>Rifa de: {element.awardSign}</div>
+                              <p className="text-muted subtitle text-center">{element.rifDate}</p>
+                              <p className="text-muted subtitle text-end">{element.name}</p>
                               <div className="icon">+</div>
                             </div>
                             {isActive === index ? (
                               <div className="accordion-content">
                                 <strong>
                                 </strong>
-                                  <p className="text-muted">Fecha de inicio: {element.rifDate}</p>
-                                  <p className="text-muted">Fecha de finalización: {element.expired}</p>
+                                  <p className="text-muted">Serie numero: {element.id}</p>
+                                  <p className="text-muted">Serial: {element.serial}</p>
+                                  <p className="text-muted">Fecha: {element.created_at.substring(0, 10)}</p>
+                                  <p className="text-muted">Hora: {element.created_at.substring(11, 16)}</p>
+                                  <p className="text-muted">Loteria: {element.loteria}</p>
+                                  <p className="text-muted">Premio sin Signo: {element.awardNoSign}</p>
+                                  <p className="text-muted">Placa: {element.plate}</p>
+                                  <p className="text-muted">Año: {element.year}</p>
+                                  <p className="text-muted">Precio: {element.price}$</p>
+                                  <p className="text-muted">Responsable: {element.name}</p>
+                                  <Barcode value={element.serial} {...config}/>
+                                  <br/>
+                                  <br/>
+                                  <br/>
+                                  <p className="text-muted">Fecha de inicio: {element.rifDate}</p> 
+                                  <p className="text-muted">Fecha de finalización: {element.expired}</p>  
                               </div>
                             ) : null}
                           </div>
                         </div>
                       );
                     })}
+                    <button className="btn btn-primary w-100">Crear una rifa</button>
                   </div>
                 </div>
               </div>

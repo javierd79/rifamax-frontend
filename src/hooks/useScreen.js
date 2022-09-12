@@ -9,7 +9,7 @@ function getScreenDimensions() {
 }
 
 function useScreen() {
-  const [ScreenDimensions, setScreenDimensions] = useState(getScreenDimensions());
+  const [ScreenDimensions, setScreenDimensions] = useState(getScreenDimensions()); // innerWidth: width, innerHeight: height
 
   useEffect(() => {
     function handleResize() {

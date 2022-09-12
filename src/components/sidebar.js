@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom'
 import Avatar from '../assets/images/avatar.png'
 import sidebar from '../assets/data/sidebar.json'
 import '../assets/scss/components/sidebar.scss'
-// import { logout, useAuthDispatch, useAuthState } from '../context/auth'
+import { useAuthState } from '../context/auth'
 
 
 function Sidebar(props) {
+
+  const userDetails = useAuthState()
+
   return (
     <>
       <div className="wrapper">
@@ -15,8 +18,8 @@ function Sidebar(props) {
         >
           <div className="profile">
             <img src={Avatar} alt="profile" className="profile-pic" />
-            <h3 className="profile-name">Taquilla</h3>
-            <p className="profile-role">Role: Taquilla</p>
+            <h3 className="profile-name">{userDetails.user.username}</h3>
+            <p className="profile-role">{userDetails.user.role}</p>
           </div>
           <ul>
             {sidebar.map((element, index) => {
