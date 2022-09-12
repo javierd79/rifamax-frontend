@@ -1,43 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Sidebar from '../components/sidebar'
 import {GiHamburgerMenu} from 'react-icons/gi'
 import {GrClose} from 'react-icons/gr'
 import '../assets/scss/pages/home.scss'
 import Header from '../components/header'
 import { BsFillPersonFill } from "react-icons/bs"
+import { StatusCard } from '../assets/data/statusCard.js'
+import axios from 'axios';
 
 function Home() {
   const [isOpen, setIsOpen] = useState(true)
-  const [isPop, setIsPop] = useState(false)
-
-  const PopOver = (popOpen) => {
-    return (
-      popOpen === true ? (
-        <div className="popover" style={{ cursor: 'pointer', position: 'absolute', left: 'calc(100% - 3.5em)', marginTop:'5px', fontSize:'23px'}}>
-          <div className="popover-content">
-            <h1>awa</h1>
-          </div>
-        </div>
-      ) : null
-    )
-  }
-
-  const togglePopOver = () => {
-    setIsPop(!isPop)
-  }
+  const [isActive, setIsActive] = useState(false)
+  const [allRifas, setAllRifas] = useState(null)
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen)
   }
 
+  useEffect(() => {
+    // axios.get('http://
+  }, [])
+
   return (
     <>
       <Sidebar isOpen={isOpen}/>
       <div className={isOpen === true ? 'openContainer' : 'closeContainer'}>
-        <PopOver popOpen={isPop}/>
         <Header>
           <div className='toggle'>
-            <BsFillPersonFill onClick={togglePopOver} style={{ cursor: 'pointer', position: 'absolute', left: 'calc(100% - 3.5em)', marginTop:'5px', fontSize:'23px'}} />
+            <BsFillPersonFill style={{ cursor: 'pointer', position: 'absolute', left: 'calc(100% - 3.5em)', marginTop:'5px', fontSize:'23px'}} />
             {
               isOpen === true ?
               <GrClose onClick={toggleSidebar} style={{ cursor: 'pointer', position: 'absolute', left: 'calc(100% - 1.5em)', marginTop:'5px', fontSize:'23px'}}/>
@@ -48,18 +38,46 @@ function Home() {
           </div>
         </Header>
         <div className='container-fluid home'>
-          <div className="row">
-            <div className="col-lg-3 col-md-6 col-xs-12 col-status">
-              <div className="p-3 border status-card">Row column</div>
+          <StatusCard />
+          <div className='accordion'>
+            <div className='accordion-item'>
+              <div className='accordion-title' onClick={() => setIsActive(!isActive)}>
+                {/* <div className="blob"></div> */}
+                <div>Rifa de:</div>
+                <div className={isActive === true ? 'icon-open' : 'icon'}>+</div>
+              </div>
+              <div className='accordion-content'>
+                Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+                labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+                animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+                aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+                pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit
+                commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa
+                proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia
+                eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
+                Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
+                culpa duis.
+              </div>
             </div>
-            <div className="col-lg-3 col-md-6 col-xs-12 col-status">
-              <div className="p-3 border status-card">Row column</div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-xs-12 col-status">
-              <div className="p-3 border status-card">Row column</div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-xs-12 col-status">
-              <div className="p-3 border status-card">Row column</div>
+          </div>
+          <div className='accordion'>
+            <div className='accordion-item'>
+              <div className='accordion-title'>
+                <div>Rifa de:</div>
+                <div className='icon'>+</div>
+              </div>
+              <div className='accordion-content'>
+                Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+                labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+                animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+                aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+                pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit
+                commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa
+                proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia
+                eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
+                Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
+                culpa duis.
+              </div>
             </div>
           </div>
         </div>

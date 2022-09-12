@@ -14,6 +14,7 @@ root.render(
     <Suspense fallback={<div className="loader"></div>}>
       <BrowserRouter>
         <AuthProvider>
+          {console.log(process.env.API_URL)}
           <App />
         </AuthProvider>
       </BrowserRouter>

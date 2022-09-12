@@ -4,6 +4,19 @@
   background-color: #eef5f9;
 }
 
+body::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 15px 0 0 15px;
+}
+body::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 15px 0 0 15px;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(black, 0.27);
+  border-radius: 15px;
+}
+
 body {
   margin: 0!important;
   padding: 0!important;
@@ -25,19 +38,19 @@ body.active {
   .wrapper {
     .sidebar {
       left: -225px;
-      transition: all 0.5s ease;
+      transition: all 0.8s ease;
     }
   }
 }
 
 .openContainer {
-  transition: all 0.5s ease;
-  animation: slideIn 0.5s ease;
+  transition: all 0.8s ease;
+  animation: slideIn 0.8s ease;
   margin-left: 225px;
 }
 .closeContainer {
-  transition: all 0.7s ease;
-  animation: slideOut 0.7s ease;
+  transition: all 0.8s ease;
+  animation: slideOut 0.8s ease;
   margin-left: 0;
 }
 

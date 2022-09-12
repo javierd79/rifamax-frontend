@@ -1,13 +1,142 @@
+$expired: rgba(246, 78, 96, 0.125);
+$totals: rgba(41, 98, 255, 0.125);
+$active: rgba(11, 183, 175, 0.125);
+
+%status-card {
+  border-radius: 5px;
+  margin-bottom: 23px;
+  cursor: pointer;
+}
+
 .home {
   margin-top: 5.4rem !important;
 
   .row {
     .col-status {
-      .status-card {
-        background-color: #ffffff;
-        border-radius: 5px;
-        margin-bottom: 23px;
+      .expired {
+        @extend %status-card;
+        background-color: $expired;
+      }
+      .actives {
+        @extend %status-card;
+        background-color: $active;
+      }
+      .total {
+        @extend %status-card;
+        background-color: $totals;
       }
     }
+  }
+
+  .accordion {
+    width: 100%;
+    margin: 0 auto;
+    .accordion-item {
+      border: 1px solid #e5e5e5;
+      border-radius: 5px;
+      margin-bottom: 0;
+      border-radius: 0!important;
+      .accordion-title {
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: start;
+        box-sizing: border-box;
+        border-radius: 0!important;
+        border-bottom: 1px solid #e5e5e5;
+        cursor: pointer;
+        div {
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .blob {
+          background: rgba(0, 255, 98, 0.6);
+          border-radius: 50%;
+          height: 10px;
+          width: 10px;
+          justify-content: start;
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+          transform: scale(1);
+          animation: pulse 2s infinite;
+        }
+        .icon {
+          font-size: 20px;
+          text-align: end;
+          transform: rotate(0deg);
+        }
+        .icon-open {
+          animation: rotateOpen 0.5s ease-in-out;
+          transform: rotate(-45deg);
+          font-size: 20px;
+          text-align: end;
+        }
+      }
+      .accordion-content {
+        background-color: #eef5f9;
+        padding: 10px 20px;
+        margin: 10px 20px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 255, 4, 0.7);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(0, 255, 4, 0);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 255, 4, 0);
+	}
+}
+
+@keyframes rotateOpen {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes rotateClose {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-45deg);
+  }
+}
+
+@keyframes accOpen {
+  0% {
+    max-height: 0;
+    opacity: 0;
+  }
+  100% {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+@keyframes accClose {
+  0% {
+    max-height: 1000px;
+    opacity: 1;
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
   }
 }
