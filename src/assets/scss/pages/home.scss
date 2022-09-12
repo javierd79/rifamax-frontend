@@ -8,6 +8,10 @@ $active: rgba(11, 183, 175, 0.125);
   cursor: pointer;
 }
 
+.card {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
 .home {
   margin-top: 5.4rem !important;
 
@@ -28,23 +32,38 @@ $active: rgba(11, 183, 175, 0.125);
     }
   }
 
+  .accordion-container {
+    border-radius: 12px;
+  }
+
   .accordion {
     width: 100%;
     margin: 0 auto;
+    background-color: #eef5f9;
     .accordion-item {
-      border: 1px solid #e5e5e5;
-      border-radius: 5px;
+      //border-bottom: 1px solid #e5e5e5;
+      //border-bottom: 1px solid #e5e5e5;
+      //border-bottom: 1px solid #e5e5e5;
+      background-color: #eef5f9;
       margin-bottom: 0;
       border-radius: 0!important;
+      border: 0;
+
+      .not-found {
+        text-align: center;
+        margin: 5rem;
+      }
+
       .accordion-title {
         padding: 10px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         text-align: start;
-        box-sizing: border-box;
+        padding: 20px;
+        //box-sizing: border-box;
         border-radius: 0!important;
-        border-bottom: 1px solid #e5e5e5;
+        //border-bottom: 1px solid #e5e5e5;
         cursor: pointer;
         div {
           font-size: 16px;
@@ -73,10 +92,9 @@ $active: rgba(11, 183, 175, 0.125);
         }
       }
       .accordion-content {
-        background-color: #eef5f9;
+        background-color: #fff;
         padding: 10px 20px;
-        margin: 10px 20px;
-        border-radius: 4px;
+        margin: 0 0;
       }
     }
   }

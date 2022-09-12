@@ -43,7 +43,7 @@ export const StatusCard = () => {
       .catch(err => {
         console.log(err)
       })
-  }, [])
+  }, [userDetails.token])
 
   return (
     <div className="row">
@@ -51,6 +51,9 @@ export const StatusCard = () => {
         <div className="card">
           <div className="p-3 card-body">
             <div className="d-flex">
+              <div className="status-icon bg-primary">
+                <p>.</p>
+              </div>
               <div className="ms-3">
                 <h5 className="mb-0 font-weight-bold">{rifasTotal}</h5>
                 <small className="text-muted">Rifas Totales</small>
@@ -63,6 +66,9 @@ export const StatusCard = () => {
         <div className="card">
           <div className="p-3 card-body">
             <div className="d-flex">
+              <div className="status-icon bg-success">
+                <p>.</p>
+              </div>
               <div className="ms-3">
                 <h5 className="mb-0 font-weight-bold">{rifasActives}</h5>
                 <small className="text-muted">Rifas Activas</small>
@@ -75,6 +81,9 @@ export const StatusCard = () => {
         <div className="card">
           <div className="p-3 card-body">
             <div className="d-flex">
+              <div className="status-icon bg-danger">
+                  <p>.</p>
+                </div>
               <div className="ms-3">
                 <h5 className="mb-0 font-weight-bold">{rifasExpired}</h5>
                 <small className="text-muted">Rifas Expiradas</small>
