@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+.app {
+  background-color: #eef5f9;
+}
+
+body::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 15px 0 0 15px;
+}
+body::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 15px 0 0 15px;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(black, 0.27);
+  border-radius: 15px;
+}
+
+body {
+  margin: 0!important;
+  padding: 0!important;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.active {
+  .section {
+    margin-left: 0;
+    width: 100%;
+  }
+  .wrapper {
+    .sidebar {
+      left: -225px;
+      transition: all 0.8s ease;
+    }
+  }
+}
+
+.openContainer {
+  transition: all 0.8s ease;
+  animation: slideIn 0.8s ease;
+  margin-left: 225px;
+}
+.closeContainer {
+  transition: all 0.8s ease;
+  animation: slideOut 0.8s ease;
+  margin-left: 0;
+}
+
+.loader {
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #3498db;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 

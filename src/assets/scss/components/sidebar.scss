@@ -1,0 +1,130 @@
+$sidebar-bg: #ffffff;
+$sidebar-dark-bg: #1a1a1a;
+$sidebar-text: black;
+$sidebar-header-height: 64px;
+$sidebar-footer-height: 64px;
+$border-color: rgba(#535d7d, 0.3);
+$hov-color: #3b82f6;
+$active-color: #1d4ed8;
+$breakpoint-height: 300px;
+
+* {
+  list-style: none;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+.wrapper {
+  .open {
+    transition: all 0.8s ease;
+    animation: slideIn 0.8s ease;
+  }
+  .close {
+    transition: all 0.8s ease;
+    animation: slideOut 0.8s ease;
+    margin-left: -245px;
+  }
+  .sidebar::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 15px 0 0 15px;
+  }
+  .sidebar::-webkit-scrollbar-track {
+    background-color: $sidebar-bg;
+    border-radius: 15px 0 0 15px;
+  }
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba($sidebar-dark-bg, 0.2);
+    border-radius: 15px 0 0 15px;
+  }
+  .sidebar {
+    background: $sidebar-bg;
+    position: fixed;
+    top: 0;
+    border: 1px solid $border-color;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    left: 0;
+    width: 225px;
+    height: 100%;
+    padding: 20px 0;
+    border-radius: 0 15px 15px 0;
+    z-index: 99999;
+    overflow: auto;
+    scrollbar-gutter: stable;
+    .profile {
+      margin-bottom: 30px;
+      text-align: center;
+      .profile-pic {
+        display: block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 0 auto;
+      }
+      .profile-name {
+        color: $sidebar-text;
+        margin: 10px 0 5px;
+      }
+      .profile-role {
+        color: $sidebar-text;
+        font-size: 14px;
+      }
+    }
+    ul {
+      li {
+        .link {
+          display: block;
+          padding: 13px 30px;
+          //border-bottom: 1px solid $border-color;
+          color: $sidebar-text;
+          font-size: 16px;
+          position: relative;
+          margin: 0 10px 0 10px;
+          border-radius: 5px;
+        }
+        .link:hover,
+        .link.active {
+          background: #517ef795;
+          color: $sidebar-text;
+          transition: all 0.5s ease;
+        }
+
+        .link:hover:before,
+        .link.active:before {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    left: -225px;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -225px;
+  }
+}
+
+ul {
+  li {
+    a {
+      color: $sidebar-text;
+    }
+    p {
+      color: $sidebar-text;
+    }
+  }
+}

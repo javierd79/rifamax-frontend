@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Dashboard",
+    "path": "/"
+  },
+  {
+    "id": 2,
+    "name": "Usuarios",
+    "path": "/users"
+  },
+  {
+    "id": 3,
+    "name": "Configuraciones",
+    "path": "/settings"
+  }
+]
