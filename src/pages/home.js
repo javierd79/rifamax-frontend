@@ -158,8 +158,8 @@ function Home() {
             )
           ) : (
             <>
-              <div className="accordion">
-                <div className="accordion-item">
+              <div className="card">
+                <div className="card-body">
                   <hr />
                   <h3 className="not-found">No hay rifas activas</h3>
                   <hr />
