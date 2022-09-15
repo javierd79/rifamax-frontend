@@ -92,7 +92,17 @@ function Home() {
               </Popover>
             ) : null} 
             <button className="toggleButton" onClick={toggleSidebar}>
-              <div></div><div></div><div></div>
+              {
+                isOpen === true ? (
+                  <>
+                    <div className="open"></div><div className="open"></div><div className="open"></div>
+                  </>
+                ) : (
+                  <>
+                    <div></div><div></div><div></div>
+                  </>
+                )    
+              }
             </button>
             <br />
           </div>

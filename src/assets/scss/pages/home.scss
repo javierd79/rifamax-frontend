@@ -33,7 +33,7 @@ $active: rgba(11, 183, 175, 0.125);
 
   div:nth-child(2) {
     transform: rotate(0deg);
-    height: 1.5px;
+    height: 2px;
   }
 
   &:hover div:first-child{
@@ -47,6 +47,20 @@ $active: rgba(11, 183, 175, 0.125);
 
   &:hover div:last-child{
     transform: rotate(-37.8deg);
+    width: 80%;
+  }
+
+  .open:last-child {
+    transform: rotate(-37.8deg);
+    width: 80%;
+  }
+
+  .open:nth-child(2){
+    opacity: 0
+  }
+
+  .open:first-child {
+    transform: rotate(40.8deg);
     width: 80%;
   }
 
