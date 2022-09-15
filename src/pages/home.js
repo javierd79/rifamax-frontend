@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { GrClose } from "react-icons/gr";
+import {Popover, PopoverHeader, PopoverBody} from 'reactstrap';
 import { useAuthState } from "../context/auth";
 import "../assets/scss/pages/home.scss";
 import Header from "../components/header";
@@ -14,6 +13,7 @@ function Home() {
   const [isOpen, setIsOpen] = useState(true);
   const [isActive, setIsActive] = useState(null);
   const [allRifas, setAllRifas] = useState(null);
+  const [pops, setPops] = useState(false);
 
   let config = {
     displayValue: false,
@@ -50,6 +50,10 @@ function Home() {
     }
   };
 
+  const togglePops = () => {
+    setPops(!pops);
+  }
+
   return (
     <>
       <Sidebar isOpen={isOpen} />
@@ -57,37 +61,39 @@ function Home() {
         <Header>
           <div className="toggle">
             <BsFillPersonFill
+              id="Popover1"
+              type="button"
+              onClick={togglePops}
               style={{
                 cursor: "pointer",
                 position: "absolute",
-                left: "calc(100% - 3.5em)",
+                left: "calc(100% - 5em)",
                 marginTop: "5px",
                 fontSize: "23px",
               }}
             />
-            {isOpen === true ? (
-              <GrClose
-                onClick={toggleSidebar}
-                style={{
-                  cursor: "pointer",
-                  position: "absolute",
-                  left: "calc(100% - 1.5em)",
-                  marginTop: "5px",
-                  fontSize: "23px",
-                }}
-              />
-            ) : (
-              <GiHamburgerMenu
-                onClick={toggleSidebar}
-                style={{
-                  cursor: "pointer",
-                  position: "absolute",
-                  left: "calc(100% - 1.5em)",
-                  marginTop: "5px",
-                  fontSize: "23px",
-                }}
-              />
-            )}
+            {pops === true ? (
+              <Popover 
+                placement="bottom"
+                target="Popover1"
+                toggle={togglePops}
+                >
+                  <PopoverHeader>
+                    ¿Desea cerrar sesión?
+                  </PopoverHeader>
+                  <PopoverBody>
+                    <button className="btn btn-danger" 
+                      // onClick={() => {
+                      //   localStorage.removeItem("token");
+                      //   window.location.href = "/login";
+                      // }}
+                      >Cerrar sesión</button>
+                  </PopoverBody>
+              </Popover>
+            ) : null} 
+            <button className="toggleButton" onClick={toggleSidebar}>
+              <div></div><div></div><div></div>
+            </button>
             <br />
           </div>
         </Header>

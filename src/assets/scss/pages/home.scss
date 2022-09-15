@@ -8,6 +8,50 @@ $active: rgba(11, 183, 175, 0.125);
   cursor: pointer;
 }
 
+.toggleButton {
+  display: flex;
+  flex-direction: column;
+  width: 2em;
+  height: 2em;
+  border-radius: 2px;
+  background-color: transparent;
+  gap: 0.40em;
+  position: absolute;
+  margin-top: 6px;
+  left: calc(100% - 4em);
+  border: none;
+  cursor: pointer;
+  
+  div {
+    background-color: black;
+    height: 2px;
+    width: 100%;
+    border-radius: 10px;
+    transition: all 0.5s;
+    transform-origin: left;
+  }
+
+  div:nth-child(2) {
+    transform: rotate(0deg);
+    height: 1.5px;
+  }
+
+  &:hover div:first-child{
+    transform: rotate(40.8deg);
+    width: 80%;
+  }
+  
+  &:hover div:nth-child(2){
+    opacity: 0
+  }
+
+  &:hover div:last-child{
+    transform: rotate(-37.8deg);
+    width: 80%;
+  }
+
+}
+
 .card {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
@@ -41,9 +85,6 @@ $active: rgba(11, 183, 175, 0.125);
     margin: 0 auto;
     background-color: #eef5f9;
     .accordion-item {
-      //border-bottom: 1px solid #e5e5e5;
-      //border-bottom: 1px solid #e5e5e5;
-      //border-bottom: 1px solid #e5e5e5;
       background-color: #eef5f9;
       margin-bottom: 0;
       border-radius: 0!important;
@@ -60,9 +101,7 @@ $active: rgba(11, 183, 175, 0.125);
         align-items: center;
         text-align: start;
         padding: 20px;
-        //box-sizing: border-box;
         border-radius: 0!important;
-        //border-bottom: 1px solid #e5e5e5;
         cursor: pointer;
         div {
           font-size: 16px;
