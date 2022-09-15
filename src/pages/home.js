@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
-import {Popover, PopoverHeader, PopoverBody} from 'reactstrap';
-import { useAuthState } from "../context/auth";
+import { PopoverBody } from "reactstrap";
+import { Popover, PopoverHeader } from "@chakra-ui/react";
+import { useAuthState, useAuthDispatch } from "../context/auth";
 import "../assets/scss/pages/home.scss";
 import Header from "../components/header";
 import { BsFillPersonFill } from "react-icons/bs";
 import { StatusCard } from "../assets/data/statusCard.js";
 import axios from "axios";
-import Barcode from 'react-barcode';
+import Barcode from "react-barcode";
+import { logout } from "../context/auth";
 
 function Home() {
   const [isOpen, setIsOpen] = useState(true);
@@ -18,13 +20,20 @@ function Home() {
   let config = {
     displayValue: false,
     height: 40,
-    margin: 0
+    margin: 0,
   };
 
   const userDetails = useAuthState();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  const dispatch = useAuthDispatch();
+
+  const handleLogout = () => {
+    logout(dispatch);
+    window.location.href = "/login";
   };
 
   useEffect(() => {
@@ -41,8 +50,8 @@ function Home() {
         console.log(err);
       });
   }, [userDetails.token]);
-  
-  const handleAccordion = index => {
+
+  const handleAccordion = (index) => {
     if (isActive === index) {
       setIsActive(null);
     } else {
@@ -52,7 +61,7 @@ function Home() {
 
   const togglePops = () => {
     setPops(!pops);
-  }
+  };
 
   return (
     <>
@@ -72,38 +81,45 @@ function Home() {
                 fontSize: "23px",
               }}
             />
+            <button className="toggleButton" onClick={toggleSidebar}>
+              {isOpen === true ? (
+                <>
+                  <div className="open"></div>
+                  <div className="open"></div>
+                  <div className="open"></div>
+                </>
+              ) : (
+                <>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </>
+              )}
+            </button>
             {pops === true ? (
-              <Popover 
+              <Popover
                 placement="bottom"
+                open={pops}
+                AnchorEl={pops}
                 target="Popover1"
                 toggle={togglePops}
-                >
-                  <PopoverHeader>
-                    ¿Desea cerrar sesión?
-                  </PopoverHeader>
-                  <PopoverBody>
-                    <button className="btn btn-danger" 
-                      // onClick={() => {
-                      //   localStorage.removeItem("token");
-                      //   window.location.href = "/login";
-                      // }}
-                      >Cerrar sesión</button>
+              >
+                <div className="popover">
+                  <PopoverHeader className="text-center justify-center mt-3">¿Desea cerrar sesión?</PopoverHeader>
+                  <hr/>
+                  <PopoverBody className="px-2 pt-2">
+                    <button
+                      className="btn btn-danger w-100"
+                      onClick={() => {
+                        handleLogout();
+                      }}
+                    >
+                      Cerrar sesión
+                    </button>
                   </PopoverBody>
+                </div>
               </Popover>
-            ) : null} 
-            <button className="toggleButton" onClick={toggleSidebar}>
-              {
-                isOpen === true ? (
-                  <>
-                    <div className="open"></div><div className="open"></div><div className="open"></div>
-                  </>
-                ) : (
-                  <>
-                    <div></div><div></div><div></div>
-                  </>
-                )    
-              }
-            </button>
+            ) : null}
             <br />
           </div>
         </Header>
@@ -125,8 +141,10 @@ function Home() {
             ) : (
               <div className="card">
                 <div className="card-body">
-                <h3 className="card-title">Rifas de carros</h3>
-                <h6 className="mb-2 mtext-muted card-subtitle">Estado de las Rifas mensuales</h6>
+                  <h3 className="card-title">Rifas de carros</h3>
+                  <h6 className="mb-2 mtext-muted card-subtitle">
+                    Estado de las Rifas mensuales
+                  </h6>
                   <div className="accordion-container">
                     {allRifas.map((element, index) => {
                       return (
@@ -137,37 +155,66 @@ function Home() {
                               onClick={handleAccordion.bind(this, index)}
                             >
                               <div>Rifa de: {element.awardSign}</div>
-                              <p className="text-muted subtitle text-center">{element.rifDate}</p>
-                              <p className="text-muted subtitle text-end">{element.name}</p>
+                              <p className="text-muted subtitle text-center">
+                                {element.rifDate}
+                              </p>
+                              <p className="text-muted subtitle text-end">
+                                {element.name}
+                              </p>
                               <div className="icon">+</div>
                             </div>
                             {isActive === index ? (
                               <div className="accordion-content">
-                                <strong>
-                                </strong>
-                                  <p className="text-muted">Serie numero: {element.id}</p>
-                                  <p className="text-muted">Serial: {element.serial}</p>
-                                  <p className="text-muted">Fecha: {element.created_at.substring(0, 10)}</p>
-                                  <p className="text-muted">Hora: {element.created_at.substring(11, 16)}</p>
-                                  <p className="text-muted">Loteria: {element.loteria}</p>
-                                  <p className="text-muted">Premio sin Signo: {element.awardNoSign}</p>
-                                  <p className="text-muted">Placa: {element.plate}</p>
-                                  <p className="text-muted">Año: {element.year}</p>
-                                  <p className="text-muted">Precio: {element.price}$</p>
-                                  <p className="text-muted">Responsable: {element.name}</p>
-                                  <Barcode value={element.serial} {...config}/>
-                                  <br/>
-                                  <br/>
-                                  <br/>
-                                  <p className="text-muted">Fecha de inicio: {element.rifDate}</p> 
-                                  <p className="text-muted">Fecha de finalización: {element.expired}</p>  
+                                <strong></strong>
+                                <p className="text-muted">
+                                  Serie numero: {element.id}
+                                </p>
+                                <p className="text-muted">
+                                  Serial: {element.serial}
+                                </p>
+                                <p className="text-muted">
+                                  Fecha: {element.created_at.substring(0, 10)}
+                                </p>
+                                <p className="text-muted">
+                                  Hora: {element.created_at.substring(11, 16)}
+                                </p>
+                                <p className="text-muted">
+                                  Loteria: {element.loteria}
+                                </p>
+                                <p className="text-muted">
+                                  Premio sin Signo: {element.awardNoSign}
+                                </p>
+                                <p className="text-muted">
+                                  Placa: {element.plate}
+                                </p>
+                                <p className="text-muted">
+                                  Año: {element.year}
+                                </p>
+                                <p className="text-muted">
+                                  Precio: {element.price}$
+                                </p>
+                                <p className="text-muted">
+                                  Responsable: {element.name}
+                                </p>
+                                <Barcode value={element.serial} {...config} />
+                                <br />
+                                <br />
+                                <br />
+                                <p className="text-muted">
+                                  Fecha de inicio: {element.rifDate}
+                                </p>
+                                <p className="text-muted">
+                                  Fecha de finalización: {element.expired}
+                                </p>
                               </div>
                             ) : null}
                           </div>
                         </div>
                       );
                     })}
-                    <button className="btn btn-primary w-100">Crear una rifa</button>
+                    <button className="btn btn-primary w-100">
+                      Crear una rifa
+                    </button>
                   </div>
                 </div>
               </div>
