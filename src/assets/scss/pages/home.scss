@@ -67,6 +67,22 @@ $active: rgba(11, 183, 175, 0.125);
   }
 }
 
+.dot {
+  user-select: none;
+} 
+
+.color-success {
+  color: #198754;
+}
+
+.color-danger {
+  color: #d63031;
+}
+
+.color-primary {
+  color: #0d6efd;
+}
+
 .popover {
   width: 14em;
   height: 9em;
@@ -80,6 +96,10 @@ $active: rgba(11, 183, 175, 0.125);
 
 .card {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
+.rifDate{
+  margin-left: 20%;
 }
 
 .home {
@@ -167,8 +187,26 @@ $active: rgba(11, 183, 175, 0.125);
         background-color: #fff;
         padding: 10px 20px;
         margin: 0 0;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.5s ease-in-out;
+        animation-direction: normal;
+        animation-fill-mode: forwards;
+        animation-duration: 0.5s;
+        animation-timing-function: ease-in-out;
+        animation-name: accordionOpen;
       }
     }
+  }
+}
+
+
+@keyframes accordionOpen {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
   }
 }
 

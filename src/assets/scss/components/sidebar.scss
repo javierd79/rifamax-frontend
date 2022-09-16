@@ -83,6 +83,8 @@ $breakpoint-height: 300px;
           position: relative;
           margin: 0 10px 0 10px;
           border-radius: 5px;
+          transition: all 0.3s ease;
+          text-decoration: none;
         }
         .link:hover,
         .link.active {

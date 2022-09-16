@@ -5,10 +5,9 @@ import sidebar from '../assets/data/sidebar.json'
 import '../assets/scss/components/sidebar.scss'
 import { useAuthState } from '../context/auth'
 
-
 function Sidebar(props) {
 
-  const userDetails = useAuthState()
+  const userDetails = useAuthState();
 
   return (
     <>
@@ -21,16 +20,61 @@ function Sidebar(props) {
             <h3 className="profile-name">{userDetails.user.username}</h3>
             <p className="profile-role">{userDetails.user.role}</p>
           </div>
+          {console.log(userDetails.user.role)}
           <ul>
-            {sidebar.map((element, index) => {
-              return (
-                <li key={index}>
-                  <Link to={element.path} className="link">
-                    <span className="item">{element.name}</span>
-                  </Link>
-                </li>
-              );
-            })}
+            {
+              userDetails.user.role === "Admin" ? (
+                sidebar.admin.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      <Link to={item.path} className="link">
+                        <span className="title">{item.name}</span>
+                      </Link>
+                    </li>
+                  );
+                }
+                )
+              ) : null
+            }
+            {
+              userDetails.user.role === "Agencia" ? (
+                sidebar.agency.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      <Link to={item.path} className="link">
+                        <span className="title">{item.name}</span>
+                      </Link>
+                    </li>
+                  );
+                })
+              ) : null
+            }
+            {
+              userDetails.user.role === "Taquilla" ? (
+                sidebar.taquilla.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      <Link to={item.path} className="link">
+                        <span className="title">{item.name}</span>
+                      </Link>
+                    </li>
+                  );
+                })
+              ) : null
+            }
+            {
+              userDetails.user.role === "Rifero" ? (
+                sidebar.rifero.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      <Link to={item.path} className="link">
+                        <span className="title">{item.name}</span>
+                      </Link>
+                    </li>
+                  );
+                })
+              ) : null
+            }
           </ul>
         </div>
       </div>

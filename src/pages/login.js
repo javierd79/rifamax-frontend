@@ -15,6 +15,7 @@ function Login(props) {
       let res = await loginUser(dispatch, { email, password });
       if (!res.user) return;
       props.history.push('/');
+      window.location.reload();
     } catch (error){
       console.error(error);
     }

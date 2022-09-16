@@ -1,17 +1,81 @@
-[
-  {
-    "id": 1,
-    "name": "Dashboard",
-    "path": "/"
-  },
-  {
-    "id": 2,
-    "name": "Usuarios",
-    "path": "/users"
-  },
-  {
-    "id": 3,
-    "name": "Configuraciones",
-    "path": "/settings"
-  }
-]
+{
+  "admin": [
+    {
+      "id": 1,
+      "name": "Dashboard",
+      "path": "/"
+    },
+    {
+      "id": 2,
+      "name": "Usuarios",
+      "path": "/users"
+    },
+    {
+      "id": 3, 
+      "name": "Agencias",
+      "path": "/agencies"
+    },
+    {
+      "id": 4,
+      "name": "Taquillas",
+      "path": "/taquillas"
+    },
+    {
+      "id": 5,
+      "name": "Configuraciones",
+      "path": "/settings"
+    }
+  ],
+  "agencia": [
+    {
+      "id": 1,
+      "name": "Dashboard",
+      "path": "/"
+    },
+    {
+      "id": 2,
+      "name": "Usuarios",
+      "path": "/users"
+    },
+    {
+      "id": 3,
+      "name": "Taquillas",
+      "path": "/taquillas"
+    },
+    {
+      "id": 4,
+      "name": "Configuraciones",
+      "path": "/settings"
+    }
+  ],
+  "taquilla": [
+    {
+      "id": 1,
+      "name": "Dashboard",
+      "path": "/"
+    },
+    {
+      "id": 2,
+      "name": "Usuarios",
+      "path": "/users"
+    },
+    {
+      "id": 3,
+      "name": "Configuraciones",
+      "path": "/settings"
+    }
+  ],
+  "rifero": 
+  [
+    {
+      "id": 1,
+      "name": "Dashboard",
+      "path": "/"
+    },
+    {
+      "id": 2,
+      "name": "Configuraciones",
+      "path": "/settings"
+    }
+  ]
+}

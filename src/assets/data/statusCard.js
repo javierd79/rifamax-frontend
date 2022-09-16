@@ -52,11 +52,11 @@ export const StatusCard = () => {
           <div className="p-3 card-body">
             <div className="d-flex">
               <div className="status-icon bg-primary">
-                <p>.</p>
+                <p className="dot color-primary">.</p>
               </div>
               <div className="ms-3">
-                <h5 className="mb-0 font-weight-bold">{rifasTotal}</h5>
-                <small className="text-muted">Rifas Totales</small>
+                <h5 className="mb-0 font-weight-bold dot">{rifasTotal}</h5>
+                <small className="text-muted dot">Rifas Totales</small>
               </div>
             </div>
           </div>
@@ -67,11 +67,11 @@ export const StatusCard = () => {
           <div className="p-3 card-body">
             <div className="d-flex">
               <div className="status-icon bg-success">
-                <p>.</p>
+                <p className="dot color-success">.</p>
               </div>
               <div className="ms-3">
-                <h5 className="mb-0 font-weight-bold">{rifasActives}</h5>
-                <small className="text-muted">Rifas Activas</small>
+                <h5 className="mb-0 font-weight-bold dot">{rifasActives}</h5>
+                <small className="text-muted dot">Rifas Activas</small>
               </div>
             </div>
           </div>
@@ -82,11 +82,11 @@ export const StatusCard = () => {
           <div className="p-3 card-body">
             <div className="d-flex">
               <div className="status-icon bg-danger">
-                  <p>.</p>
+                  <p className="dot color-danger">.</p>
                 </div>
               <div className="ms-3">
-                <h5 className="mb-0 font-weight-bold">{rifasExpired}</h5>
-                <small className="text-muted">Rifas Expiradas</small>
+                <h5 className="mb-0 font-weight-bold dot">{rifasExpired}</h5>
+                <small className="text-muted dot">Rifas Expiradas</small>
               </div>
             </div>
           </div>

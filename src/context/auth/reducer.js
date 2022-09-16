@@ -6,9 +6,14 @@ let token = localStorage.getItem("currentUser")
          ? JSON.parse(localStorage.getItem("currentUser")).token
          : '';
 
+let role = localStorage.getItem("currentUser")
+         ? JSON.parse(localStorage.getItem("currentUser")).user.role
+         : '';
+
 export const initialState = {
   user: '' || user,
   token: '' || token,
+  role: '' || role,
   loading: false,
   errorMessage: null,
   private: true,

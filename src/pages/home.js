@@ -155,13 +155,15 @@ function Home() {
                               onClick={handleAccordion.bind(this, index)}
                             >
                               <div>Rifa de: {element.awardSign}</div>
-                              <p className="text-muted subtitle text-center">
-                                {element.rifDate}
-                              </p>
+                              <div className="rifDate">{element.rifDate}</div>
                               <p className="text-muted subtitle text-end">
                                 {element.name}
                               </p>
-                              <div className="icon">+</div>
+                              {isActive === index ? (
+                                <div className="icon">-</div>
+                              ) : (
+                                <div className="icon">+</div>
+                              )}
                             </div>
                             {isActive === index ? (
                               <div className="accordion-content">
@@ -206,6 +208,31 @@ function Home() {
                                 <p className="text-muted">
                                   Fecha de finalización: {element.expired}
                                 </p>
+                                {element.is_send === true ? (
+                                  <>
+                                    <button
+                                      className="btn btn-primary me-2"
+                                      disabled={true}
+                                    >
+                                      Imprimir
+                                    </button>
+                                    <button
+                                      className="btn btn-primary"
+                                      disabled={true}
+                                    >
+                                      Enviar a APP
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button className="btn btn-primary me-2">
+                                      Imprimir
+                                    </button>
+                                    <button className="btn btn-primary">
+                                      Enviar a APP
+                                    </button>
+                                  </>
+                                )}
                               </div>
                             ) : null}
                           </div>
