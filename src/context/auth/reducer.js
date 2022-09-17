@@ -47,7 +47,7 @@ export const AuthReducer = (initialState, action) => {
       return {
         ...initialState,
         loading: false,
-        errorMessage: action.error,
+        errorMessage: {message: 'Unauthorized'},
         private: true,
       };
     default: 

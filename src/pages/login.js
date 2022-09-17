@@ -32,8 +32,8 @@ function Login(props) {
         <label htmlFor="password">Password</label>
         <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
 
-        <button disabled={loading}>Login</button>
-        {errorMessage && <div>{errorMessage}</div>}
+        <button disabled={loading} onCLick={()=>console.log(errorMessage)}>Login</button>
+        {errorMessage && <div>{errorMessage.message}</div>}
       </form>
     </>
   )
