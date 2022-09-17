@@ -1,14 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react';
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody
+} from 'reactstrap';
 
-function Modal({ title, children }) {
+function ModalF({children, classBtn, btnColor, buttonTitle, title, status, centered = false}){
+  const [ modal, setModal ] = useState(false);
+
+  const toggle = () => setModal(!modal);
+
   return (
-    <div className="card modal">
-      <div className="card-body">
-        <h3 className="card-title">{title}</h3>
-        {children}
-      </div>
-    </div>
-  )
+    <>
+      <Button color={btnColor} className={classBtn} disabled={status} onClick={toggle}>
+        {buttonTitle}
+      </Button>
+      <Modal
+      centered={centered}
+      isOpen={modal}
+      toggle={toggle}
+      backdrop="static"
+      keyboard={true}
+      >
+        <ModalHeader toggle={toggle}>{title}</ModalHeader>
+        <ModalBody>
+          {children}
+          {' '}
+        </ModalBody>
+      </Modal>
+    </>
+  );
 }
 
-export default Modal
+export default ModalF;

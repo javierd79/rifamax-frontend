@@ -10,12 +10,15 @@ import { StatusCard } from "../assets/data/statusCard.js";
 import axios from "axios";
 import Barcode from "react-barcode";
 import { logout } from "../context/auth";
+import Modal from '../components/modal';
+import RifaGenerator from "../components/rifaGenerator";
 
 function Home() {
   const [isOpen, setIsOpen] = useState(true);
   const [isActive, setIsActive] = useState(null);
   const [allRifas, setAllRifas] = useState(null);
   const [pops, setPops] = useState(false);
+  const [openGenerator, setOpenGenerator] = useState(false);
 
   let config = {
     displayValue: false,
@@ -225,12 +228,33 @@ function Home() {
                                   </>
                                 ) : (
                                   <>
-                                    <button className="btn btn-primary me-2">
+                                    <button 
+                                      className="btn btn-primary me-2"
+                                      onClick={Modal()}
+                                    >
                                       Imprimir
                                     </button>
-                                    <button className="btn btn-primary">
-                                      Enviar a APP
-                                    </button>
+                                    <Modal
+                                      btnColor="primary"
+                                      centered={true}
+                                      buttonTitle="Imprimir"
+                                      title="Imprimir"
+                                      classBtn='ms-2'
+                                      status={element.is_send}
+                                    >
+                                      <RifaGenerator
+                                        rifasNumber={element.numbers}
+                                        rifasTitle={element.awardSign}
+                                        taquilla={element.name}
+                                        price={element.price}
+                                        year={element.year}
+                                        plate={element.plate}
+                                        sign={element.awardNoSign}
+                                        date={element.expired}
+                                        time={element.rifDate}
+                                        noSign={element.awardNoSign}
+                                      />
+                                    </Modal>
                                   </>
                                 )}
                               </div>
