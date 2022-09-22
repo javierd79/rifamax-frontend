@@ -13,7 +13,7 @@ let role = localStorage.getItem("currentUser")
 export const initialState = {
   user: '' || user,
   token: '' || token,
-  role: '' || role,
+  role: 'undefined' || role,
   loading: false,
   errorMessage: null,
   private: true,

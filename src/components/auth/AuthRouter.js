@@ -5,16 +5,28 @@ import { useAuthState } from '../../context/auth';
 
 const AuthRouter = ({ component: Component, path, isPrivate, ...rest }) => {
   const userDetails = useAuthState();
+
+  const permissions = {
+    Admin: ['/', '/users'],
+    Rifero: ['/'],
+    Taquilla: ['/'],
+    Agency: ['/'],
+    undefined: ['/login'],
+  };
+
   return (
     <Route
       path={path}
       render={(props) => 
         isPrivate && !Boolean(userDetails.token) ? (
-          <Redirect to={{ pathname: '/login'}} />
+          <Redirect to={{ pathname: '/login', state: { from: props.location }}} />
         ) : (
-          <Component {...props}/>
+          permissions[userDetails.user.role].includes(path) ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to={{ pathname: '/', state: { from: props.location }}} />
         )
-      } 
+      )} 
       {...rest}
     />
   )

@@ -97,7 +97,7 @@ function Home() {
   //     .catch((err) => {
   //       console.log(err);
   //     });
-  // }, [riferos, userDetails.token]);
+  // }, [userDetails.token]);
 
   const sendToApp = (id) => {
     axios.put(`http://159.203.76.114/api/v1/rifas/${id}`, {
