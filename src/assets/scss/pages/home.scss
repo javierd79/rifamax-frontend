@@ -99,7 +99,7 @@ $active: rgba(11, 183, 175, 0.125);
 }
 
 .rifDate{
-  margin-left: 20%;
+  margin-left: calc(50vw - 10%);
 }
 
 .home {
@@ -184,7 +184,10 @@ $active: rgba(11, 183, 175, 0.125);
       }
 
       .accordion-content {
-        background-color: #fff;
+        background:#f6f9fa;
+        background-origin: cover;
+        background-repeat: repeat;
+        background-position: center;
         padding: 10px 20px;
         margin: 0 0;
         transform: scaleY(0);
@@ -195,6 +198,11 @@ $active: rgba(11, 183, 175, 0.125);
         animation-duration: 0.5s;
         animation-timing-function: ease-in-out;
         animation-name: accordionOpen;
+        
+        .card {
+          margin-left: calc(50% - 9em);
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
+        }
       }
     }
   }

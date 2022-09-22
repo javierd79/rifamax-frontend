@@ -54,6 +54,27 @@ body.active {
   margin-left: 0;
 }
 
+@media (max-width: 580px) {
+  .openContainer {
+    margin-left: 0;
+    transition: opacity .15s;
+    opacity: .5;
+    overflow-x: hidden;
+    overflow-y: hidden; 
+    pointer-events: none;
+  }
+  .rifD {
+    margin-left: 10px;
+    margin-right: -10px;
+  }
+  .toggleButton {
+    div {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}
+
 .loader {
   border: 10px solid #f3f3f3;
   border-top: 10px solid #3498db;

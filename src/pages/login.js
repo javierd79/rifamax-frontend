@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { loginUser, useAuthState, useAuthDispatch } from '../context/auth';
+import "../assets/scss/pages/login.scss";
+import RifaMaxLogo from '../assets/images/LogoRifaMax.png'
 
 function Login(props) {
   const [email, setEmail] = useState('');
@@ -22,20 +24,23 @@ function Login(props) {
   };
 
   return (
-    <>
+    <div className='login'>
       <form onSubmit={handleLogin}>
-        <label htmlFor="email">Email</label>
-        <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
+      <img src={RifaMaxLogo} alt="RifaMax" className="logo" />
+        <div className='form-control'>
+          <label htmlFor="email">Email</label>
+          <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
 
-        <br/>
+          <br/>
 
-        <label htmlFor="password">Password</label>
-        <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
+          <label htmlFor="password">Password</label>
+          <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
 
-        <button disabled={loading} onCLick={()=>console.log(errorMessage)}>Login</button>
-        {errorMessage && <div>{errorMessage.message}</div>}
+          <button className='btn' disabled={loading} onCLick={()=>console.log(errorMessage)}>Login</button>
+          {errorMessage && <div>{errorMessage.message}</div>}
+        </div>
       </form>
-    </>
+    </div>
   )
 }
 
