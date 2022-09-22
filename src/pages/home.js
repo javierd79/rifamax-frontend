@@ -182,28 +182,28 @@ function Home() {
             </button>
             {pops === true ? (
               <Popover
-                placement="bottom"
-                open={pops}
-                AnchorEl={pops}
-                target="Popover1"
-                toggle={togglePops}
-              >
-                <div className="popover">
-                  <PopoverHeader className="text-center justify-center mt-3">¿Desea cerrar sesión?</PopoverHeader>
-                  <hr/>
-                  <PopoverBody className="px-2 pt-2">
-                    <button
-                      className="btn btn-danger w-100"
-                      onClick={() => {
-                        handleLogout();
-                      }}
-                    >
-                      Cerrar sesión
-                    </button>
-                  </PopoverBody>
-                </div>
-              </Popover>
-            ) : null}
+              placement="bottom"
+              open={pops}
+              AnchorEl={pops}
+              target="Popover1"
+              toggle={togglePops}
+            >
+              <div className="popover">
+                <PopoverHeader className="text-center justify-center mt-3">¿Desea cerrar sesión?</PopoverHeader>
+                <hr/>
+                <PopoverBody className="px-2 pt-2">
+                  <button
+                    className="btn btn-danger w-100"
+                    onClick={() => {
+                      handleLogout();
+                    }}
+                  >
+                    Cerrar sesión
+                  </button>
+                </PopoverBody>
+              </div>
+            </Popover>
+          ) : null}
             <br />
           </div>
         </Header>
