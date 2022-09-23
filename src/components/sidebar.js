@@ -38,7 +38,7 @@ function Sidebar(props) {
             }
             {
               userDetails.user.role === "Agencia" ? (
-                sidebar.agency.map((item, index) => {
+                sidebar.agencia.map((item, index) => {
                   return (
                     <li key={index}>
                       <Link to={item.path} className="link">

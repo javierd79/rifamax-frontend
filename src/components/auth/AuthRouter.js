@@ -10,7 +10,7 @@ const AuthRouter = ({ component: Component, path, isPrivate, ...rest }) => {
     Admin: ['/', '/users'],
     Rifero: ['/'],
     Taquilla: ['/'],
-    Agency: ['/'],
+    Agencia: ['/'],
     undefined: ['/login'],
   };
 
