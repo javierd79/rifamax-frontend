@@ -1,0 +1,25 @@
+name: Continuos deploy
+
+on: 
+  push: 
+    branches: 
+      - deploy
+      - dev
+      
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: Install dependencies
+        run: yarn
+      
+      - name: Build
+        run: yarn build      
+      
+      - name: Test
+        run: yarn test --watchAll=false
+        
