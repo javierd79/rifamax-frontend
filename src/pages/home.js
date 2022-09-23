@@ -21,7 +21,6 @@ function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [isActive, setIsActive] = useState(null);
   const [allRifas, setAllRifas] = useState(null);
-  const [riferos, setRiferos] = useState(null);
   const [pops, setPops] = useState(false);
   
   const yesterday = () => {
