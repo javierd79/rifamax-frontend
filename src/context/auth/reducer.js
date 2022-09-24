@@ -10,10 +10,15 @@ let role = localStorage.getItem("currentUser")
          ? JSON.parse(localStorage.getItem("currentUser")).user.role
          : '';
 
+let exp = localStorage.getItem("currentUser")
+         ? JSON.parse(localStorage.getItem("currentUser")).user.exp
+         : '';
+
 export const initialState = {
   user: '' || user,
   token: '' || token,
   role: 'undefined' || role,
+  exp: '' || exp,
   loading: false,
   errorMessage: null,
   private: true,

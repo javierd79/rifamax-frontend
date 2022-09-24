@@ -8,65 +8,6 @@ $active: rgba(11, 183, 175, 0.125);
   cursor: pointer;
 }
 
-.toggleButton {
-  display: flex;
-  flex-direction: column;
-  width: 2em;
-  height: 2em;
-  border-radius: 2px;
-  background-color: transparent;
-  gap: 0.40em;
-  position: absolute;
-  margin-top: 6px;
-  left: calc(100% - 4em);
-  border: none;
-  cursor: pointer;
-
-  div {
-    background-color: black;
-    height: 2px;
-    width: 100%;
-    border-radius: 10px;
-    transition: all 0.5s;
-    transform-origin: left;
-  }
-
-  div:nth-child(2) {
-    transform: rotate(0deg);
-    height: 1.5px;
-  }
-
-  &:hover div:first-child {
-    transform: rotate(40.8deg);
-    width: 80%;
-  }
-
-  &:hover div:nth-child(2) {
-    opacity: 0;
-    height: 2px;
-  }
-
-  &:hover div:last-child {
-    transform: rotate(-40.8deg);
-    width: 80%;
-  }
-
-  .open:last-child {
-    transform: rotate(-40.8deg);
-    width: 80%;
-  }
-
-  .open:nth-child(2) {
-    opacity: 0;
-    height: 2px;
-  }
-
-  .open:first-child {
-    transform: rotate(40.8deg);
-    width: 80%;
-  }
-}
-
 .dot {
   user-select: none;
 } 
@@ -83,17 +24,6 @@ $active: rgba(11, 183, 175, 0.125);
   color: #0d6efd;
 }
 
-.popover {
-  width: 14em;
-  height: 9em;
-  background-color: #ffffff;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-  position: absolute;
-  top: 4em;
-  left: calc(100% - 15em);
-}
-
 .card {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
@@ -103,7 +33,7 @@ $active: rgba(11, 183, 175, 0.125);
 }
 
 .home {
-  margin-top: 5.4rem !important;
+  margin-top: 5.4rem;
 
   .row {
     .col-status {
@@ -136,7 +66,7 @@ $active: rgba(11, 183, 175, 0.125);
     .accordion-item {
       background-color: #eef5f9;
       margin-bottom: 0;
-      border-radius: 0 !important;
+      border-radius: 0;
       border: 0;
 
       .not-found {
@@ -150,7 +80,7 @@ $active: rgba(11, 183, 175, 0.125);
         align-items: center;
         text-align: start;
         padding: 20px;
-        border-radius: 0 !important;
+        border-radius: 0;
         cursor: pointer;
 
         div {

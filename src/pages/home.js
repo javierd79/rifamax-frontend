@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import { FormGroup, PopoverBody } from "reactstrap";
 import { Popover, PopoverHeader } from "@chakra-ui/react";
-import { useAuthState, useAuthDispatch } from "../context/auth";
+import { useAuthState, useAuthDispatch, logout } from "../context/auth";
 import "../assets/scss/pages/home.scss";
 import Header from "../components/header";
 import { BsFillPersonFill } from "react-icons/bs";
 import { StatusCard } from "../assets/data/statusCard.js";
 import axios from "axios";
 import Barcode from "react-barcode";
-import { logout } from "../context/auth";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Modal from "../components/modal";
@@ -82,21 +81,6 @@ function Home() {
     logout(dispatch);
     window.location.href = "/login";
   };
-
-  // useEffect(() => {
-  //   axios
-  //     .get("http://159.203.76.114/api/v1/taquillas", {
-  //       headers: {
-  //         Authorization: `Bearer ${userDetails.token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       setRiferos(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [userDetails.token]);
 
   const sendToApp = (id) => {
     axios.put(`http://159.203.76.114/api/v1/rifas/${id}`, {
@@ -181,28 +165,30 @@ function Home() {
             </button>
             {pops === true ? (
               <Popover
-              placement="bottom"
-              open={pops}
-              AnchorEl={pops}
-              target="Popover1"
-              toggle={togglePops}
-            >
-              <div className="popover">
-                <PopoverHeader className="text-center justify-center mt-3">¿Desea cerrar sesión?</PopoverHeader>
-                <hr/>
-                <PopoverBody className="px-2 pt-2">
-                  <button
-                    className="btn btn-danger w-100"
-                    onClick={() => {
-                      handleLogout();
-                    }}
-                  >
-                    Cerrar sesión
-                  </button>
-                </PopoverBody>
-              </div>
-            </Popover>
-          ) : null}
+                placement="bottom"
+                open={pops}
+                AnchorEl={pops}
+                target="Popover1"
+                toggle={togglePops}
+              >
+                <div className="popover">
+                  <PopoverHeader className="text-center justify-center mt-3">
+                    ¿Desea cerrar sesión?
+                  </PopoverHeader>
+                  <hr />
+                  <PopoverBody className="px-2 pt-2">
+                    <button
+                      className="btn btn-danger w-100"
+                      onClick={() => {
+                        handleLogout();
+                      }}
+                    >
+                      Cerrar sesión
+                    </button>
+                  </PopoverBody>
+                </div>
+              </Popover>
+            ) : null}
             <br />
           </div>
         </Header>
@@ -237,8 +223,12 @@ function Home() {
                               className="accordion-title"
                               onClick={handleAccordion.bind(this, index)}
                             >
-                              <div className="col-6 col-xs-12">Rifa de: {element.awardSign}</div>
-                              <div className="col-6 col-xs-12 text-start rifD">{element.rifDate}</div>
+                              <div className="col-6 col-xs-12">
+                                Rifa de: {element.awardSign}
+                              </div>
+                              <div className="col-6 col-xs-12 text-start rifD">
+                                {element.rifDate}
+                              </div>
                               <p className="text subtitle text-end">
                                 {element.name}
                               </p>
@@ -250,39 +240,50 @@ function Home() {
                             </div>
                             {isActive === index ? (
                               <div className="accordion-content">
-                                <div className="card mb-2" style={{maxWidth:'18rem', minWidth:'2rem'}}>
+                                <div
+                                  className="card mb-2"
+                                  style={{
+                                    maxWidth: "18rem",
+                                    minWidth: "2rem",
+                                  }}
+                                >
                                   <div className="card-body">
-                                <strong></strong>
-                                <p className="text">
-                                Sin Signo: {element.awardNoSign}
-                                <br/>
-                                Loteria: {element.loteria}
-                                <br/>
-                                Serie numero: {element.id}
-                                <br/>
-                                Fecha: {element.created_at.substring(0, 10)}
-                                <br/>
-                                Hora: {element.created_at.substring(11, 16)}
-                                <br/>
-                                Serial: {element.serial}
-                                <br/>
-                                Placa: {element.plate}
-                                <br/>
-                                Año: {element.year}
-                                <br/>
-                                Precio: {element.price}$
-                                <br/>
-                                Responsable: {userDetails.user.username}
-                                <br />
-                                <br />
-                                <Barcode value={element.serial} {...config} />
-                                <br />
-                                <br />
-                                  Fecha de inicio: {element.rifDate}
-                                <br/>
-                                  Fecha de finalización: {element.expired}
-                                </p>
-                                </div>
+                                    <strong></strong>
+                                    <p className="text">
+                                      Sin Signo: {element.awardNoSign}
+                                      <br />
+                                      Loteria: {element.loteria}
+                                      <br />
+                                      Serie numero: {element.id}
+                                      <br />
+                                      Fecha:{" "}
+                                      {element.created_at.substring(0, 10)}
+                                      <br />
+                                      Hora:{" "}
+                                      {element.created_at.substring(11, 16)}
+                                      <br />
+                                      Serial: {element.serial}
+                                      <br />
+                                      Placa: {element.plate}
+                                      <br />
+                                      Año: {element.year}
+                                      <br />
+                                      Precio: {element.price}$
+                                      <br />
+                                      Responsable: {userDetails.user.username}
+                                      <br />
+                                      <br />
+                                      <Barcode
+                                        value={element.serial}
+                                        {...config}
+                                      />
+                                      <br />
+                                      <br />
+                                      Fecha de inicio: {element.rifDate}
+                                      <br />
+                                      Fecha de finalización: {element.expired}
+                                    </p>
+                                  </div>
                                 </div>
                                 {element.is_send === true ? (
                                   <>
@@ -301,7 +302,7 @@ function Home() {
                                   </>
                                 ) : (
                                   <>
-                                    <button 
+                                    <button
                                       className="btn btn-primary me-2"
                                       onClick={() => {
                                         sendToApp(element.id);
@@ -336,16 +337,16 @@ function Home() {
                           expired: "",
                           rifero: "",
                           price: "",
-                          
                         }}
                         validationSchema={formSchema}
-                        
                       >
                         <Form>
                           <div className="row">
                             <div className="col-6">
                               <FormGroup>
-                                <label htmlFor="rifDate">Fecha de la rifa</label>
+                                <label htmlFor="rifDate">
+                                  Fecha de la rifa
+                                </label>
                                 <Field
                                   className="form-control"
                                   name="rifDate"
@@ -361,7 +362,9 @@ function Home() {
                             </div>
                             <div className="col-6">
                               <FormGroup>
-                                <label htmlFor="expired">Fecha de finalización</label>
+                                <label htmlFor="expired">
+                                  Fecha de finalización
+                                </label>
                                 <Field
                                   className="form-control"
                                   name="expired"
@@ -379,7 +382,9 @@ function Home() {
                           <div className="row">
                             <div className="col-6">
                               <FormGroup>
-                                <label htmlFor="awardSign">Premio con Signo</label>
+                                <label htmlFor="awardSign">
+                                  Premio con Signo
+                                </label>
                                 <Field
                                   className="form-control"
                                   name="awardSign"
@@ -395,7 +400,9 @@ function Home() {
                             </div>
                             <div className="col-6">
                               <FormGroup>
-                                <label htmlFor="awardNoSign">Premio sin Signo</label>
+                                <label htmlFor="awardNoSign">
+                                  Premio sin Signo
+                                </label>
                                 <Field
                                   className="form-control"
                                   name="awardNoSign"
@@ -410,9 +417,9 @@ function Home() {
                               </FormGroup>
                             </div>
                           </div>
-                          <hr/>
+                          <hr />
                           <p className="text-center">Opciones</p>
-                          <hr/>
+                          <hr />
                           <div className="row">
                             <div className="col-4">
                               <FormGroup>
@@ -450,7 +457,7 @@ function Home() {
                               <FormGroup>
                                 <label htmlFor="loteria">Loteria</label>
                                 <Field
-                                  className="form-control"  
+                                  className="form-control"
                                   name="loteria"
                                   placeholder="Loteria"
                                   type="text"
@@ -520,8 +527,11 @@ function Home() {
                               component="div"
                             />
                           </FormGroup>
-                          <hr/>
-                          <button className="btn btn-primary w-100" type="submit">
+                          <hr />
+                          <button
+                            className="btn btn-primary w-100"
+                            type="submit"
+                          >
                             Crear Rifa
                           </button>
                         </Form>
@@ -532,15 +542,17 @@ function Home() {
               </div>
             )
           ) : (
-            <>
-              <div className="card">
-                <div className="card-body">
-                  <hr />
-                  <h3 className="not-found">No hay rifas activas</h3>
-                  <hr />
+            <div className="card">
+              <div className="card-body">
+                <div className="accordion">
+                  <div className="accordion-item">
+                    <hr />
+                    <h3 className="not-found">No hay rifas activas</h3>
+                    <hr />
+                  </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

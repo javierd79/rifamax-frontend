@@ -17,8 +17,9 @@ export async function loginUser(dispatch, loginPayload) {
       dispatch({ type: 'LOGIN_SUCCESS', payload: data, private: false });
       localStorage.setItem('currentUser', JSON.stringify(data));
       localStorage.setItem('user', JSON.stringify(data.user.username));
-      localStorage.setItem('token', JSON.stringify(data.token));
       localStorage.setItem('role', JSON.stringify(data.user.role));
+      localStorage.setItem('token', JSON.stringify(data.token));
+      localStorage.setItem('exp', JSON.stringify(data.exp));
       return data;
     }
 
