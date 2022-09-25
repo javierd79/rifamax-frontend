@@ -25,7 +25,10 @@
   }
   tbody{
     background-color: #ffffff;
-    tr{
+    tr:hover {
+      background-color: rgb(245, 245, 249);
+    }
+    tr {
       background: rgb(252, 252, 252);
       .body-item{
         padding-top: 12px;
