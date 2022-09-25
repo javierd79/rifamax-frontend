@@ -65,7 +65,7 @@ function Users() {
         },
       })
       .then((res) => {
-        setUsers([]);
+        setUsers(res.data);
       })
       .catch((err) => {
         console.log(err);
