@@ -9,15 +9,41 @@ import { useAuthState, useAuthDispatch, logout } from "../context/auth";
 import "../assets/scss/pages/users.scss";
 import axios from "axios";
 import Modal from "../components/modal";
+import * as Yup from "yup";
+import { Formik, Form, Field } from "formik";
+import Switch from "react-js-switch";
 
 function Users() {
   const [isOpen, setIsOpen] = useState(false);
   const [pops, setPops] = useState(false);
   const [users, setUsers] = useState([]);
+  const [steps, setSteps] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState({});
+
+  const prevStep = () => {
+    setSteps(steps - 1);
+  };
+
+  const nextStep = () => {
+    setSteps(steps + 1);
+  };
+
+  const handleSteps = input => e => {
+    setSteps({ [input]: e.taget.value });
+  };
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  const formScheme = Yup.object().shape({
+    name: Yup.string().required("Required"),
+    username: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email").required("Required"),
+    role: Yup.string().required("Required"),
+    status: Yup.boolean().required("Required"),
+  });
 
   const userDetails = useAuthState();
 
@@ -47,11 +73,123 @@ function Users() {
     setPops(!pops);
   };
 
+  const RegisterUser = () => {
+    return (
+      <div className="register-user">
+        <Formik
+          initialValues={{
+            name: "",
+            username: "",
+            email: "",
+            role: "",
+            status: false,
+          }}
+          validationSchema={formScheme}
+          onSubmit={(values) => {
+            setUser(values)
+            nextStep();
+          }}
+        >
+          {({ errors, touched, isSubmitting }) => (
+            <Form>
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <Field
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="form-control" />
+                {errors.name && touched.name ? (
+                  <div className="text-danger">{errors.name}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <Field
+                  type="text"
+                  name="username"
+                  id="username"
+                  className="form-control" />
+                {errors.username && touched.username ? (
+                  <div className="text-danger">{errors.username}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <Field
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="form-control" />
+                {errors.email && touched.email ? (
+                  <div className="text-danger">{errors.email}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="role">Role</label>
+                <Field
+                  as="select"
+                  name="role"
+                  id="role"
+                  className="form-control"
+                >
+                  <option value="">Select Role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Agencia">Agencia</option>
+                  <option value="Taquilla">Taquilla</option>
+                  <option value="Rifero">Rifero</option>
+                </Field>
+                {errors.role && touched.role ? (
+                  <div className="text-danger">{errors.role}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <button
+                  className="btn btn-primary mt-2"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Loading..." : "Submit"}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    );
+  };  
+
+  const RenderSteps = () => {
+    switch (steps) {
+      case 1:
+        return (
+          <RegisterUser/>
+        );
+      case 2:
+        return (
+          <h1>a</h1>
+          // <JoinUsers/>
+        );
+      case 3:
+        return (
+          <h1>v</h1>
+          // <SendData/>
+        );
+      case 4:
+        return (
+          <h1>g</h1>
+          // <Success/>
+        );
+      default:
+        return (
+          <RegisterUser/>
+        );
+    }
+  };
+
   return (
     <>
       <Sidebar isOpen={isOpen} />
       <div className={isOpen === true ? "openContainer" : "closeContainer"}>
-      <button className="btn-flotante">+</button>
         <Header>
           <div className="toggle">
             <BsFillPersonFill
@@ -137,29 +275,36 @@ function Users() {
                         <td className="body-item">{user.email}</td>
                         <td className="body-item">{user.role}</td>
                         <td className="body-item">
-                          {user.status ? (
-                            <span className="badge-activo badge">Activo</span>
-                          ) : (
-                            <span className="badge-inactivo badge">Inactivo</span>
-                          )}
+                          <Switch
+                            value={user.status}
+                            color="#fff"
+                            backgroundColor="#231f20"
+                            on
+                            handleDiameter={30}
+                            onChange={() => {
+                              axios
+                                .put(
+                                  `http://159.203.76.114/api/v1/users/${user.id}`,
+                                  {
+                                    status: !user.status,
+                                  },
+                                  {
+                                    headers: {
+                                      Authorization: `Bearer ${userDetails.token}`,
+                                    },
+                                  }
+                                )
+                                .then((res) => {
+                                  console.log(res);
+                                  window.location.reload();
+                                })
+                                .catch((err) => {
+                                  console.log(err);
+                                });
+                            }}
+                          />
                         </td>
                         <td className="body-btn">
-                          <Modal
-                            btnColor="primary"
-                            centered={true}
-                            classBtn="me-1 mb-1"
-                            buttonTitle=<FaEdit />
-                            title="Editar usuario"
-                          >
-                            <h6>
-                              Una vez eliminado este usuario se borraran todos
-                              su atributos relacionados: Rifas, Sorteos,
-                              Agencias, Riferos, Taquilla
-                            </h6>
-                            <button className="btn btn-danger w-100">
-                              Eliminar
-                            </button>
-                          </Modal>
                           <Modal
                             btnColor="danger"
                             centered={true}
@@ -172,7 +317,27 @@ function Users() {
                               su atributos relacionados: Rifas, Sorteos,
                               Agencias, Riferos, Taquilla
                             </h6>
-                            <button className="btn btn-danger w-100">
+                            <button
+                              className="btn btn-danger w-100 mt-4"
+                              onClick={() => {
+                                axios
+                                  .delete(
+                                    `http://159.203.76.114/api/v1/users/${user.id}`,
+                                    {
+                                      headers: {
+                                        Authorization: `Bearer ${userDetails.token}`,
+                                      },
+                                    }
+                                  )
+                                  .then((res) => {
+                                    console.log(res);
+                                    window.location.reload();
+                                  })
+                                  .catch((err) => {
+                                    console.log(err);
+                                  });
+                              }}
+                            >
                               Eliminar
                             </button>
                           </Modal>
@@ -181,6 +346,15 @@ function Users() {
                     ))}
                   </tbody>
                 </table>
+                <Modal
+                  btnColor="primary"
+                  centered={true}
+                  classBtn="mb-1"
+                  buttonTitle="Agregar usuario"
+                  title="Agregar usuario"
+                >
+                  <RenderSteps/>
+                </Modal>
               </div>
             </div>
           </div>
@@ -188,6 +362,6 @@ function Users() {
       </div>
     </>
   );
-}
+};
 
 export default Users;

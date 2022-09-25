@@ -8860,6 +8860,13 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+react-js-switch@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/react-js-switch/-/react-js-switch-1.1.6.tgz#0b098761a30e57ce5c379fcad0604268f70b39e1"
+  integrity sha512-2FxJeXPIhnH+FCeWcN5s/BG1OeL8PVak6/tZ1F5F3snvraUPakVsUhLwJ40mM9juatHUDuERVOOELsjUBxre5w==
+  dependencies:
+    request-animation-number "^1.0.6"
+
 react-popper@^2.2.4:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.3.0.tgz#17891c620e1320dce318bad9fede46a5f71c70ba"
@@ -9184,6 +9191,11 @@ renderkid@^3.0.0:
     htmlparser2 "^6.1.0"
     lodash "^4.17.21"
     strip-ansi "^6.0.1"
+
+request-animation-number@^1.0.6:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/request-animation-number/-/request-animation-number-1.0.8.tgz#2591cec4b21cd5cddf0d356a0486a288269d24d4"
+  integrity sha512-t/9G8TrTzE5GBWXiQuOTeNEkiGqfv0JRac/6KMzNlTy0i01IgQxJ6G78b4cI+nHg38ZAeUScUT/gY6p6ww/SOw==
 
 require-directory@^2.1.1:
   version "2.1.1"
