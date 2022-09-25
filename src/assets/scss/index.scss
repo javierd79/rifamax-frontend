@@ -113,6 +113,22 @@ body.active {
   }
 }
 
+.badge-activo {
+  background-color: #00bfa6;
+  color: white;
+  padding: 0.2em 0.5em;
+  border-radius: 5px;
+  font-size: 0.8em;
+}
+
+.badge-inactivo {
+  background-color: #ff5252;
+  color: white;
+  padding: 0.2em 0.5em;
+  border-radius: 5px;
+  font-size: 0.8em;
+}
+
 .openContainer {
   transition: all 0.8s ease;
   animation: slideIn 0.8s ease;
