@@ -190,106 +190,105 @@ function Users() {
   const JoinUsers = () => {
     return (
       <div className="join-users">
-        <Formik
-          initialValues={{
-            phone: "",
-          }}
-          validationSchema={formScheme}
-          onSubmit={(values, { setSubmitting }) => {
-            setBodyOption(bodyOption.push(values));
-            setSubmitting(false);
-            console.log(bodyOption);
-            nextStep();
-          }}
-        >
-          {({ errors, touched, isSubmitting }) => (
-            <Form>
-              <div className="form-group">
-                <label htmlFor="Opcion">Opcion</label>
-                <Field
-                  as="select"
-                  name="option"
-                  id="option"
-                  className="form-control"
-                  onChange={(e) => setOption(e.target.value)}
-                >
-                  <option value="">Select Option</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </Field>
-                {errors.option && touched.option ? (
-                  <div className="text-danger">{errors.option}</div>
+          <Formik
+            initialValues={{
+              phone: "",
+            }}
+            validationSchema={formScheme}
+            onSubmit={(values, { setSubmitting }) => {
+              setBodyOption(bodyOption.push(values));
+              setSubmitting(false);
+              console.log(bodyOption);
+              nextStep();
+            }}
+          >
+            {({ errors, touched, isSubmitting }) => (
+              <Form>
+                <div className="form-group">
+                  <label htmlFor="Opcion">Opcion</label>
+                  <Field
+                    as="select"
+                    name="option"
+                    id="option"
+                    className="form-control"
+                    onChange={(e) => setOption(e.target.value)}
+                  >
+                    <option value="">Seleccione una seccion</option>
+                    <option value="Agencia">Agencia</option>
+                    <option value="Taquilla">Taquilla</option>
+                    <option value="Rifero">Rifero</option>
+                  </Field>
+                  {errors.option && touched.option ? (
+                    <div className="text-danger">{errors.option}</div>
+                  ) : null}
+                </div>
+                {option === "1" ? (
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <Field
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                  </div>
                 ) : null}
-              </div>
-              {option === "1" ? (
+                {option === "2" ? (
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <Field
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                  </div>
+                ) : null}
+                {option === "3" ? (
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <Field
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                  </div>
+                ) : null}
+                {option === "4" ? (
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <Field
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                  </div>
+                ) : null}
                 <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
-                  <Field
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    className="form-control"
-                  />
-                  {errors.phone && touched.phone ? (
-                    <div className="text-danger">{errors.phone}</div>
-                  ) : null}
+                  <button
+                    className="btn btn-primary mt-2"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Loading..." : "Submit"}
+                  </button>
                 </div>
-              ) : null}
-              {option === "2" ? (
-                <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
-                  <Field
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    className="form-control"
-                  />
-                  {errors.phone && touched.phone ? (
-                    <div className="text-danger">{errors.phone}</div>
-                  ) : null}
-                </div>
-              ) : null}
-              {option === "3" ? (
-                <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
-                  <Field
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    className="form-control"
-                  />
-                  {errors.phone && touched.phone ? (
-                    <div className="text-danger">{errors.phone}</div>
-                  ) : null}
-                </div>
-              ) : null}
-              {option === "4" ? (
-                <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
-                  <Field
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    className="form-control"
-                  />
-                  {errors.phone && touched.phone ? (
-                    <div className="text-danger">{errors.phone}</div>
-                  ) : null}
-                </div>
-              ) : null}
-              <div className="form-group">
-                <button
-                  className="btn btn-primary mt-2"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Loading..." : "Submit"}
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
+              </Form>
+            )}
+          </Formik>
       </div>
     );
   };        
