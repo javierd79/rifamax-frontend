@@ -1,6 +1,28 @@
 .users {
   margin-top: 5.4rem;
 
+  .card {
+    .card-body{
+      .accordion {
+        width: 100%;
+        margin: 0 auto;
+        background-color: #eef5f9;
+    
+        .accordion-item {
+          background-color: #eef5f9;
+          margin-bottom: 0;
+          border-radius: 0;
+          border: 0;
+    
+          .not-found {
+            text-align: center;
+            margin: 5rem;
+          }
+        }
+      }
+    }
+  }
+
   .title{
     text-align: center;
   }

@@ -65,7 +65,7 @@ function Users() {
         },
       })
       .then((res) => {
-        setUsers(res.data);
+        setUsers([]);
       })
       .catch((err) => {
         console.log(err);
@@ -383,77 +383,66 @@ function Users() {
           </div>
         </Header>
         <div className="container-fluid users">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title title">Usuarios</h5>
-              <hr />
-              <div className="table-responsive">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Nombre</th>
-                      <th scope="col">Correo</th>
-                      <th scope="col">Rol</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map((user) => (
-                      <tr key={user.id}>
-                        <th scope="row" className="body-item">
-                          {user.id}
-                        </th>
-                        <td className="body-item">{user.name}</td>
-                        <td className="body-item">{user.email}</td>
-                        <td className="body-item">{user.role}</td>
-                        <td className="body-item">
-                          <Switch
-                            value={user.status}
-                            color="#fff"
-                            onChange={() => {
-                              axios
-                                .put(
-                                  `http://159.203.76.114/api/v1/users/${user.id}`,
-                                  {
-                                    status: !user.status,
-                                  },
-                                  {
-                                    headers: {
-                                      Authorization: `Bearer ${userDetails.token}`,
-                                    },
-                                  }
-                                )
-                                .then((res) => {
-                                  console.log(res);
-                                  window.location.reload();
-                                })
-                                .catch((err) => {
-                                  console.log(err);
-                                });
-                            }}
-                          />
-                        </td>
-                        <td className="body-btn">
-                          <Modal
-                            btnColor="danger"
-                            centered={true}
-                            classBtn="mb-1"
-                            buttonTitle=<BsTrash />
-                            title="Estas seguro de eliminar este usuario?"
-                          >
-                            <h6>
-                              Una vez eliminado este usuario se borraran todos
-                              su atributos relacionados: Rifas, Sorteos,
-                              Agencias, Riferos, Taquilla
-                            </h6>
-                            <button
-                              className="btn btn-danger w-100 mt-4"
-                              onClick={() => {
+          {users.length === 0 ? (
+            <div className="card">
+              <div className="card-body">
+                <div className="accordion">
+                  <div className="accordion-item">
+                    <hr />
+                    <h2 className="not-found" id="headingOne">
+                      No hay usuarios
+                    </h2>
+                    <hr />
+                  </div>
+                </div>
+                <Modal
+                  btnColor="primary"
+                  centered={true}
+                  classBtn="mb-1"
+                  buttonTitle="Agregar usuario"
+                  title="Agregar usuario"
+                >
+                  <RenderSteps />
+                </Modal>
+              </div>
+            </div>
+          ) : (
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title title">Usuarios</h5>
+                <hr />
+                <div className="table-responsive">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users.map((user) => (
+                        <tr key={user.id}>
+                          <th scope="row" className="body-item">
+                            {user.id}
+                          </th>
+                          <td className="body-item">{user.name}</td>
+                          <td className="body-item">{user.email}</td>
+                          <td className="body-item">{user.role}</td>
+                          <td className="body-item">
+                            <Switch
+                              value={user.status}
+                              color="#fff"
+                              onChange={() => {
                                 axios
-                                  .delete(
+                                  .put(
                                     `http://159.203.76.114/api/v1/users/${user.id}`,
+                                    {
+                                      status: !user.status,
+                                    },
                                     {
                                       headers: {
                                         Authorization: `Bearer ${userDetails.token}`,
@@ -468,27 +457,63 @@ function Users() {
                                     console.log(err);
                                   });
                               }}
+                            />
+                          </td>
+                          <td className="body-btn">
+                            <Modal
+                              btnColor="danger"
+                              centered={true}
+                              classBtn="mb-1"
+                              buttonTitle=<BsTrash />
+                              title="Estas seguro de eliminar este usuario?"
                             >
-                              Eliminar
-                            </button>
-                          </Modal>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <Modal
-                  btnColor="primary"
-                  centered={true}
-                  classBtn="mb-1"
-                  buttonTitle="Agregar usuario"
-                  title="Agregar usuario"
-                >
-                  <RenderSteps/>
-                </Modal>
+                              <h6>
+                                Una vez eliminado este usuario se borraran todos
+                                su atributos relacionados: Rifas, Sorteos,
+                                Agencias, Riferos, Taquilla
+                              </h6>
+                              <button
+                                className="btn btn-danger w-100 mt-4"
+                                onClick={() => {
+                                  axios
+                                    .delete(
+                                      `http://159.203.76.114/api/v1/users/${user.id}`,
+                                      {
+                                        headers: {
+                                          Authorization: `Bearer ${userDetails.token}`,
+                                        },
+                                      }
+                                    )
+                                    .then((res) => {
+                                      console.log(res);
+                                      window.location.reload();
+                                    })
+                                    .catch((err) => {
+                                      console.log(err);
+                                    });
+                                }}
+                              >
+                                Eliminar
+                              </button>
+                            </Modal>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <Modal
+                    btnColor="primary"
+                    centered={true}
+                    classBtn="mb-1"
+                    buttonTitle="Agregar usuario"
+                    title="Agregar usuario"
+                  >
+                    <RenderSteps />
+                  </Modal>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
