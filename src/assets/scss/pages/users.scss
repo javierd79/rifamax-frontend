@@ -2,11 +2,7 @@
   margin-top: 5.4rem;
 
   .title{
-    margin-left: calc(50vw - 5%);
-
-    @media screen and (max-width: 768px) {
-      margin-left: calc(50vw - 20%);
-    }
+    text-align: center;
   }
 
   .table{

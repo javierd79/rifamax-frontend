@@ -51,6 +51,7 @@ function Users() {
     <>
       <Sidebar isOpen={isOpen} />
       <div className={isOpen === true ? "openContainer" : "closeContainer"}>
+      <button className="btn-flotante">+</button>
         <Header>
           <div className="toggle">
             <BsFillPersonFill
@@ -135,7 +136,7 @@ function Users() {
                         <td className="body-item">{user.name}</td>
                         <td className="body-item">{user.email}</td>
                         <td className="body-item">{user.role}</td>
-                        <td>
+                        <td className="body-item">
                           {user.status ? (
                             <span className="badge-activo badge">Activo</span>
                           ) : (
@@ -146,7 +147,7 @@ function Users() {
                           <Modal
                             btnColor="primary"
                             centered={true}
-                            classBtn="me-2"
+                            classBtn="me-1 mb-1"
                             buttonTitle=<FaEdit />
                             title="Editar usuario"
                           >
@@ -162,6 +163,7 @@ function Users() {
                           <Modal
                             btnColor="danger"
                             centered={true}
+                            classBtn="mb-1"
                             buttonTitle=<BsTrash />
                             title="Estas seguro de eliminar este usuario?"
                           >
