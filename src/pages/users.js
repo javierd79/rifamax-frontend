@@ -17,6 +17,8 @@ function Users() {
   const [pops, setPops] = useState(false);
   const [users, setUsers] = useState([]);
   const [steps, setSteps] = useState(1);
+  const [bodyOption, setBodyOption] = useState([]);
+  const [option, setOption] = useState(null);
   // const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState([]);
 
@@ -41,6 +43,8 @@ function Users() {
     username: Yup.string().required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     role: Yup.string().required("Required"),
+    password: Yup.string().required("Required").min(6, "Muy corta"),
+    password_confirmation: Yup.string().required("Required").min(6, "Muy corta").equals([Yup.ref("password")], "Las contraseñas no coinciden"),
     status: Yup.boolean().required("Required"),
   });
 
@@ -81,7 +85,9 @@ function Users() {
             username: "",
             email: "",
             role: "",
-            status: false,
+            password: "",
+            password_confirmation: "",
+            status: true,
           }}
           validationSchema={formScheme}
           onSubmit={(values, { setSubmitting }) => {
@@ -127,6 +133,28 @@ function Users() {
               ) : null}
             </div>
             <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <Field
+                type="password"
+                name="password"
+                id="password"
+                className="form-control" />
+              {errors.password && touched.password ? (
+                <div className="text-danger">{errors.password}</div>
+              ) : null}
+            </div>
+            <div className="form-group">
+              <label htmlFor="password_confirmation">Confirm Password</label>
+              <Field
+                type="password"
+                name="password_confirmation"
+                id="password_confirmation"
+                className="form-control" />
+              {errors.password_confirmation && touched.password_confirmation ? (
+                <div className="text-danger">{errors.password_confirmation}</div>
+              ) : null}
+            </div>
+            <div className="form-group">
               <label htmlFor="role">Role</label>
               <Field
                 as="select"
@@ -159,6 +187,113 @@ function Users() {
     );
   };  
 
+  const JoinUsers = () => {
+    return (
+      <div className="join-users">
+        <Formik
+          initialValues={{
+            phone: "",
+          }}
+          validationSchema={formScheme}
+          onSubmit={(values, { setSubmitting }) => {
+            setBodyOption(bodyOption.push(values));
+            setSubmitting(false);
+            console.log(bodyOption);
+            nextStep();
+          }}
+        >
+          {({ errors, touched, isSubmitting }) => (
+            <Form>
+              <div className="form-group">
+                <label htmlFor="Opcion">Opcion</label>
+                <Field
+                  as="select"
+                  name="option"
+                  id="option"
+                  className="form-control"
+                  onChange={(e) => setOption(e.target.value)}
+                >
+                  <option value="">Select Option</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </Field>
+                {errors.option && touched.option ? (
+                  <div className="text-danger">{errors.option}</div>
+                ) : null}
+              </div>
+              {option === "1" ? (
+                <div className="form-group">
+                  <label htmlFor="phone">Phone</label>
+                  <Field
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    className="form-control"
+                  />
+                  {errors.phone && touched.phone ? (
+                    <div className="text-danger">{errors.phone}</div>
+                  ) : null}
+                </div>
+              ) : null}
+              {option === "2" ? (
+                <div className="form-group">
+                  <label htmlFor="phone">Phone</label>
+                  <Field
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    className="form-control"
+                  />
+                  {errors.phone && touched.phone ? (
+                    <div className="text-danger">{errors.phone}</div>
+                  ) : null}
+                </div>
+              ) : null}
+              {option === "3" ? (
+                <div className="form-group">
+                  <label htmlFor="phone">Phone</label>
+                  <Field
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    className="form-control"
+                  />
+                  {errors.phone && touched.phone ? (
+                    <div className="text-danger">{errors.phone}</div>
+                  ) : null}
+                </div>
+              ) : null}
+              {option === "4" ? (
+                <div className="form-group">
+                  <label htmlFor="phone">Phone</label>
+                  <Field
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    className="form-control"
+                  />
+                  {errors.phone && touched.phone ? (
+                    <div className="text-danger">{errors.phone}</div>
+                  ) : null}
+                </div>
+              ) : null}
+              <div className="form-group">
+                <button
+                  className="btn btn-primary mt-2"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Loading..." : "Submit"}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    );
+  };        
+
   const RenderSteps = () => {
     switch (steps) {
       case 1:
@@ -167,8 +302,7 @@ function Users() {
         );
       case 2:
         return (
-          <h1>a</h1>
-          // <JoinUsers/>
+          <JoinUsers/>
         );
       case 3:
         return (
