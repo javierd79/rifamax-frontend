@@ -4,7 +4,6 @@ import { Popover, PopoverHeader } from "@chakra-ui/react";
 import Header from "../components/header";
 import Sidebar from "../components/sidebar";
 import { BsFillPersonFill, BsTrash } from "react-icons/bs";
-import { FaEdit } from "react-icons/fa";
 import { useAuthState, useAuthDispatch, logout } from "../context/auth";
 import "../assets/scss/pages/users.scss";
 import axios from "axios";
@@ -18,20 +17,20 @@ function Users() {
   const [pops, setPops] = useState(false);
   const [users, setUsers] = useState([]);
   const [steps, setSteps] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({});
+  // const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState([]);
 
-  const prevStep = () => {
-    setSteps(steps - 1);
-  };
+  // const prevStep = () => {
+  //   setSteps(steps - 1);
+  // };
 
   const nextStep = () => {
     setSteps(steps + 1);
   };
 
-  const handleSteps = input => e => {
-    setSteps({ [input]: e.taget.value });
-  };
+  // const handleSteps = input => e => {
+  //   setSteps({ [input]: e.taget.value });
+  // };
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -85,73 +84,75 @@ function Users() {
             status: false,
           }}
           validationSchema={formScheme}
-          onSubmit={(values) => {
-            setUser(values)
+          onSubmit={(values, { setSubmitting }) => {
+            setUser(user.push(values));
+            setSubmitting(false);
+            console.log(user);
             nextStep();
           }}
         >
           {({ errors, touched, isSubmitting }) => (
             <Form>
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <Field
-                  type="text"
-                  name="name"
-                  id="name"
-                  className="form-control" />
-                {errors.name && touched.name ? (
-                  <div className="text-danger">{errors.name}</div>
-                ) : null}
-              </div>
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <Field
-                  type="text"
-                  name="username"
-                  id="username"
-                  className="form-control" />
-                {errors.username && touched.username ? (
-                  <div className="text-danger">{errors.username}</div>
-                ) : null}
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <Field
-                  type="email"
-                  name="email"
-                  id="email"
-                  className="form-control" />
-                {errors.email && touched.email ? (
-                  <div className="text-danger">{errors.email}</div>
-                ) : null}
-              </div>
-              <div className="form-group">
-                <label htmlFor="role">Role</label>
-                <Field
-                  as="select"
-                  name="role"
-                  id="role"
-                  className="form-control"
-                >
-                  <option value="">Select Role</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Agencia">Agencia</option>
-                  <option value="Taquilla">Taquilla</option>
-                  <option value="Rifero">Rifero</option>
-                </Field>
-                {errors.role && touched.role ? (
-                  <div className="text-danger">{errors.role}</div>
-                ) : null}
-              </div>
-              <div className="form-group">
-                <button
-                  className="btn btn-primary mt-2"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Loading..." : "Submit"}
-                </button>
-              </div>
-            </Form>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <Field
+                type="text"
+                name="name"
+                id="name"
+                className="form-control" />
+              {errors.name && touched.name ? (
+                <div className="text-danger">{errors.name}</div>
+              ) : null}
+            </div>
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <Field
+                type="text"
+                name="username"
+                id="username"
+                className="form-control" />
+              {errors.username && touched.username ? (
+                <div className="text-danger">{errors.username}</div>
+              ) : null}
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <Field
+                type="email"
+                name="email"
+                id="email"
+                className="form-control" />
+              {errors.email && touched.email ? (
+                <div className="text-danger">{errors.email}</div>
+              ) : null}
+            </div>
+            <div className="form-group">
+              <label htmlFor="role">Role</label>
+              <Field
+                as="select"
+                name="role"
+                id="role"
+                className="form-control"
+              >
+                <option value="">Select Role</option>
+                <option value="Admin">Admin</option>
+                <option value="Agencia">Agencia</option>
+                <option value="Taquilla">Taquilla</option>
+                <option value="Rifero">Rifero</option>
+              </Field>
+              {errors.role && touched.role ? (
+                <div className="text-danger">{errors.role}</div>
+              ) : null}
+            </div>
+            <div className="form-group">
+              <button
+                className="btn btn-primary mt-2"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Loading..." : "Submit"}
+              </button>
+            </div>
+          </Form>
           )}
         </Formik>
       </div>
@@ -278,9 +279,6 @@ function Users() {
                           <Switch
                             value={user.status}
                             color="#fff"
-                            backgroundColor="#231f20"
-                            on
-                            handleDiameter={30}
                             onChange={() => {
                               axios
                                 .put(
