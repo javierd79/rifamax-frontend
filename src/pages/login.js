@@ -26,7 +26,7 @@ function Login(props) {
   return (
     <div className='login'>
       <form onSubmit={handleLogin}>
-      <img src={RifaMaxLogo} alt="RifaMax" className="logo" />
+      {/* <img src={RifaMaxLogo} alt="RifaMax" className="logo" /> */}
         <div className='form-control'>
           <label htmlFor="email">Email</label>
           <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />

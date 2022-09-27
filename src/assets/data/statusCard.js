@@ -56,7 +56,7 @@ export const StatusCard = () => {
               </div>
               <div className="ms-3">
                 <h5 className="mb-0 font-weight-bold dot">{rifasTotal}</h5>
-                <small className="text-muted dot">Rifas Totales</small>
+                <small className="text-muted dot">Ordenes Totales</small>
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@ export const StatusCard = () => {
               </div>
               <div className="ms-3">
                 <h5 className="mb-0 font-weight-bold dot">{rifasActives}</h5>
-                <small className="text-muted dot">Rifas Activas</small>
+                <small className="text-muted dot">Ordenes Activas</small>
               </div>
             </div>
           </div>
@@ -86,7 +86,7 @@ export const StatusCard = () => {
                 </div>
               <div className="ms-3">
                 <h5 className="mb-0 font-weight-bold dot">{rifasExpired}</h5>
-                <small className="text-muted dot">Rifas Expiradas</small>
+                <small className="text-muted dot">Ordenes Expiradas</small>
               </div>
             </div>
           </div>

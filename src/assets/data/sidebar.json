@@ -4,11 +4,6 @@
       "id": 1,
       "name": "Dashboard",
       "path": "/"
-    },
-    {
-      "id": 2,
-      "name": "Usuarios",
-      "path": "/users"
     }
   ],
   "agencia": [
