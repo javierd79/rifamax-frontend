@@ -12,6 +12,7 @@ const AuthRouter = ({ component: Component, path, isPrivate, ...rest }) => {
     Taquilla: ['/'],
     Agencia: ['/'],
     undefined: ['/login'],
+    null: ['/login'],
   };
 
   return (

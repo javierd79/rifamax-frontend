@@ -24,6 +24,51 @@ $active: rgba(11, 183, 175, 0.125);
   color: #0d6efd;
 }
 
+.ribbon {
+  background-color: rgb(251, 45, 45);
+  color: #fff;
+  transform: rotate(45deg);
+  position: absolute;
+  border-radius: 3px 5px 5px 1.5px;
+  padding: 2px;
+  top: 12px;
+  right: -1.5px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  user-select: none;
+}
+
+.ribbon:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  transform: rotate(45deg);
+  height: 0;
+  border-style: solid;
+  border-radius: 5px 0;
+  border-width: 0 15px 16.5px 2px;
+  border-color: transparent rgb(251, 45, 45) transparent transparent;
+  top: 3px;
+  right: -6px;
+}
+
+.ribbon:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  transform: rotate(224deg);
+  height: 0;
+  border-style: solid;
+  border-radius: 5px 0 0 0;
+  border-width: 0 15px 16.5px 2px;
+  border-color: transparent rgb(251, 45, 45) transparent transparent;
+  top: 4.125px;
+  right: 40px;
+}
+
 .card {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }

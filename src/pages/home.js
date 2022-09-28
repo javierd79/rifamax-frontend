@@ -92,6 +92,7 @@ function Home() {
       },
     }).then((res) => {
       console.log(res);
+      window.location.reload();
     })
   }
 
@@ -121,6 +122,7 @@ function Home() {
       .catch((err) => {
         console.log(err);
       });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails.token]);
 
   const handleAccordion = (index) => {
@@ -281,8 +283,6 @@ function Home() {
                                       <br />
                                       Precio: {element.price}$
                                       <br />
-                                      Responsable: {userDetails.user.username}
-                                      <br />
                                       <br />
                                       <Barcode
                                         value={element.serial}
@@ -296,29 +296,82 @@ function Home() {
                                 </div>
                                 {element.is_send === true ? (
                                   <>
-                                    <button
-                                      className="btn btn-primary me-2"
-                                      disabled={true}
+                                    <Modal
+                                      btnColor="primary"
+                                      centered={true}
+                                      buttonTitle="Ver tickets"
+                                      title={`Tickets`}
                                     >
-                                      Imprimir
-                                    </button>
-                                    <button
-                                      className="btn btn-primary"
-                                      disabled={true}
-                                    >
-                                      Enviar a APP
-                                    </button>
+                                        <div className="row">
+                                          {
+                                            element.rifa_tickets.map((ticket) => {
+                                              return (
+                                                <div className="col-4">
+                                                  <div className="card mb-2 mt-2 ms-1 me-1">
+                                                    <div className="card-body">
+                                                      <h5 className="card-title">
+                                                        {ticket.ticket_nro}
+                                                      </h5>
+                                                      <p className="card-text">
+                                                        {ticket.sign}
+                                                        <p className="text-muted mt-1">
+                                                          {ticket.serial}
+                                                        </p>
+                                                      </p>
+                                                        {ticket.is_sold === true
+                                                          ? <p className="ribbon">Vendido</p>
+                                                          : null
+                                                        }
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              );
+                                            })
+                                          }
+                                        </div>
+                                    </Modal>
                                   </>
                                 ) : (
                                   <>
-                                    <button
-                                      className="btn btn-primary me-2"
-                                      onClick={() => {
-                                        sendToApp(element.id);
-                                      }}
+                                    <Modal
+                                      btnColor="primary"
+                                      centered={true}
+                                      buttonTitle="Enviar a APP"
+                                      title={`Enviar a APP`}
                                     >
-                                      Enviar a APP
-                                    </button>
+                                        <div className="row">
+                                          {
+                                            element.rifa_tickets.map((ticket) => {
+                                              return (
+                                                <div className="col-4">
+                                                  <div className="card mb-2 mt-2 ms-1 me-1">
+                                                    <div className="card-body">
+                                                      <h5 className="card-title">
+                                                        {ticket.ticket_nro}
+                                                      </h5>
+                                                      <p className="card-text">
+                                                        {ticket.sign}
+                                                        <p className="text-muted mt-1">
+                                                          {ticket.serial}
+                                                        </p>
+                                                      </p>
+                                                        {ticket.is_sold === true
+                                                          ? <p className="ribbon">Vendido</p>
+                                                          : null
+                                                        }
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              );
+                                            })
+                                          }
+                                        </div>
+                                        <button className="btn btn-success w-100 mt-2" onClick={() => {
+                                          sendToApp(element.id);
+                                        }}>
+                                          Confirmar
+                                        </button>
+                                    </Modal>
                                   </>
                                 )}
                               </div>

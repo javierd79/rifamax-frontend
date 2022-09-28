@@ -11,6 +11,7 @@ import Modal from "../components/modal";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import Switch from "react-js-switch";
+import { render } from "@testing-library/react";
 
 function Users() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +22,7 @@ function Users() {
   const [option, setOption] = useState(null);
   // const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState([]);
+  let user_obj;
 
   // const prevStep = () => {
   //   setSteps(steps - 1);
@@ -51,6 +53,13 @@ function Users() {
   const userDetails = useAuthState();
 
   const dispatch = useAuthDispatch();
+
+  const roleSelect = [
+    { value: "Admin", label: "Admin" },
+    { value: "Rifero", label: "Rifero" },
+    { value: "Taquilla", label: "Taquilla" },
+    { value: "Agencia", label: "Agencia" },
+  ];
 
   const handleLogout = () => {
     logout(dispatch);
@@ -91,8 +100,11 @@ function Users() {
           }}
           validationSchema={formScheme}
           onSubmit={(values, { setSubmitting }) => {
-            setUser(user.push(values));
+            setUser([...user, values]);
             setSubmitting(false);
+            if (values.role === "Admin") {
+              setOption('Admin');
+            }
             console.log(user);
             nextStep();
           }}
@@ -162,11 +174,12 @@ function Users() {
                 id="role"
                 className="form-control"
               >
-                <option value="">Select Role</option>
-                <option value="Admin">Admin</option>
-                <option value="Agencia">Agencia</option>
-                <option value="Taquilla">Taquilla</option>
-                <option value="Rifero">Rifero</option>
+                <option disabled value="">Seleccione un Rol</option>
+                {roleSelect.map((role) => (
+                  <option key={role.value} value={role.value}>
+                    {role.label}
+                  </option>
+                ))}
               </Field>
               {errors.role && touched.role ? (
                 <div className="text-danger">{errors.role}</div>
@@ -200,29 +213,51 @@ function Users() {
               setSubmitting(false);
               console.log(bodyOption);
               nextStep();
+              window.location.reload();
             }}
           >
             {({ errors, touched, isSubmitting }) => (
               <Form>
                 <div className="form-group">
-                  <label htmlFor="Opcion">Opcion</label>
-                  <Field
-                    as="select"
-                    name="option"
-                    id="option"
-                    className="form-control"
-                    onChange={(e) => setOption(e.target.value)}
-                  >
-                    <option value="">Seleccione una seccion</option>
-                    <option value="Agencia">Agencia</option>
-                    <option value="Taquilla">Taquilla</option>
-                    <option value="Rifero">Rifero</option>
-                  </Field>
+                    {
+                      option === 'Admin' ? null :
+                      (
+                        <>
+                        <label htmlFor="Opcion">Opcion</label>
+                          <Field
+                            as="select"
+                            name="option"
+                            id='role'
+                            className="form-control"
+                            onChange={(e) => setOption(e.target.value)}
+                          >
+                            <option value="">Seleccione una seccion</option>
+                            <option value="Agencia">Agencia</option>
+                            <option value="Taquilla">Taquilla</option>
+                            <option value="Rifero">Rifero</option>
+                          </Field>
+                        </>
+                      )
+                    }
                   {errors.option && touched.option ? (
                     <div className="text-danger">{errors.option}</div>
                   ) : null}
                 </div>
-                {option === "1" ? (
+                {option === "Agencia" ? (
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <Field
+                      type="text"                                                                                                       
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                  </div>
+                ) : null}
+                {option === "Taquilla" ? (
                   <div className="form-group">
                     <label htmlFor="phone">Phone</label>
                     <Field
@@ -236,7 +271,7 @@ function Users() {
                     ) : null}
                   </div>
                 ) : null}
-                {option === "2" ? (
+                {option === "Rifero" ? (
                   <div className="form-group">
                     <label htmlFor="phone">Phone</label>
                     <Field
@@ -250,40 +285,37 @@ function Users() {
                     ) : null}
                   </div>
                 ) : null}
-                {option === "3" ? (
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <Field
-                      type="text"
-                      name="phone"
-                      id="phone"
-                      className="form-control"
-                    />
-                    {errors.phone && touched.phone ? (
-                      <div className="text-danger">{errors.phone}</div>
-                    ) : null}
-                  </div>
-                ) : null}
-                {option === "4" ? (
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <Field
-                      type="text"
-                      name="phone"
-                      id="phone"
-                      className="form-control"
-                    />
-                    {errors.phone && touched.phone ? (
-                      <div className="text-danger">{errors.phone}</div>
-                    ) : null}
-                  </div>
+                {option === "Admin" ? (
+                  <>
+                    <p className="text-center">Esta seguro que desea crear un usuario con privilegios de administrador?</p>
+                    <button className="btn btn-primary mt-2" onClick={() => (
+                      axios.post('http://159.203.76.114/api/v1/users', user[0],
+                      {
+                        headers: {
+                          'Authorization': `Bearer ${userDetails.token}`
+                          }
+                          })
+                          .then(res => {
+                            console.log(res);
+                            console.log(res.data);
+                          })
+                          .catch(err => {
+                            console.log(err);
+                            console.log(user);
+                          })
+                      )}
+                    >
+                      Crear
+                    </button>
+                  </>
                 ) : null}
                 <div className="form-group">
                   <button
-                    className="btn btn-primary mt-2"
+                    className={`btn btn-primary mt-2 ${option === "Admin" ? "d-none" : ""}`}
+                    type="submit"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Loading..." : "Submit"}
+                    {isSubmitting ? "Loading..." : "Siguiente"}
                   </button>
                 </div>
               </Form>
