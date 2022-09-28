@@ -21,6 +21,7 @@ function Home() {
   const [isActive, setIsActive] = useState(null);
   const [allRifas, setAllRifas] = useState(null);
   const [pops, setPops] = useState(false);
+  const [riferos, setRiferos] = useState([]);
   
   const yesterday = () => {
     let today = new Date();
@@ -91,11 +92,23 @@ function Home() {
       },
     }).then((res) => {
       console.log(res);
-    });
-
-  };
+    })
+  }
 
   useEffect(() => {
+    axios
+      .get("http://159.203.76.114/api/v1/riferos", {
+        headers: {
+          Authorization: `Bearer ${userDetails.token}`,
+        },
+      })
+      .then((res) => {
+        setRiferos([...res.data]);
+        console.log(riferos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     axios
       .get("http://159.203.76.114/api/v1/rifas/actives", {
         headers: {
@@ -201,7 +214,7 @@ function Home() {
                   <div className="accordion">
                     <div className="accordion-item">
                       <hr />
-                      <h3 className="not-found">No hay ordenes activas</h3>
+                      <h3 className="not-found">No hay rifas activas</h3>
                       <hr />
                     </div>
                   </div>
@@ -210,7 +223,7 @@ function Home() {
             ) : (
               <div className="card">
                 <div className="card-body">
-                  <h3 className="card-title">Ordenes de platillo</h3>
+                  <h3 className="card-title">Rifas de Carros</h3>
                   <h6 className="mb-2 mtext card-subtitle">
                     Estado de las Rifas mensuales
                   </h6>
@@ -224,7 +237,7 @@ function Home() {
                               onClick={handleAccordion.bind(this, index)}
                             >
                               <div className="col-6 col-xs-12">
-                                Orden de: {element.awardSign}
+                                Rifa de: {element.awardSign}
                               </div>
                               <div className="col-6 col-xs-12 text-start rifD">
                                 {element.rifDate}
@@ -318,8 +331,8 @@ function Home() {
                       btnColor="primary"
                       centered={true}
                       classBtn="w-100"
-                      buttonTitle="Agregar ordenes"
-                      title="Agregar ordenes"
+                      buttonTitle="Agregar rifas"
+                      title="Agregar rifas"
                     >
                       <Formik
                         initialValues={{
@@ -341,12 +354,12 @@ function Home() {
                             <div className="col-6">
                               <FormGroup>
                                 <label htmlFor="rifDate">
-                                  Fecha de la orden
+                                  Fecha de la rifa
                                 </label>
                                 <Field
                                   className="form-control"
                                   name="rifDate"
-                                  placeholder="Fecha de la orden"
+                                  placeholder="Fecha de la Rifa"
                                   type="date"
                                 />
                                 <ErrorMessage
@@ -379,12 +392,12 @@ function Home() {
                             <div className="col-6">
                               <FormGroup>
                                 <label htmlFor="awardSign">
-                                  Platillo
+                                  Premio con Signo
                                 </label>
                                 <Field
                                   className="form-control"
                                   name="awardSign"
-                                  placeholder="Platillo"
+                                  placeholder="Premio con Signo"
                                   type="text"
                                 />
                                 <ErrorMessage
@@ -397,7 +410,7 @@ function Home() {
                             <div className="col-6">
                               <FormGroup>
                                 <label htmlFor="awardNoSign">
-                                  Extras
+                                  Premio sin signo
                                 </label>
                                 <Field
                                   className="form-control"
@@ -419,11 +432,11 @@ function Home() {
                           <div className="row">
                             <div className="col-4">
                               <FormGroup>
-                                <label htmlFor="plate">Propina</label>
+                                <label htmlFor="plate">Placa</label>
                                 <Field
                                   className="form-control"
                                   name="plate"
-                                  placeholder="Propina"
+                                  placeholder="Placa"
                                   type="text"
                                 />
                                 <ErrorMessage
@@ -435,11 +448,11 @@ function Home() {
                             </div>
                             <div className="col-4">
                               <FormGroup>
-                                <label htmlFor="year">Porcentaje</label>
+                                <label htmlFor="year">Año</label>
                                 <Field
                                   className="form-control"
                                   name="year"
-                                  placeholder="Porcentaje"
+                                  placeholder="Año"
                                   type="number"
                                 />
                                 <ErrorMessage
@@ -451,11 +464,11 @@ function Home() {
                             </div>
                             <div className="col-4">
                               <FormGroup>
-                                <label htmlFor="loteria">Nombre</label>
+                                <label htmlFor="loteria">Loteria</label>
                                 <Field
                                   className="form-control"
                                   name="loteria"
-                                  placeholder="Nombre"
+                                  placeholder="Loteria"
                                   type="text"
                                   value="ZULIA 7A"
                                   disabled={true}
@@ -471,11 +484,11 @@ function Home() {
                           <div className="row">
                             <div className="col-6">
                               <FormGroup>
-                                <label htmlFor="numbers">Cedula</label>
+                                <label htmlFor="numbers">Numeros</label>
                                 <Field
                                   className="form-control"
                                   name="numbers"
-                                  placeholder="Cedula"
+                                  placeholder="Numeros"
                                   type="text"
                                 />
                                 <ErrorMessage
@@ -487,11 +500,11 @@ function Home() {
                             </div>
                             <div className="col-6">
                               <FormGroup>
-                                <label htmlFor="price">Telefono</label>
+                                <label htmlFor="price">Precio</label>
                                 <Field
                                   className="form-control"
                                   name="price"
-                                  placeholder="Telefono"
+                                  placeholder="Precio"
                                   type="number"
                                 />
                                 <ErrorMessage
@@ -503,12 +516,13 @@ function Home() {
                             </div>
                           </div>
                           <FormGroup>
-                            <label htmlFor="rifero">Restaurant</label>
+                            <label htmlFor="rifero">Rifero</label>
                             <select className="form-control" name="rifero">
-                              <option value="0">Seleccione</option>
-                              <option value="1">Restaurante 1</option>
-                              <option value="2">Restaurante 2</option>
-                              <option value="3">Restaurante 3</option>
+                              {
+                                riferos.map((rifero, index) => (
+                                  <option key={index} value={rifero._id}>{rifero.name}</option>
+                                ))
+                              }
                             </select>
                             <ErrorMessage
                               className="field-error text-danger"
@@ -536,7 +550,7 @@ function Home() {
                 <div className="accordion">
                   <div className="accordion-item">
                     <hr />
-                    <h3 className="not-found">No hay ordenes activas</h3>
+                    <h3 className="not-found">No hay rifas activas</h3>
                     <hr />
                   </div>
                 </div>

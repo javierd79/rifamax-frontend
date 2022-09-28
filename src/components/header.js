@@ -7,7 +7,7 @@ function Header({ children }) {
     <>
       <div className="header">
         <div className="flex">
-          {/* <img src={RifaMaxLogo} alt="RifaMax" className="logo" /> */}
+          <img src={RifaMaxLogo} alt="RifaMax" className="logo" />
           <div className="items">
             {children}
           </div>
