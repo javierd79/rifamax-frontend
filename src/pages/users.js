@@ -85,6 +85,10 @@ function Users() {
     setPops(!pops);
   };
 
+  const handleSwitch = (e) => {
+    return e
+  };
+
   const RegisterUser = () => {
     return (
       <div className="register-user">
@@ -456,7 +460,7 @@ function Users() {
                       </tr>
                     </thead>
                     <tbody>
-                      {users.map((user) => (
+                      {users.sort((a, b) => a.id - b.id).map((user) => (
                         <tr key={user.id}>
                           <th scope="row" className="body-item">
                             {user.id}

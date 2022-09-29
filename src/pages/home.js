@@ -70,8 +70,10 @@ function Home() {
     margin: 0,
   };
 
+  
+  
   const userDetails = useAuthState();
-
+  
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -95,6 +97,22 @@ function Home() {
       window.location.reload();
     })
   }
+  
+  const postRifa = (values) => {
+    axios
+      .post("http://localhost:3001/rifas", values, {
+        headers: {
+          "Authorization": `Bearer ${userDetails.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     axios
@@ -304,9 +322,9 @@ function Home() {
                                     >
                                         <div className="row">
                                           {
-                                            element.rifa_tickets.map((ticket) => {
+                                            element.rifa_tickets.sort((a, b) => a.ticket_nro - b.ticket_nro).map((ticket) => {
                                               return (
-                                                <div className="col-4">
+                                                <div className="col-lg-4 col-xs-12">
                                                   <div className="card mb-2 mt-2 ms-1 me-1">
                                                     <div className="card-body">
                                                       <h5 className="card-title">
@@ -341,9 +359,9 @@ function Home() {
                                     >
                                         <div className="row">
                                           {
-                                            element.rifa_tickets.map((ticket) => {
+                                            element.rifa_tickets.sort((a, b) => a.ticket_nro - b.ticket_nro).map((ticket) => {
                                               return (
-                                                <div className="col-4">
+                                                <div className="col-lg-4 col-xs-12">
                                                   <div className="card mb-2 mt-2 ms-1 me-1">
                                                     <div className="card-body">
                                                       <h5 className="card-title">
@@ -401,6 +419,9 @@ function Home() {
                           price: "",
                         }}
                         validationSchema={formSchema}
+                        onSubmit={(values) => {
+                          postRifa(values);
+                        }}
                       >
                         <Form>
                           <div className="row">
