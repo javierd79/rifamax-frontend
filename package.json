@@ -25,6 +25,7 @@
     "react-router-dom": "5",
     "react-scripts": "5.0.1",
     "reactstrap": "^9.1.4",
+    "regex-master": "^1.0.0",
     "web-vitals": "^2.1.0",
     "yup": "^0.32.11"
   },
