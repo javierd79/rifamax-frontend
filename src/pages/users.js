@@ -11,6 +11,7 @@ import Modal from "../components/modal";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import Switch from "react-js-switch";
+import { render } from "@testing-library/react";
 
 function Users() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +22,7 @@ function Users() {
   const [option, setOption] = useState(null);
   // const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState([]);
-  let user_phone = "";
+  let user_obj;
 
   // const prevStep = () => {
   //   setSteps(steps - 1);
@@ -47,7 +48,6 @@ function Users() {
     password: Yup.string().required("Required").min(6, "Muy corta"),
     password_confirmation: Yup.string().required("Required").min(6, "Muy corta").equals([Yup.ref("password")], "Las contraseñas no coinciden"),
     status: Yup.boolean().required("Required"),
-    phone: Yup.string().required("Required"),
   });
 
   const userDetails = useAuthState();
@@ -83,6 +83,10 @@ function Users() {
 
   const togglePops = () => {
     setPops(!pops);
+  };
+
+  const handleSwitch = (e) => {
+    return e
   };
 
   const RegisterUser = () => {
@@ -223,17 +227,18 @@ function Users() {
                       option === 'Admin' ? null :
                       (
                         <>
-                        <label htmlFor="phone">Telefono</label>
+                        <label htmlFor="Opcion">Opcion</label>
                           <Field
-                            as="text"
-                            name="telefono"
-                            id='telefono'
+                            as="select"
+                            name="option"
+                            id='role'
                             className="form-control"
                             onChange={(e) => setOption(e.target.value)}
                           >
-                            {errors.phone && touched.phone ? (
-                            <div className="text-danger">{errors.phone}</div>
-                            ) : null}
+                            <option value="">Seleccione una seccion</option>
+                            <option value="Agencia">Agencia</option>
+                            <option value="Taquilla">Taquilla</option>
+                            <option value="Rifero">Rifero</option>
                           </Field>
                         </>
                       )
@@ -242,6 +247,48 @@ function Users() {
                     <div className="text-danger">{errors.option}</div>
                   ) : null}
                 </div>
+                {option === "Agencia" ? (
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <Field
+                      type="text"                                                                                                       
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                  </div>
+                ) : null}
+                {option === "Taquilla" ? (
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <Field
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                  </div>
+                ) : null}
+                {option === "Rifero" ? (
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <Field
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                  </div>
+                ) : null}
                 {option === "Admin" ? (
                   <>
                     <p className="text-center">Esta seguro que desea crear un usuario con privilegios de administrador?</p>
@@ -271,21 +318,6 @@ function Users() {
                     className={`btn btn-primary mt-2 ${option === "Admin" ? "d-none" : ""}`}
                     type="submit"
                     disabled={isSubmitting}
-                    onSubmit={() => (
-                      axios.post('http://159.203.76.114/api/v1/taquillas', user_phone, {
-                        headers: {
-                          'Authorization': `Bearer ${userDetails.token}`
-                          }
-                          })
-                          .then(res => {
-                            console.log(res);
-                            console.log(res.data);
-                          })
-                          .catch(err => {
-                            console.log(err);
-                            console.log(user);
-                          })
-                      )}
                   >
                     {isSubmitting ? "Loading..." : "Siguiente"}
                   </button>

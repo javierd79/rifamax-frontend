@@ -14,16 +14,11 @@ let exp = localStorage.getItem("currentUser")
          ? JSON.parse(localStorage.getItem("currentUser")).user.exp
          : '';
 
-let status = localStorage.getItem("currentUser")
-         ? JSON.parse(localStorage.getItem("currentUser")).user.status
-         : '';
-
 export const initialState = {
   user: '' || user,
   token: '' || token,
   role: 'undefined' || role,
   exp: '' || exp,
-  status: false || status,
   loading: false,
   errorMessage: null,
   private: true,

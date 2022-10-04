@@ -9128,11 +9128,6 @@ regenerator-transform@^0.15.0:
   dependencies:
     "@babel/runtime" "^7.8.4"
 
-regex-master@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/regex-master/-/regex-master-1.0.0.tgz#0467357172e2548cca9ec6169936bf8c6d36c877"
-  integrity sha512-57yqjgZRVklEku1YHLyFQ1YzuwQnHLXgFknH22FbIWwv7C7FyhQ4lQxXs+JrYXrdg1KOLpipnnYzLUI9FKq62w==
-
 regex-parser@^2.2.11:
   version "2.2.11"
   resolved "https://registry.yarnpkg.com/regex-parser/-/regex-parser-2.2.11.tgz#3b37ec9049e19479806e878cabe7c1ca83ccfe58"
