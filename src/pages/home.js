@@ -24,7 +24,7 @@ function Home() {
   const [pops, setPops] = useState(false);
   const [riferos, setRiferos] = useState([]);
   const [users, setUsers] = useState([]);
-  
+
   const yesterday = () => {
     let today = new Date();
     let DAYS_IN_MS = 1000 * 60 * 60 * 24;
@@ -36,18 +36,14 @@ function Home() {
     rifDate: Yup.date()
       .required("Campo requerido")
       .min(yesterday(), "La fecha debe ser mayor a la actual"),
-    awardSign: Yup.string() 
-      .required("Campo requerido"),
-    awardNoSign: Yup.string()
-      .required("Campo requerido"),
-    plate: Yup.string()
-      .required("Campo requerido"),
+    awardSign: Yup.string().required("Campo requerido"),
+    awardNoSign: Yup.string().required("Campo requerido"),
+    plate: Yup.string().required("Campo requerido"),
     year: Yup.number()
       .required("Campo requerido")
       .min(1990, "El año debe ser mayor a 1990")
       .max(new Date().getFullYear(), "El año debe ser menor al actual"),
-    loteria: Yup.string()
-      .required("Campo requerido"),
+    loteria: Yup.string().required("Campo requerido"),
     numbers: Yup.number()
       .required("Campo requerido")
       .min(100, "El número debe ser mayor a 100")
@@ -71,10 +67,8 @@ function Home() {
     margin: 0,
   };
 
-  
-  
   const userDetails = useAuthState();
-  
+
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -87,45 +81,49 @@ function Home() {
   };
 
   const sendToApp = (id) => {
-    axios.put(`https://rifa-max.com/api/v1/rifas/${id}`, {
-      is_send: true
-    }, {
-      headers: {
-        Authorization: `Bearer ${userDetails.token}`,
-      },
-    }).then((res) => {
-      window.location.reload();
-    }).catch((err) => {
-    })
-  }
-  
+    axios
+      .put(
+        `https://rifa-max.com/api/v1/rifas/${id}`,
+        {
+          is_send: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userDetails.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {});
+  };
+
   const postRifa = (values) => {
     axios
       .post("https://rifa-max.com/api/v1/rifas", values, {
         headers: {
-          "Authorization": `Bearer ${userDetails.token}`,
+          Authorization: `Bearer ${userDetails.token}`,
         },
       })
       .then((res) => {
         window.location.reload();
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   };
 
   useEffect(() => {
     axios
       .get("https://rifa-max.com/api/v1/users", {
         headers: {
-          "Authorization": `Bearer ${userDetails.token}`,
+          Authorization: `Bearer ${userDetails.token}`,
         },
       })
       .then((res) => {
         setUsers([...res.data]);
       })
-      .catch((err) => {
-      });
-        
+      .catch((err) => {});
+
     axios
       .get("https://rifa-max.com/api/v1/riferos", {
         headers: {
@@ -135,8 +133,7 @@ function Home() {
       .then((res) => {
         setRiferos([...res.data]);
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
     axios
       .get("https://rifa-max.com/api/v1/rifas/actives", {
         headers: {
@@ -146,9 +143,8 @@ function Home() {
       .then((res) => {
         setAllRifas(res.data);
       })
-      .catch((err) => {
-      });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      .catch((err) => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails.token]);
 
   const handleAccordion = (index) => {
@@ -239,6 +235,222 @@ function Home() {
                     </div>
                   </div>
                 </div>
+                <Modal
+                  btnColor="primary"
+                  centered={true}
+                  classBtn="w-100 add-rifas"
+                  buttonTitle="Agregar rifas"
+                  title="Agregar rifas"
+                >
+                  <Formik
+                    initialValues={{
+                      rifDate: "",
+                      awardSign: "",
+                      awardNoSign: "",
+                      plate: "",
+                      year: "",
+                      loteria: "ZULIA 7A",
+                      numbers: "",
+                      expired: "",
+                      rifero_id: Number("0"),
+                      price: "",
+                    }}
+                    validationSchema={formSchema}
+                    onSubmit={(values) => {
+                      postRifa(values);
+                    }}
+                  >
+                    <Form>
+                      <div className="row">
+                        <div className="col-6">
+                          <FormGroup>
+                            <label htmlFor="rifDate">Fecha de la rifa</label>
+                            <Field
+                              className="form-control"
+                              name="rifDate"
+                              placeholder="Fecha de la Rifa"
+                              type="date"
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="rifDate"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                        <div className="col-6">
+                          <FormGroup>
+                            <label htmlFor="expired">
+                              Fecha de finalización
+                            </label>
+                            <Field
+                              className="form-control"
+                              name="expired"
+                              placeholder="Fecha de expiracion"
+                              type="date"
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="expired"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-6">
+                          <FormGroup>
+                            <label htmlFor="awardSign">Premio con Signo</label>
+                            <Field
+                              className="form-control"
+                              name="awardSign"
+                              placeholder="Premio con Signo"
+                              type="text"
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="awardSign"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                        <div className="col-6">
+                          <FormGroup>
+                            <label htmlFor="awardNoSign">
+                              Premio sin signo
+                            </label>
+                            <Field
+                              className="form-control"
+                              name="awardNoSign"
+                              placeholder="Premio sin Signo"
+                              type="text"
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="awardNoSign"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                      </div>
+                      <hr />
+                      <p className="text-center">Opciones</p>
+                      <hr />
+                      <div className="row">
+                        <div className="col-4">
+                          <FormGroup>
+                            <label htmlFor="plate">Placa</label>
+                            <Field
+                              className="form-control"
+                              name="plate"
+                              placeholder="Placa"
+                              type="text"
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="plate"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                        <div className="col-4">
+                          <FormGroup>
+                            <label htmlFor="year">Año</label>
+                            <Field
+                              className="form-control"
+                              name="year"
+                              placeholder="Año"
+                              type="number"
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="year"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                        <div className="col-4">
+                          <FormGroup>
+                            <label htmlFor="loteria">Loteria</label>
+                            <Field
+                              className="form-control"
+                              name="loteria"
+                              placeholder="Loteria"
+                              type="text"
+                              value="ZULIA 7A"
+                              disabled={true}
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="loteria"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-6">
+                          <FormGroup>
+                            <label htmlFor="numbers">Numeros</label>
+                            <Field
+                              className="form-control"
+                              name="numbers"
+                              placeholder="Numeros"
+                              type="text"
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="numbers"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                        <div className="col-6">
+                          <FormGroup>
+                            <label htmlFor="price">Precio</label>
+                            <Field
+                              className="form-control"
+                              name="price"
+                              placeholder="Precio"
+                              type="number"
+                            />
+                            <ErrorMessage
+                              className="field-error text-danger"
+                              name="price"
+                              component="div"
+                            />
+                          </FormGroup>
+                        </div>
+                      </div>
+                      <FormGroup>
+                        <label htmlFor="rifero_id">Rifero</label>
+                        <Field
+                          as="select"
+                          type="number"
+                          className="form-control"
+                          name="rifero_id"
+                          placeholder="Rifero"
+                        >
+                          <option value="">Seleccione un Rifero</option>
+                          {riferos.map((user, index) => (
+                            <option key={index} value={Number(user.id)}>
+                              {user.user.name}
+                            </option>
+                          ))}
+                        </Field>
+                        <ErrorMessage
+                          className="field-error text-danger"
+                          name="rifero"
+                          component="div"
+                        />
+                      </FormGroup>
+                      <hr />
+                      <button className="btn btn-primary w-100" type="submit">
+                        Crear Rifa
+                      </button>
+                    </Form>
+                  </Formik>
+                </Modal>
               </div>
             ) : (
               <div className="card">
@@ -302,7 +514,7 @@ function Home() {
                                       Precio: {element.price}$
                                       <br />
                                       Responsable: {element.user.name}
-                                      <br/>
+                                      <br />
                                       <br />
                                       <Barcode
                                         value={element.serial}
@@ -314,7 +526,7 @@ function Home() {
                                     </p>
                                   </div>
                                 </div>
-                                {element.is_send === true ? ( 
+                                {element.is_send === true ? (
                                   <>
                                     <Modal
                                       btnColor="primary"
@@ -323,12 +535,21 @@ function Home() {
                                       buttonTitle="Ver tickets"
                                       title={`Tickets`}
                                     >
-                                        <div className="row">
-                                          {
-                                            element.rifa_tickets.sort((a, b) => a.ticket_nro - b.ticket_nro).map((ticket) => {
-                                              return (
-                                                <div className="col-lg-4 col-xs-12">
-                                                  <a className="ticket-open" href={`https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`} target="_blank" rel="noreferrer">
+                                      <div className="row">
+                                        {element.rifa_tickets
+                                          .sort(
+                                            (a, b) =>
+                                              a.ticket_nro - b.ticket_nro
+                                          )
+                                          .map((ticket) => {
+                                            return (
+                                              <div className="col-lg-4 col-xs-12">
+                                                <a
+                                                  className="ticket-open"
+                                                  href={`https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`}
+                                                  target="_blank"
+                                                  rel="noreferrer"
+                                                >
                                                   <div className="card mb-2 mt-2 ms-1 me-1">
                                                     <div className="card-body">
                                                       <h5 className="card-title">
@@ -340,18 +561,19 @@ function Home() {
                                                           {ticket.serial}
                                                         </p>
                                                       </p>
-                                                        {ticket.is_sold === true
-                                                          ? <p className="ribbon">Vendido</p>
-                                                          : null
-                                                        }
+                                                      {ticket.is_sold ===
+                                                      true ? (
+                                                        <p className="ribbon">
+                                                          Vendido
+                                                        </p>
+                                                      ) : null}
                                                     </div>
                                                   </div>
-                                                  </a>
-                                                </div>
-                                              );
-                                            })
-                                          }
-                                        </div>
+                                                </a>
+                                              </div>
+                                            );
+                                          })}
+                                      </div>
                                     </Modal>
                                   </>
                                 ) : (
@@ -363,38 +585,45 @@ function Home() {
                                       buttonTitle="Enviar a APP"
                                       title={`Enviar a APP`}
                                     >
-                                        <div className="row">
-                                          {
-                                            element.rifa_tickets.sort((a, b) => a.ticket_nro - b.ticket_nro).map((ticket) => {
-                                              return (
-                                                <div className="col-lg-4 col-xs-12">
-                                                  <div className="card mb-2 mt-2 ms-1 me-1">
-                                                    <div className="card-body">
-                                                      <h5 className="card-title">
-                                                        {ticket.ticket_nro}
-                                                      </h5>
-                                                      <p className="card-text">
-                                                        {ticket.sign}
-                                                        <p className="text-muted mt-1">
-                                                          {ticket.serial}
-                                                        </p>
+                                      <div className="row">
+                                        {element.rifa_tickets
+                                          .sort(
+                                            (a, b) =>
+                                              a.ticket_nro - b.ticket_nro
+                                          )
+                                          .map((ticket) => {
+                                            return (
+                                              <div className="col-lg-4 col-xs-12">
+                                                <div className="card mb-2 mt-2 ms-1 me-1">
+                                                  <div className="card-body">
+                                                    <h5 className="card-title">
+                                                      {ticket.ticket_nro}
+                                                    </h5>
+                                                    <p className="card-text">
+                                                      {ticket.sign}
+                                                      <p className="text-muted mt-1">
+                                                        {ticket.serial}
                                                       </p>
-                                                        {ticket.is_sold === true
-                                                          ? <p className="ribbon">Vendido</p>
-                                                          : null
-                                                        }
-                                                    </div>
+                                                    </p>
+                                                    {ticket.is_sold === true ? (
+                                                      <p className="ribbon">
+                                                        Vendido
+                                                      </p>
+                                                    ) : null}
                                                   </div>
                                                 </div>
-                                              );
-                                            })
-                                          }
-                                        </div>
-                                        <button className="btn btn-success w-100 w-100" onClick={() => {
+                                              </div>
+                                            );
+                                          })}
+                                      </div>
+                                      <button
+                                        className="btn btn-success w-100 w-100"
+                                        onClick={() => {
                                           sendToApp(element.id);
-                                        }}>
-                                          Confirmar
-                                        </button>
+                                        }}
+                                      >
+                                        Confirmar
+                                      </button>
                                     </Modal>
                                   </>
                                 )}
@@ -605,13 +834,11 @@ function Home() {
                               placeholder="Rifero"
                             >
                               <option value="">Seleccione un Rifero</option>
-                              {
-                                riferos.map((user, index) => (
-                                  <option key={index} value={Number(user.id)}>
-                                    {user.user.name}
-                                  </option>
-                                ))
-                              }
+                              {riferos.map((user, index) => (
+                                <option key={index} value={Number(user.id)}>
+                                  {user.user.name}
+                                </option>
+                              ))}
                             </Field>
                             <ErrorMessage
                               className="field-error text-danger"
