@@ -16,11 +16,6 @@
       "id": 1,
       "name": "Dashboard",
       "path": "/"
-    },
-    {
-      "id": 1,
-      "name": "Taquillas",
-      "path": "/taquillas"
     }
   ],
   "taquilla": [
@@ -28,11 +23,6 @@
       "id": 1,
       "name": "Dashboard",
       "path": "/"
-    },
-    {
-      "id": 2,
-      "name": "Configuraciones",
-      "path": "/settings"
     }
   ],
   "rifero": 
@@ -41,11 +31,6 @@
       "id": 1,
       "name": "Dashboard",
       "path": "/"
-    },
-    {
-      "id": 2,
-      "name": "Configuraciones",
-      "path": "/settings"
     }
   ]
 }

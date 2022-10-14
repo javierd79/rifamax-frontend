@@ -24,6 +24,12 @@ $active: rgba(11, 183, 175, 0.125);
   color: #0d6efd;
 }
 
+.ticket-open {
+  color: inherit;
+  font-style: none;
+  text-decoration: none;
+}
+
 .ribbon {
   background-color: rgb(251, 45, 45);
   color: #fff;
@@ -103,6 +109,10 @@ $active: rgba(11, 183, 175, 0.125);
     border-radius: 12px;
   }
 
+  .add-rifas {
+    border-radius: 0 0 6px 6px;
+  }   
+
   .accordion {
     width: 100%;
     margin: 0 auto;
@@ -177,12 +187,20 @@ $active: rgba(11, 183, 175, 0.125);
         .card {
           margin-left: calc(50% - 9em);
           box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
+          border-radius: 6px 6px 0 0;
         }
+
       }
     }
   }
 }
 
+.button-ticket {
+  max-width: 18rem;
+  margin-left: calc(50% - 9rem);
+  margin-top:-7.9px!important;
+  border-radius: 0 0 6px 6px; 
+}
 
 @keyframes accordionOpen {
   0% {

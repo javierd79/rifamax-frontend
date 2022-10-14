@@ -1,4 +1,4 @@
-const URL = 'http://159.203.76.114';
+const URL = 'https://rifa-max.com';
 
 export async function loginUser(dispatch, loginPayload) {
   const requestOptions = {

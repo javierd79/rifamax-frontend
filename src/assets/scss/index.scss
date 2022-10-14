@@ -4,17 +4,19 @@
   background-color: #eef5f9;
 }
 
-body::-webkit-scrollbar {
-  width: 5px;
-  border-radius: 15px 0 0 15px;
+.modal-open::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 5px!important;
+  border-radius: 15px 0 0 15px!important;
 }
-body::-webkit-scrollbar-track {
-  background-color: white;
-  border-radius: 15px 0 0 15px;
+
+.modal-open::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+  background-color: #ffffff!important;
+  border-radius: 15px 0 0 15px!important;
 }
-body::-webkit-scrollbar-thumb {
-  background-color: rgba(black, 0.27);
-  border-radius: 15px;
+
+.modal-open::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  background-color: rgba(#000000, 0.27)!important;
+  border-radius: 15px!important;
 }
 
 .popover {
@@ -171,7 +173,7 @@ body.active {
   margin-left: 0;
 }
 
-@media (max-width: 580px) {
+@media (max-width: 610px) {
   .openContainer {
     margin-left: 0;
     transition: opacity .15s;
@@ -193,15 +195,36 @@ body.active {
 }
 
 .loader {
-  border: 10px solid #f3f3f3;
-  border-top: 10px solid #3498db;
+  border: 10px solid #02a2ff15;
+  border-top: 10px solid #349bdb;
   border-radius: 50%;
+  position: absolute;
   width: 80px;
   height: 80px;
   animation: spin 1s linear infinite;
-  top: 50%;
-  left: 50%;
-  position: absolute;
+  top: 45%;
+  left: 47.5%;
+}
+
+@media (max-width: 1024px) {
+  .loader {
+    top: 45%;
+    left: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .loader {
+    top: 45%;
+    left: 43%;
+  }
+}
+
+@media (max-width: 435px) {
+  .loader {
+    top: 50vh;
+    left: 40%;
+  }
 }
 
 @keyframes spin {

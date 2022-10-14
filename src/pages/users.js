@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { PopoverBody } from "reactstrap";
 import { Popover, PopoverHeader } from "@chakra-ui/react";
@@ -9,9 +10,8 @@ import "../assets/scss/pages/users.scss";
 import axios from "axios";
 import Modal from "../components/modal";
 import * as Yup from "yup";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, validateYupSchema } from "formik";
 import Switch from "react-js-switch";
-import { render } from "@testing-library/react";
 
 function Users() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,13 @@ function Users() {
   const [option, setOption] = useState(null);
   // const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState([]);
-  let user_obj;
+  const [userPhone, setUserPhone] = useState([]);
+  const [agency, setAgency] = useState(null);
+  const [control, setControl] = useState(null);
+
+  let setCode = 0;
+  let security = Math.floor(Math.random() * 1000000) + 1;
+  let verify = false;
 
   // const prevStep = () => {
   //   setSteps(steps - 1);
@@ -32,22 +38,46 @@ function Users() {
     setSteps(steps + 1);
   };
 
+  const qualify = (param) => {
+    if (param === "Agencia"){
+      setControl(0);
+    } else if (param === "Taquilla"){
+      setControl(1);
+    } else if (param === "Rifero"){
+      setControl(2);
+    }
+  }
+
+  const arrJoins = ['agencies', 'taquilla', 'riferos'];
+
   // const handleSteps = input => e => {
   //   setSteps({ [input]: e.taget.value });
   // };
+
+  const validateSecurity = (setCode) => {
+    if (security === Number(setCode)) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
   const formScheme = Yup.object().shape({
-    name: Yup.string().required("Required"),
-    username: Yup.string().required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
-    role: Yup.string().required("Required"),
-    password: Yup.string().required("Required").min(6, "Muy corta"),
-    password_confirmation: Yup.string().required("Required").min(6, "Muy corta").equals([Yup.ref("password")], "Las contraseñas no coinciden"),
-    status: Yup.boolean().required("Required"),
+    name: Yup.string().required("Requerido"),
+    username: Yup.string().required("Requerido"),
+    email: Yup.string().email("Correo invalido").required("Requerido"),
+    role: Yup.string().required("Requerido"),
+    password: Yup.string().required("Requerido").min(6, "Muy corta"),
+    password_confirmation: Yup.string().required("Requerido").min(6, "Muy corta").equals([Yup.ref("password")], "Las contraseñas no coinciden"),
+    status: Yup.boolean().required("Requerido"),
+  });
+
+  const joinForm = Yup.object().shape({
+    phone: Yup.string().required("Requerido"),
   });
 
   const userDetails = useAuthState();
@@ -68,7 +98,7 @@ function Users() {
 
   useEffect(() => {
     axios
-      .get("http://159.203.76.114/api/v1/users", {
+      .get("https://rifa-max.com/api/v1/users", {
         headers: {
           Authorization: `Bearer ${userDetails.token}`,
         },
@@ -83,10 +113,6 @@ function Users() {
 
   const togglePops = () => {
     setPops(!pops);
-  };
-
-  const handleSwitch = (e) => {
-    return e
   };
 
   const RegisterUser = () => {
@@ -105,254 +131,244 @@ function Users() {
           validationSchema={formScheme}
           onSubmit={(values, { setSubmitting }) => {
             setUser([...user, values]);
+            axios.post("https://rifa-max.com/api/v1/users", values, {
+              headers: {
+                Authorization: `Bearer ${userDetails.token}`,
+              },
+            });
             setSubmitting(false);
-            if (values.role === "Admin") {
-              setOption('Admin');
-            }
-            console.log(user);
+            setOption(values.role.toString());
+            qualify(values.role.toString());
             nextStep();
           }}
         >
           {({ errors, touched, isSubmitting }) => (
             <Form>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <Field
-                type="text"
-                name="name"
-                id="name"
-                className="form-control" />
-              {errors.name && touched.name ? (
-                <div className="text-danger">{errors.name}</div>
-              ) : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <Field
-                type="text"
-                name="username"
-                id="username"
-                className="form-control" />
-              {errors.username && touched.username ? (
-                <div className="text-danger">{errors.username}</div>
-              ) : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <Field
-                type="email"
-                name="email"
-                id="email"
-                className="form-control" />
-              {errors.email && touched.email ? (
-                <div className="text-danger">{errors.email}</div>
-              ) : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Field
-                type="password"
-                name="password"
-                id="password"
-                className="form-control" />
-              {errors.password && touched.password ? (
-                <div className="text-danger">{errors.password}</div>
-              ) : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="password_confirmation">Confirm Password</label>
-              <Field
-                type="password"
-                name="password_confirmation"
-                id="password_confirmation"
-                className="form-control" />
-              {errors.password_confirmation && touched.password_confirmation ? (
-                <div className="text-danger">{errors.password_confirmation}</div>
-              ) : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="role">Role</label>
-              <Field
-                as="select"
-                name="role"
-                id="role"
-                className="form-control"
-              >
-                <option disabled value="">Seleccione un Rol</option>
-                {roleSelect.map((role) => (
-                  <option key={role.value} value={role.value}>
-                    {role.label}
+              <div className="form-group">
+                <label htmlFor="name">Nombre</label>
+                <Field
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="form-control"
+                />
+                {errors.name && touched.name ? (
+                  <div className="text-danger">{errors.name}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="username">Nombre general</label>
+                <Field
+                  type="text"
+                  name="username"
+                  id="username"
+                  className="form-control"
+                />
+                {errors.username && touched.username ? (
+                  <div className="text-danger">{errors.username}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Correo</label>
+                <Field
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="form-control"
+                />
+                {errors.email && touched.email ? (
+                  <div className="text-danger">{errors.email}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Contraseña</label>
+                <Field
+                  type="password"
+                  name="password"
+                  id="password"
+                  className="form-control"
+                />
+                {errors.password && touched.password ? (
+                  <div className="text-danger">{errors.password}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="password_confirmation">
+                  Confirmar contraseña
+                </label>
+                <Field
+                  type="password"
+                  name="password_confirmation"
+                  id="password_confirmation"
+                  className="form-control"
+                />
+                {errors.password_confirmation &&
+                touched.password_confirmation ? (
+                  <div className="text-danger">
+                    {errors.password_confirmation}
+                  </div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="role">Role</label>
+                <Field
+                  as="select"
+                  name="role"
+                  id="role"
+                  className="form-control"
+                >
+                  <option disabled value="">
+                    Seleccione un Rol
                   </option>
-                ))}
-              </Field>
-              {errors.role && touched.role ? (
-                <div className="text-danger">{errors.role}</div>
-              ) : null}
-            </div>
-            <div className="form-group">
-              <button
-                className="btn btn-primary mt-2"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Loading..." : "Submit"}
-              </button>
-            </div>
-          </Form>
+                  {roleSelect.map((role) => (
+                    <option key={role.value} value={role.value}>
+                      {role.label}
+                    </option>
+                  ))}
+                </Field>
+                {errors.role && touched.role ? (
+                  <div className="text-danger">{errors.role}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <button
+                  className="btn btn-primary mt-4 w-100"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Loading..." : "Siguiente"}
+                </button>
+              </div>
+            </Form>
           )}
         </Formik>
+        <hr className="mt-4"/>
+          <p className="text-muted subtitle p-2 text-center"><strong>ADVERTENCIA:<br/></strong>El usuario sera creado al presionar el boton, el siguiente paso es de configuracion.</p>
+        <hr className="mb-4"/>
       </div>
     );
-  };  
+  };
 
   const JoinUsers = () => {
     return (
       <div className="join-users">
-          <Formik
-            initialValues={{
-              phone: "",
-            }}
-            validationSchema={formScheme}
-            onSubmit={(values, { setSubmitting }) => {
-              setBodyOption(bodyOption.push(values));
-              setSubmitting(false);
-              console.log(bodyOption);
-              nextStep();
-              window.location.reload();
-            }}
-          >
-            {({ errors, touched, isSubmitting }) => (
-              <Form>
-                <div className="form-group">
-                    {
-                      option === 'Admin' ? null :
-                      (
-                        <>
-                        <label htmlFor="Opcion">Opcion</label>
-                          <Field
-                            as="select"
-                            name="option"
-                            id='role'
-                            className="form-control"
-                            onChange={(e) => setOption(e.target.value)}
-                          >
-                            <option value="">Seleccione una seccion</option>
-                            <option value="Agencia">Agencia</option>
-                            <option value="Taquilla">Taquilla</option>
-                            <option value="Rifero">Rifero</option>
-                          </Field>
-                        </>
-                      )
-                    }
-                  {errors.option && touched.option ? (
-                    <div className="text-danger">{errors.option}</div>
-                  ) : null}
-                </div>
-                {option === "Agencia" ? (
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <Field
-                      type="text"                                                                                                       
-                      name="phone"
-                      id="phone"
-                      className="form-control"
-                    />
-                    {errors.phone && touched.phone ? (
-                      <div className="text-danger">{errors.phone}</div>
-                    ) : null}
-                  </div>
-                ) : null}
-                {option === "Taquilla" ? (
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <Field
-                      type="text"
-                      name="phone"
-                      id="phone"
-                      className="form-control"
-                    />
-                    {errors.phone && touched.phone ? (
-                      <div className="text-danger">{errors.phone}</div>
-                    ) : null}
-                  </div>
-                ) : null}
-                {option === "Rifero" ? (
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <Field
-                      type="text"
-                      name="phone"
-                      id="phone"
-                      className="form-control"
-                    />
-                    {errors.phone && touched.phone ? (
-                      <div className="text-danger">{errors.phone}</div>
-                    ) : null}
-                  </div>
-                ) : null}
+        <Formik
+          initialValues={{
+            phone: "",
+            agency_id: Number(agency) === 0 ? null : Number(agency),
+          }}
+          validationSchema={joinForm}
+          onSubmit={(values, { setSubmitting }) => {
+            setBodyOption([...bodyOption, values]);
+            setSubmitting(false);
+            axios.post(`https://rifa-max.com/api/v1/${arrJoins[control]}`, values, {
+              headers: {
+                Authorization: `Bearer ${userDetails.token}`,
+              },
+            });
+            window.location.reload();
+          }}
+        >
+          {({ errors, touched, isSubmitting }) => (
+            <Form>
+              <div className="form-group">
                 {option === "Admin" ? (
                   <>
-                    <p className="text-center">Esta seguro que desea crear un usuario con privilegios de administrador?</p>
-                    <button className="btn btn-primary mt-2" onClick={() => (
-                      axios.post('http://159.203.76.114/api/v1/users', user[0],
-                      {
-                        headers: {
-                          'Authorization': `Bearer ${userDetails.token}`
-                          }
+                    <p className="text-center">
+                      Esta seguro que desea crear un usuario con privilegios de
+                      administrador?
+                    </p>
+                    <button
+                      className="btn btn-primary mt-4 w-100"
+                      onClick={() =>
+                        axios
+                          .post("https://rifa-max.com/api/v1/users", user[0], {
+                            headers: {
+                              Authorization: `Bearer ${userDetails.token}`,
+                            },
                           })
-                          .then(res => {
-                            console.log(res);
-                            console.log(res.data);
+                          .then((res) => {
+                            window.location.reload();
                           })
-                          .catch(err => {
+                          .catch((err) => {
                             console.log(err);
-                            console.log(user);
                           })
-                      )}
+                      }
                     >
                       Crear
                     </button>
                   </>
                 ) : null}
-                <div className="form-group">
-                  <button
-                    className={`btn btn-primary mt-2 ${option === "Admin" ? "d-none" : ""}`}
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Loading..." : "Siguiente"}
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
+                {option !== "Admin" ? (
+                  <>
+                    <label htmlFor="phone">Telefono</label>
+                    <Field
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      className="form-control"
+                    />
+                    {errors.phone && touched.phone ? (
+                      <div className="text-danger">{errors.phone}</div>
+                    ) : null}
+                    { 
+                      option === "Taquilla" ? (
+                        <>
+                          <label htmlFor="agency_id">Agencia</label>
+                          <Field 
+                            as="select"
+                            name="agency_id"
+                            id="agency_id"
+                            className="form-control"
+                            onChange={(e) => {
+                              setAgency(e.target.value);
+                            }}
+                          >
+                            <option disabled value="1">
+                              Seleccione una agencia
+                            </option>
+                            {users.map((user) => (
+                              user.role === "Agencia" ? (
+                                <option key={user.id} value={user.id}>
+                                  {user.name}
+                                </option>
+                              ) : null
+                            ))}
+                          </Field>
+                          {errors.agency_id && touched.agency_id ? (
+                            <div className="text-danger">{errors.agency_id}</div>
+                          ) : null}
+                        </>
+                      ) : null
+                    }
+                  </>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <button
+                  className={`btn btn-primary mt-4 w-100 ${
+                    option === "Admin" ? "d-none" : ""
+                  }`}
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Loading..." : "Siguiente"}
+                </button> 
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     );
-  };        
+  };
 
   const RenderSteps = () => {
     switch (steps) {
       case 1:
-        return (
-          <RegisterUser/>
-        );
+        return <RegisterUser />;
       case 2:
-        return (
-          <JoinUsers/>
-        );
-      case 3:
-        return (
-          <h1>v</h1>
-          // <SendData/>
-        );
-      case 4:
-        return (
-          <h1>g</h1>
-          // <Success/>
-        );
+        return <JoinUsers />;
       default:
-        return (
-          <RegisterUser/>
-        );
+        return <RegisterUser />;
     }
   };
 
@@ -460,60 +476,27 @@ function Users() {
                       </tr>
                     </thead>
                     <tbody>
-                      {users.sort((a, b) => a.id - b.id).map((user) => (
-                        <tr key={user.id}>
-                          <th scope="row" className="body-item">
-                            {user.id}
-                          </th>
-                          <td className="body-item">{user.name}</td>
-                          <td className="body-item">{user.email}</td>
-                          <td className="body-item">{user.role}</td>
-                          <td className="body-item">
-                            <Switch
-                              value={user.status}
-                              color="#fff"
-                              onChange={() => {
-                                axios
-                                  .put(
-                                    `http://159.203.76.114/api/v1/users/${user.id}`,
-                                    {
-                                      status: !user.status,
-                                    },
-                                    {
-                                      headers: {
-                                        Authorization: `Bearer ${userDetails.token}`,
-                                      },
-                                    }
-                                  )
-                                  .then((res) => {
-                                    console.log(res);
-                                    window.location.reload();
-                                  })
-                                  .catch((err) => {
-                                    console.log(err);
-                                  });
-                              }}
-                            />
-                          </td>
-                          <td className="body-btn">
-                            <Modal
-                              btnColor="danger"
-                              centered={true}
-                              classBtn="mb-1"
-                              buttonTitle=<BsTrash />
-                              title="Estas seguro de eliminar este usuario?"
-                            >
-                              <h6>
-                                Una vez eliminado este usuario se borraran todos
-                                su atributos relacionados: Rifas, Sorteos,
-                                Agencias, Riferos, Taquilla
-                              </h6>
-                              <button
-                                className="btn btn-danger w-100 mt-4"
-                                onClick={() => {
+                      {users
+                        .sort((a, b) => a.id - b.id)
+                        .map((user) => (
+                          <tr key={user.id}>
+                            <th scope="row" className="body-item">
+                              {user.id}
+                            </th>
+                            <td className="body-item">{user.name}</td>
+                            <td className="body-item">{user.email}</td>
+                            <td className="body-item">{user.role}</td>
+                            <td className="body-item">
+                              <Switch
+                                value={user.status}
+                                color="#fff"
+                                onChange={() => {
                                   axios
-                                    .delete(
-                                      `http://159.203.76.114/api/v1/users/${user.id}`,
+                                    .put(
+                                      `https://rifa-max.com/api/v1/users/${user.id}`,
+                                      {
+                                        status: !user.status,
+                                      },
                                       {
                                         headers: {
                                           Authorization: `Bearer ${userDetails.token}`,
@@ -521,20 +504,86 @@ function Users() {
                                       }
                                     )
                                     .then((res) => {
-                                      console.log(res);
                                       window.location.reload();
                                     })
                                     .catch((err) => {
                                       console.log(err);
                                     });
                                 }}
+                              />
+                            </td>
+                            <td className="body-btn">
+                              <Modal
+                                btnColor="danger"
+                                centered={true}
+                                classBtn="mb-1"
+                                buttonTitle=<BsTrash />
+                                title="Estas seguro de eliminar este usuario?"
                               >
-                                Eliminar
-                              </button>
-                            </Modal>
-                          </td>
-                        </tr>
-                      ))}
+                                <h6>
+                                  Una vez eliminado este usuario se borraran
+                                  todos su atributos relacionados: Rifas,
+                                  Sorteos, Agencias, Riferos, Taquilla.
+                                  <br />
+                                  {/* <br />
+                                  Ingrese el codigo de seguridad:{" "}
+                                  <strong>
+                                    {security}
+                                  </strong>{" "}
+                                  para continuar.
+                                </h6>
+                                <hr />
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  onChange={(e) =>
+                                    {(setCode = e.target.value) && (validateSecurity(e.target.value))}
+                                    
+                                  }
+                                  
+                                  /> */}
+                                </h6>
+                                  
+                                {
+                                  
+                                    validateSecurity(setCode) === false ? (
+                                        <button
+                                          className="btn btn-danger w-100 mt-4"
+                                          onClick={() => {
+                                            axios
+                                              .delete(
+                                                `https://rifa-max.com/api/v1/users/${user.id}`,
+                                                {
+                                                  headers: {
+                                                    Authorization: `Bearer ${userDetails.token}`,
+                                                  },
+                                                }
+                                              )
+                                              .then((res) => {
+                                                window.location.reload();
+                                              })
+                                              .catch((err) => {
+                                                console.log(err);
+                                              });
+                                          }}
+                                        >
+                                          
+                                          Eliminar
+                                        </button>
+                                      )
+                                      : (
+                                        <button
+                                          className="btn btn-danger w-100 mt-4"
+                                          disabled
+                                        >
+                                          Eliminar
+                                        </button>
+                                      )
+                                }
+                              </Modal>
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                   <Modal

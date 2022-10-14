@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import { FormGroup, PopoverBody } from "reactstrap";
@@ -22,12 +23,12 @@ function Home() {
   const [allRifas, setAllRifas] = useState(null);
   const [pops, setPops] = useState(false);
   const [riferos, setRiferos] = useState([]);
+  const [users, setUsers] = useState([]);
   
   const yesterday = () => {
     let today = new Date();
     let DAYS_IN_MS = 1000 * 60 * 60 * 24;
     let yesterday = new Date(today.getTime() - DAYS_IN_MS);
-    console.log(yesterday);
     return yesterday;
   };
 
@@ -54,7 +55,7 @@ function Home() {
     expired: Yup.date()
       .required("Campo requerido")
       .min(yesterday(), "La fecha debe ser mayor a la actual"),
-    rifero: Yup.number()
+    rifero_id: Yup.number()
       .required("Campo requerido")
       .min(1, "El número debe ser mayor a 1")
       .max(100, "El número debe ser menor a 100"),
@@ -86,50 +87,58 @@ function Home() {
   };
 
   const sendToApp = (id) => {
-    axios.put(`http://159.203.76.114/api/v1/rifas/${id}`, {
+    axios.put(`https://rifa-max.com/api/v1/rifas/${id}`, {
       is_send: true
     }, {
       headers: {
         Authorization: `Bearer ${userDetails.token}`,
       },
     }).then((res) => {
-      console.log(res);
       window.location.reload();
+    }).catch((err) => {
     })
   }
   
   const postRifa = (values) => {
     axios
-      .post("http://localhost:3001/rifas", values, {
+      .post("https://rifa-max.com/api/v1/rifas", values, {
         headers: {
           "Authorization": `Bearer ${userDetails.token}`,
         },
       })
       .then((res) => {
-        console.log(res);
         window.location.reload();
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 
   useEffect(() => {
     axios
-      .get("http://159.203.76.114/api/v1/riferos", {
+      .get("https://rifa-max.com/api/v1/users", {
+        headers: {
+          "Authorization": `Bearer ${userDetails.token}`,
+        },
+      })
+      .then((res) => {
+        setUsers([...res.data]);
+      })
+      .catch((err) => {
+      });
+        
+    axios
+      .get("https://rifa-max.com/api/v1/riferos", {
         headers: {
           Authorization: `Bearer ${userDetails.token}`,
         },
       })
       .then((res) => {
         setRiferos([...res.data]);
-        console.log(riferos);
       })
       .catch((err) => {
-        console.log(err);
       });
     axios
-      .get("http://159.203.76.114/api/v1/rifas/actives", {
+      .get("https://rifa-max.com/api/v1/rifas/actives", {
         headers: {
           Authorization: `Bearer ${userDetails.token}`,
         },
@@ -138,7 +147,6 @@ function Home() {
         setAllRifas(res.data);
       })
       .catch((err) => {
-        console.log(err);
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails.token]);
@@ -154,14 +162,6 @@ function Home() {
   const togglePops = () => {
     setPops(!pops);
   };
-
-  // const options = riferos?.map((rifero) => {
-  //   return (
-  //     <option key={rifero.id} value={rifero.id}>
-  //       {rifero.name}
-  //     </option>
-  //   );
-  // });
 
   return (
     <>
@@ -283,9 +283,9 @@ function Home() {
                                   <div className="card-body">
                                     <strong></strong>
                                     <p className="text">
-                                      Precio: {element.awardNoSign}
+                                      Sin Signo: {element.awardNoSign}
                                       <br />
-                                      Restaurant: {element.loteria}
+                                      Loteria: {element.loteria}
                                       <br />
                                       Numero: {element.id}
                                       <br />
@@ -301,6 +301,8 @@ function Home() {
                                       <br />
                                       Precio: {element.price}$
                                       <br />
+                                      Responsable: {element.user.name}
+                                      <br/>
                                       <br />
                                       <Barcode
                                         value={element.serial}
@@ -312,11 +314,12 @@ function Home() {
                                     </p>
                                   </div>
                                 </div>
-                                {element.is_send === true ? (
+                                {element.is_send === true ? ( 
                                   <>
                                     <Modal
                                       btnColor="primary"
                                       centered={true}
+                                      classBtn="w-100 button-ticket"
                                       buttonTitle="Ver tickets"
                                       title={`Tickets`}
                                     >
@@ -325,6 +328,7 @@ function Home() {
                                             element.rifa_tickets.sort((a, b) => a.ticket_nro - b.ticket_nro).map((ticket) => {
                                               return (
                                                 <div className="col-lg-4 col-xs-12">
+                                                  <a className="ticket-open" href={`https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`} target="_blank" rel="noreferrer">
                                                   <div className="card mb-2 mt-2 ms-1 me-1">
                                                     <div className="card-body">
                                                       <h5 className="card-title">
@@ -342,6 +346,7 @@ function Home() {
                                                         }
                                                     </div>
                                                   </div>
+                                                  </a>
                                                 </div>
                                               );
                                             })
@@ -354,6 +359,7 @@ function Home() {
                                     <Modal
                                       btnColor="primary"
                                       centered={true}
+                                      classBtn="w-100 button-ticket"
                                       buttonTitle="Enviar a APP"
                                       title={`Enviar a APP`}
                                     >
@@ -384,7 +390,7 @@ function Home() {
                                             })
                                           }
                                         </div>
-                                        <button className="btn btn-success w-100 mt-2" onClick={() => {
+                                        <button className="btn btn-success w-100 w-100" onClick={() => {
                                           sendToApp(element.id);
                                         }}>
                                           Confirmar
@@ -401,7 +407,7 @@ function Home() {
                     <Modal
                       btnColor="primary"
                       centered={true}
-                      classBtn="w-100"
+                      classBtn="w-100 add-rifas"
                       buttonTitle="Agregar rifas"
                       title="Agregar rifas"
                     >
@@ -415,7 +421,7 @@ function Home() {
                           loteria: "ZULIA 7A",
                           numbers: "",
                           expired: "",
-                          rifero: "",
+                          rifero_id: Number("0"),
                           price: "",
                         }}
                         validationSchema={formSchema}
@@ -590,14 +596,23 @@ function Home() {
                             </div>
                           </div>
                           <FormGroup>
-                            <label htmlFor="rifero">Rifero</label>
-                            <select className="form-control" name="rifero">
+                            <label htmlFor="rifero_id">Rifero</label>
+                            <Field
+                              as="select"
+                              type="number"
+                              className="form-control"
+                              name="rifero_id"
+                              placeholder="Rifero"
+                            >
+                              <option value="">Seleccione un Rifero</option>
                               {
-                                riferos.map((rifero, index) => (
-                                  <option key={index} value={rifero._id}>{rifero.name}</option>
+                                riferos.map((user, index) => (
+                                  <option key={index} value={Number(user.id)}>
+                                    {user.user.name}
+                                  </option>
                                 ))
                               }
-                            </select>
+                            </Field>
                             <ErrorMessage
                               className="field-error text-danger"
                               name="rifero"

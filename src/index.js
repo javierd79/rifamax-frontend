@@ -12,7 +12,7 @@ root.render(
     <Suspense fallback={<div className="loader"></div>}>
       <BrowserRouter>
         <AuthProvider>
-          <App />
+          <App/>
         </AuthProvider>
       </BrowserRouter>
     </Suspense>

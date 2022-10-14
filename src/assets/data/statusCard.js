@@ -10,7 +10,7 @@ export const StatusCard = () => {
   const userDetails = useAuthState()
   
   useEffect(() => {
-    axios.get('http://159.203.76.114/api/v1/rifas/actives', {
+    axios.get('https://rifa-max.com/api/v1/rifas/actives', {
       headers: {
         Authorization: `Bearer ${userDetails.token}`
       }
@@ -21,7 +21,7 @@ export const StatusCard = () => {
       .catch(err => {
         console.log(err)
       })
-    axios.get('http://159.203.76.114/api/v1/rifas/expired', {
+    axios.get('https://rifa-max.com/api/v1/rifas/expired', {
       headers: {
         Authorization: `Bearer ${userDetails.token}`
       }
@@ -32,7 +32,7 @@ export const StatusCard = () => {
       .catch(err => {
         console.log(err)
       })
-    axios.get('http://159.203.76.114/api/v1/rifas', {
+    axios.get('https://rifa-max.com/api/v1/rifas', {
       headers: {
         Authorization: `Bearer ${userDetails.token}`
       }
