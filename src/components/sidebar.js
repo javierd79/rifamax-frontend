@@ -17,10 +17,9 @@ function Sidebar(props) {
         >
           <div className="profile">
             <img src={Avatar} alt="profile" className="profile-pic" />
-            <h3 className="profile-name">{userDetails.user.username}</h3>
+            <h3 className="profile-name">{userDetails.name}</h3>
             <p className="profile-role">{userDetails.user.role}</p>
           </div>
-          {console.log(userDetails.user.role)}
           <ul>
             {
               userDetails.user.role === "Admin" ? (

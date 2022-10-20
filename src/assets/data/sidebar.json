@@ -23,6 +23,11 @@
       "id": 1,
       "name": "Dashboard",
       "path": "/"
+    },
+    {
+      "id": 2,
+      "name": "Riferos",
+      "path": "/riferos"
     }
   ],
   "rifero": 

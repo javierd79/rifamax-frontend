@@ -16,6 +16,7 @@ export async function loginUser(dispatch, loginPayload) {
     if(data.user) {
       dispatch({ type: 'LOGIN_SUCCESS', payload: data, private: false });
       localStorage.setItem('currentUser', JSON.stringify(data));
+      localStorage.setItem('name', JSON.stringify(data.user.name));
       localStorage.setItem('user', JSON.stringify(data.user.username));
       localStorage.setItem('role', JSON.stringify(data.user.role));
       localStorage.setItem('token', JSON.stringify(data.token));
@@ -35,6 +36,7 @@ export async function loginUser(dispatch, loginPayload) {
 export async function logout(dispatch) {
   dispatch({ type: 'LOGOUT', private: true });
   localStorage.removeItem('currentUser');
+  localStorage.removeItem('name');
   localStorage.removeItem('user');
   localStorage.removeItem('token');
   localStorage.removeItem('role');

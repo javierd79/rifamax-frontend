@@ -1,9 +1,10 @@
 import { lazy } from 'react';
 
+const NotFound = lazy(() => import('../pages/notfound.js'));
 const Home = lazy(() => import('../pages/home.js'));
 const Login = lazy(() => import('../pages/login.js'));
 const Users = lazy(() => import('../pages/users.js'));
-const Construction = lazy(() => import('../pages/construction.js'));
+const Riferos = lazy(() => import('../pages/riferos.js'));
 
 const Router = [
   {
@@ -17,14 +18,19 @@ const Router = [
     isPrivate: true,
   },
   {
-    path: '/construction',
-    component: Construction,
+    path: '/riferos',
+    component: Riferos,
     isPrivate: true,
   },
   {
     path: '/',
     component: Home,
     isPrivate: true,
+  },
+  {
+    path: '/*',
+    component: NotFound,
+    isPrivate: false,
   }
 ]
 

@@ -1,0 +1,115 @@
+.riferos {
+  margin-top: 5.4rem;
+
+  .card {
+    .card-body{
+      .accordion {
+        width: 100%;
+        margin: 0 auto;
+        background-color: #eef5f9;
+    
+        .accordion-item {
+          background-color: #eef5f9;
+          margin-bottom: 0;
+          border-radius: 0;
+          border: 0;
+    
+          .not-found {
+            text-align: center;
+            margin: 5rem;
+          }
+        }
+      }
+    }
+  }
+
+  .title{
+    text-align: center;
+  }
+
+  .table{
+    background-color: #ffffff;
+  }
+
+  thead{
+    background-color: #444444;
+    tr{
+      th{
+        text-align: center;
+        color: #ffffff;
+      }
+      td {
+        .badge {
+          padding: 0 70% 0 30%;
+        }
+      }
+    }
+  }
+  tbody{
+    background-color: #ffffff;
+    tr:hover {
+      background-color: rgb(245, 245, 249);
+    }
+    tr {
+      background: rgb(252, 252, 252);
+      .body-item{
+        padding-top: 12px;
+        text-align: center;
+        justify-content: center;
+
+        div {
+          margin: auto;
+        }
+
+        @media screen and (max-width: 768px) {
+          padding-top: calc(20px + 1rem);
+        }
+      }
+
+      .body-btn{
+        text-align: center;
+      }
+
+      .btn{
+        padding: 0.5rem 1rem;
+        margin-left: 10px;
+        border-radius: 0.25rem;
+        border: 0;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        cursor: pointer;
+
+        
+        @media screen and (max-width: 768px) {
+          width: 100%;
+        }
+      }
+      
+      .btn-warning{
+        color: #212529;
+        background-color: #edc107;
+        border-color: #edc107;
+
+        &:hover{
+          background-color: #d6a100;
+          border-color: #d6a100;
+        }
+
+        @media screen and (max-width: 768px) {
+          margin-bottom: 10px;
+        }
+      }
+
+      .btn-danger{
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+
+        &:hover{
+          background-color: #a32a3a;
+          border-color: #a32a3a;
+        }
+      }
+    }
+  }
+}

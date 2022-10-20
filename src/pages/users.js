@@ -70,6 +70,7 @@ function Users() {
     name: Yup.string().required("Requerido"),
     username: Yup.string().required("Requerido"),
     email: Yup.string().email("Correo invalido").required("Requerido"),
+    cedula: Yup.string().required("Requerido").max(10, "Maximo 10 caracteres").min(8, "Minimo 8 caracteres").matches(/^[V|E|J|P][0-9]{5,9}$/, 'Debe incluir V E J o P'),
     role: Yup.string().required("Requerido"),
     password: Yup.string().required("Requerido").min(6, "Muy corta"),
     password_confirmation: Yup.string().required("Requerido").min(6, "Muy corta").equals([Yup.ref("password")], "Las contraseñas no coinciden"),
@@ -86,7 +87,6 @@ function Users() {
 
   const roleSelect = [
     { value: "Admin", label: "Admin" },
-    { value: "Rifero", label: "Rifero" },
     { value: "Taquilla", label: "Taquilla" },
     { value: "Agencia", label: "Agencia" },
   ];
@@ -166,6 +166,18 @@ function Users() {
                 />
                 {errors.username && touched.username ? (
                   <div className="text-danger">{errors.username}</div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="cedula">Cedula/RIF</label>
+                <Field
+                  type="text"
+                  name="cedula"
+                  id="cedula"
+                  className="form-control"
+                />
+                {errors.cedula && touched.cedula ? (
+                  <div className="text-danger">{errors.cedula}</div>
                 ) : null}
               </div>
               <div className="form-group">

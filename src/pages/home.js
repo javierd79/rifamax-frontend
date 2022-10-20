@@ -9,10 +9,11 @@ import Header from "../components/header";
 import { BsFillPersonFill } from "react-icons/bs";
 import { StatusCard } from "../assets/data/statusCard.js";
 import axios from "axios";
-import Barcode from "react-barcode";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Modal from "../components/modal";
+import Switch from "react-js-switch";
+import RifaMaxLogo from '../assets/images/ticket.png'
 
 // import Modal from '../components/modal';
 // import RifaGenerator from "../components/rifaGenerator";
@@ -24,6 +25,7 @@ function Home() {
   const [pops, setPops] = useState(false);
   const [riferos, setRiferos] = useState([]);
   const [users, setUsers] = useState([]);
+  const [checkState, setCheckState] = useState(false);
 
   const yesterday = () => {
     let today = new Date();
@@ -38,10 +40,10 @@ function Home() {
       .min(yesterday(), "La fecha debe ser mayor a la actual"),
     awardSign: Yup.string().required("Campo requerido"),
     awardNoSign: Yup.string().required("Campo requerido"),
-    plate: Yup.string().required("Campo requerido"),
+    plate: Yup.string().nullable(),
     year: Yup.number()
-      .required("Campo requerido")
       .min(1990, "El año debe ser mayor a 1990")
+      .nullable()
       .max(new Date().getFullYear(), "El año debe ser menor al actual"),
     loteria: Yup.string().required("Campo requerido"),
     numbers: Yup.number()
@@ -61,10 +63,14 @@ function Home() {
       .max(1000, "El número debe ser menor a 1000"),
   });
 
-  let config = {
-    displayValue: true,
-    height: 30,
-    margin: 0,
+  // let config = {
+  //   displayValue: true,
+  //   height: 30,
+  //   margin: 0,
+  // };
+
+  const toggleCheck = () => {
+    setCheckState(!checkState);
   };
 
   const userDetails = useAuthState();
@@ -247,8 +253,8 @@ function Home() {
                       rifDate: "",
                       awardSign: "",
                       awardNoSign: "",
-                      plate: "",
-                      year: "",
+                      plate: null,
+                      year: null,
                       loteria: "ZULIA 7A",
                       numbers: "",
                       expired: "",
@@ -337,38 +343,94 @@ function Home() {
                       <p className="text-center">Opciones</p>
                       <hr />
                       <div className="row">
-                        <div className="col-4">
-                          <FormGroup>
-                            <label htmlFor="plate">Placa</label>
-                            <Field
-                              className="form-control"
-                              name="plate"
-                              placeholder="Placa"
-                              type="text"
+                        <div className="col-12">
+                          <div
+                            className="form-check"
+                            style={{ marginLeft: "41%" }}
+                          >
+                            <p
+                              className="form-check-label"
+                              style={{
+                                marginBottom: "2px",
+                                marginLeft: "-2.4%",
+                              }}
+                            >
+                              Dinero
+                            </p>
+                            <Switch
+                              onChange={() => toggleCheck()}
+                              value={checkState}
+                              name="Opcion"
                             />
-                            <ErrorMessage
-                              className="field-error text-danger"
-                              name="plate"
-                              component="div"
-                            />
-                          </FormGroup>
+                          </div>
                         </div>
-                        <div className="col-4">
-                          <FormGroup>
-                            <label htmlFor="year">Año</label>
-                            <Field
-                              className="form-control"
-                              name="year"
-                              placeholder="Año"
-                              type="number"
-                            />
-                            <ErrorMessage
-                              className="field-error text-danger"
-                              name="year"
-                              component="div"
-                            />
-                          </FormGroup>
-                        </div>
+                      </div>
+                      <div className="row">
+                        {checkState === false ? (
+                          <>
+                            <div className="col-4 justify-center">
+                              <FormGroup>
+                                <label htmlFor="plate">Placa</label>
+                                <Field
+                                  className="form-control"
+                                  name="plate"
+                                  placeholder="Placa"
+                                  type="text"
+                                />
+                                <ErrorMessage
+                                  className="field-error text-danger"
+                                  name="plate"
+                                  component="div"
+                                />
+                              </FormGroup>
+                            </div>
+                            <div className="col-4">
+                              <FormGroup>
+                                <label htmlFor="year">Año</label>
+                                <Field
+                                  className="form-control"
+                                  name="year"
+                                  placeholder="Año"
+                                  type="number"
+                                />
+                                <ErrorMessage
+                                  className="field-error text-danger"
+                                  name="year"
+                                  component="div"
+                                />
+                              </FormGroup>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="col-4 justify-center">
+                              <FormGroup>
+                                <label htmlFor="plate">Placa</label>
+                                <Field
+                                  className="form-control"
+                                  name="plate"
+                                  placeholder="Placa"
+                                  type="text"
+                                  value={null}
+                                  disabled
+                                />
+                              </FormGroup>
+                            </div>
+                            <div className="col-4">
+                              <FormGroup>
+                                <label htmlFor="year">Año</label>
+                                <Field
+                                  className="form-control"
+                                  name="year"
+                                  placeholder="Año"
+                                  type="number"
+                                  value={null}
+                                  disabled
+                                />
+                              </FormGroup>
+                            </div>
+                          </>
+                        )}
                         <div className="col-4">
                           <FormGroup>
                             <label htmlFor="loteria">Loteria</label>
@@ -396,7 +458,7 @@ function Home() {
                               className="form-control"
                               name="numbers"
                               placeholder="Numeros"
-                              type="text"
+                              type="number"
                             />
                             <ErrorMessage
                               className="field-error text-danger"
@@ -411,7 +473,7 @@ function Home() {
                             <Field
                               className="form-control"
                               name="price"
-                              placeholder="Precio"
+                              placeholder="Precio                             $"
                               type="number"
                             />
                             <ErrorMessage
@@ -434,7 +496,7 @@ function Home() {
                           <option value="">Seleccione un Rifero</option>
                           {riferos.map((user, index) => (
                             <option key={index} value={Number(user.id)}>
-                              {user.user.name}
+                              {user.user.name ?? "Sin nombre"}
                             </option>
                           ))}
                         </Field>
@@ -455,188 +517,18 @@ function Home() {
             ) : (
               <div className="card">
                 <div className="card-body">
-                  <h3 className="card-title">Rifas de Carros</h3>
+                  <div className="row">
+                    <div className="col-md-9 col-xs-12">
+                  <h3 className="card-title">Rifas</h3>
                   <h6 className="mb-2 mtext card-subtitle">
                     Estado de las Rifas mensuales
                   </h6>
-                  <div className="accordion-container">
-                    {allRifas.map((element, index) => {
-                      return (
-                        <div className="accordion" key={index}>
-                          <div className="accordion-item">
-                            <div
-                              className="accordion-title"
-                              onClick={handleAccordion.bind(this, index)}
-                            >
-                              <div className="col-6 col-xs-12">
-                                Rifa de: {element.awardSign}
-                              </div>
-                              <div className="col-6 col-xs-12 text-start rifD">
-                                {element.rifDate}
-                              </div>
-                              <p className="text subtitle text-end">
-                                {element.name}
-                              </p>
-                              {isActive === index ? (
-                                <div className="icon">-</div>
-                              ) : (
-                                <div className="icon">+</div>
-                              )}
-                            </div>
-                            {isActive === index ? (
-                              <div className="accordion-content">
-                                <div
-                                  className="card mb-2"
-                                  style={{
-                                    maxWidth: "18rem",
-                                    minWidth: "2rem",
-                                  }}
-                                >
-                                  <div className="card-body">
-                                    <strong></strong>
-                                    <p className="text">
-                                      Sin Signo: {element.awardNoSign}
-                                      <br />
-                                      Loteria: {element.loteria}
-                                      <br />
-                                      Numero: {element.id}
-                                      <br />
-                                      Fecha:{" "}
-                                      {element.created_at.substring(0, 10)}
-                                      <br />
-                                      Hora:{" "}
-                                      {element.created_at.substring(11, 16)}
-                                      <br />
-                                      Serial: {element.serial}
-                                      <br />
-                                      Año: {element.year}
-                                      <br />
-                                      Precio: {element.price}$
-                                      <br />
-                                      Responsable: {element.user.name}
-                                      <br />
-                                      <br />
-                                      <Barcode
-                                        value={element.serial}
-                                        {...config}
-                                      />
-                                      <br />
-                                      <br />
-                                      Fecha de inicio: {element.rifDate}
-                                    </p>
-                                  </div>
-                                </div>
-                                {element.is_send === true ? (
-                                  <>
-                                    <Modal
-                                      btnColor="primary"
-                                      centered={true}
-                                      classBtn="w-100 button-ticket"
-                                      buttonTitle="Ver tickets"
-                                      title={`Tickets`}
-                                    >
-                                      <div className="row">
-                                        {element.rifa_tickets
-                                          .sort(
-                                            (a, b) =>
-                                              a.ticket_nro - b.ticket_nro
-                                          )
-                                          .map((ticket) => {
-                                            return (
-                                              <div className="col-lg-4 col-xs-12">
-                                                <a
-                                                  className="ticket-open"
-                                                  href={`https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`}
-                                                  target="_blank"
-                                                  rel="noreferrer"
-                                                >
-                                                  <div className="card mb-2 mt-2 ms-1 me-1">
-                                                    <div className="card-body">
-                                                      <h5 className="card-title">
-                                                        {ticket.ticket_nro}
-                                                      </h5>
-                                                      <p className="card-text">
-                                                        {ticket.sign}
-                                                        <p className="text-muted mt-1">
-                                                          {ticket.serial}
-                                                        </p>
-                                                      </p>
-                                                      {ticket.is_sold ===
-                                                      true ? (
-                                                        <p className="ribbon">
-                                                          Vendido
-                                                        </p>
-                                                      ) : null}
-                                                    </div>
-                                                  </div>
-                                                </a>
-                                              </div>
-                                            );
-                                          })}
-                                      </div>
-                                    </Modal>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Modal
-                                      btnColor="primary"
-                                      centered={true}
-                                      classBtn="w-100 button-ticket"
-                                      buttonTitle="Enviar a APP"
-                                      title={`Enviar a APP`}
-                                    >
-                                      <div className="row">
-                                        {element.rifa_tickets
-                                          .sort(
-                                            (a, b) =>
-                                              a.ticket_nro - b.ticket_nro
-                                          )
-                                          .map((ticket) => {
-                                            return (
-                                              <div className="col-lg-4 col-xs-12">
-                                                <div className="card mb-2 mt-2 ms-1 me-1">
-                                                  <div className="card-body">
-                                                    <h5 className="card-title">
-                                                      {ticket.ticket_nro}
-                                                    </h5>
-                                                    <p className="card-text">
-                                                      {ticket.sign}
-                                                      <p className="text-muted mt-1">
-                                                        {ticket.serial}
-                                                      </p>
-                                                    </p>
-                                                    {ticket.is_sold === true ? (
-                                                      <p className="ribbon">
-                                                        Vendido
-                                                      </p>
-                                                    ) : null}
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            );
-                                          })}
-                                      </div>
-                                      <button
-                                        className="btn btn-success w-100 w-100"
-                                        onClick={() => {
-                                          sendToApp(element.id);
-                                        }}
-                                      >
-                                        Confirmar
-                                      </button>
-                                    </Modal>
-                                  </>
-                                )}
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                      );
-                    })}
-                    <Modal
+                  </div>
+                  <div className="col-md-3 col-xs-12">
+                  <Modal
                       btnColor="primary"
                       centered={true}
-                      classBtn="w-100 add-rifas"
+                      classBtn="mt-2 addrifas"
                       buttonTitle="Agregar rifas"
                       title="Agregar rifas"
                     >
@@ -645,8 +537,8 @@ function Home() {
                           rifDate: "",
                           awardSign: "",
                           awardNoSign: "",
-                          plate: "",
-                          year: "",
+                          plate: null,
+                          year: null,
                           loteria: "ZULIA 7A",
                           numbers: "",
                           expired: "",
@@ -739,38 +631,94 @@ function Home() {
                           <p className="text-center">Opciones</p>
                           <hr />
                           <div className="row">
-                            <div className="col-4">
-                              <FormGroup>
-                                <label htmlFor="plate">Placa</label>
-                                <Field
-                                  className="form-control"
-                                  name="plate"
-                                  placeholder="Placa"
-                                  type="text"
+                            <div className="col-12">
+                              <div
+                                className="form-check"
+                                style={{ marginLeft: "41%" }}
+                              >
+                                <p
+                                  className="form-check-label"
+                                  style={{
+                                    marginBottom: "2px",
+                                    marginLeft: "-2.4%",
+                                  }}
+                                >
+                                  Dinero
+                                </p>
+                                <Switch
+                                  onChange={() => toggleCheck()}
+                                  value={checkState}
+                                  name="Opcion"
                                 />
-                                <ErrorMessage
-                                  className="field-error text-danger"
-                                  name="plate"
-                                  component="div"
-                                />
-                              </FormGroup>
+                              </div>
                             </div>
-                            <div className="col-4">
-                              <FormGroup>
-                                <label htmlFor="year">Año</label>
-                                <Field
-                                  className="form-control"
-                                  name="year"
-                                  placeholder="Año"
-                                  type="number"
-                                />
-                                <ErrorMessage
-                                  className="field-error text-danger"
-                                  name="year"
-                                  component="div"
-                                />
-                              </FormGroup>
-                            </div>
+                          </div>
+                          <div className="row">
+                            {checkState === false ? (
+                              <>
+                                <div className="col-4 justify-center">
+                                  <FormGroup>
+                                    <label htmlFor="plate">Placa</label>
+                                    <Field
+                                      className="form-control"
+                                      name="plate"
+                                      placeholder="Placa"
+                                      type="text"
+                                    />
+                                    <ErrorMessage
+                                      className="field-error text-danger"
+                                      name="plate"
+                                      component="div"
+                                    />
+                                  </FormGroup>
+                                </div>
+                                <div className="col-4">
+                                  <FormGroup>
+                                    <label htmlFor="year">Año</label>
+                                    <Field
+                                      className="form-control"
+                                      name="year"
+                                      placeholder="Año"
+                                      type="number"
+                                    />
+                                    <ErrorMessage
+                                      className="field-error text-danger"
+                                      name="year"
+                                      component="div"
+                                    />
+                                  </FormGroup>
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="col-4 justify-center">
+                                  <FormGroup>
+                                    <label htmlFor="plate">Placa</label>
+                                    <Field
+                                      className="form-control"
+                                      name="plate"
+                                      placeholder="Placa"
+                                      type="text"
+                                      value={null}
+                                      disabled
+                                    />
+                                  </FormGroup>
+                                </div>
+                                <div className="col-4">
+                                  <FormGroup>
+                                    <label htmlFor="year">Año</label>
+                                    <Field
+                                      className="form-control"
+                                      name="year"
+                                      placeholder="Año"
+                                      type="number"
+                                      value={null}
+                                      disabled
+                                    />
+                                  </FormGroup>
+                                </div>
+                              </>
+                            )}
                             <div className="col-4">
                               <FormGroup>
                                 <label htmlFor="loteria">Loteria</label>
@@ -798,7 +746,7 @@ function Home() {
                                   className="form-control"
                                   name="numbers"
                                   placeholder="Numeros"
-                                  type="text"
+                                  type="number"
                                 />
                                 <ErrorMessage
                                   className="field-error text-danger"
@@ -813,7 +761,7 @@ function Home() {
                                 <Field
                                   className="form-control"
                                   name="price"
-                                  placeholder="Precio"
+                                  placeholder="Precio                             $"
                                   type="number"
                                 />
                                 <ErrorMessage
@@ -836,7 +784,7 @@ function Home() {
                               <option value="">Seleccione un Rifero</option>
                               {riferos.map((user, index) => (
                                 <option key={index} value={Number(user.id)}>
-                                  {user.user.name}
+                                  {user.user.name ?? "Sin nombre"}
                                 </option>
                               ))}
                             </Field>
@@ -856,6 +804,294 @@ function Home() {
                         </Form>
                       </Formik>
                     </Modal>
+                  </div>
+                  </div>
+                  <div className="accordion-container">
+                    {allRifas.sort((a, b) => (a.id > b.id ? -1 : 1)).map((element, index) => {
+                      return (
+                        <div className="accordion" key={index}>
+                          <div className="accordion-item">
+                            <div
+                              className="accordion-title"
+                              onClick={handleAccordion.bind(this, index)}
+                            >
+                              <div className="col-6 col-xs-12">
+                                <span
+                                  style={{
+                                    border: "2px",
+                                    borderRadius: "100%",
+                                    padding: "0 6.5px 0 6.5px",
+                                    color: "#fff",
+                                  }}
+                                  className="bg-primary"
+                                >
+                                  {element.id}
+                                </span>{" "}
+                                {element.plate || element.year === null ? `Premio: ${element.awardSign}$` : `Premio: ${element.awardSign}`}
+                              </div>
+                              <div className="col-6 col-xs-12 text-start rifD">
+                                {element.user.name}
+                              </div>
+                              <p className="text subtitle text-end">
+                                {element.name}
+                              </p>
+                              {isActive === index ? (
+                                <div className="icon">-</div>
+                              ) : (
+                                <div className="icon">+</div>
+                              )}
+                            </div>
+                            {isActive === index ? (
+                              <div className="accordion-content">
+                                <div
+                                  className="card mb-2"
+                                  style={{
+                                    maxWidth: "18rem",
+                                    minWidth: "2rem",
+                                  }}
+                                >
+                                  <div className="card-body">
+                                    <img src={RifaMaxLogo} alt="Logo" className="img-fluid" /><br/>
+                                    <p className="text-center"><strong>{element.numbers} - SIGNO <br/>PRECIO: {element.price}$</strong></p>
+                                    
+                                    -------------------------------------------------
+
+                                    <div className="row">
+                                      <div className="col-6">
+                                        <p className="card-text text-start"><strong>PREMIO:</strong></p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-end"><strong>{element.plate || element.year === null ? `${element.awardSign}$` : `${element.awardSign}`}</strong></p>
+                                      </div>
+                                      {
+                                        element.plate !== null ? (
+                                          <>
+                                            <div className="col-6">
+                                              <p className="card-text text-start">
+                                                <strong>PLACA:</strong>
+                                              </p>
+                                            </div>
+                                            <div className="col-6">
+                                              <p className="card-text text-end">
+                                                <strong>{element.plate}</strong>
+                                              </p>
+                                            </div>
+                                          </>
+                                        ) : null
+                                      }
+                                      {
+                                        element.year !== null ? (
+                                          <>
+                                            <div className="col-6">
+                                              <p className="card-text text-start">
+                                                <strong>MODELO:</strong>
+                                              </p>
+                                            </div>
+                                            <div className="col-6">
+                                              <p className="card-text text-end">
+                                                <strong>{element.year}</strong>
+                                              </p>
+                                            </div>
+                                          </>
+                                        ) : null
+                                      }
+                                      <div className="col-6">
+                                        <p className="card-text text-start">
+                                          <strong>SIN SIGNO:</strong>
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-end">
+                                          <strong>{element.awardNoSign}$</strong>
+                                        </p>
+                                      </div>
+                                    </div>
+                                    -------------------------------------------------
+                                    <div className="row">
+                                      <div className="col-10">
+                                        <p className="card-text text-start">
+                                          SERIE NUMERO:
+                                        </p>
+                                      </div>
+                                      <div className="col-2">
+                                        <p className="card-text text-end">
+                                          {element.id}
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-start">
+                                          LOTERIA:
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-end">
+                                          {element.loteria}
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-start">
+                                          FECHA:
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-end">
+                                          {element.created_at.substring(0, 10)}
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-start">
+                                          HORA:
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-end">
+                                          {element.created_at.substring(11, 19)}
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-start">
+                                          CADUCA:
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-end">
+                                          {element.expired.substring(0, 10)}
+                                        </p>
+                                      </div>
+                                      <div className="col-4">
+                                        <p className="card-text text-start">
+                                          RIFERO:
+                                        </p>
+                                      </div>
+                                      <div className="col-8">
+                                        <p className="card-text text-end">
+                                          {element.user.name}
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-start">
+                                          TELEFONO:
+                                        </p>
+                                      </div>
+                                      <div className="col-6">
+                                        <p className="card-text text-end">
+                                          {element.rifero.phone}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <p className="subtitle text-muted mt-4 text-center">
+                                      Esto es una representacion de como luciran los tickets
+                                    </p>
+                                  </div>
+                                </div>
+                                {element.is_send === true ? (
+                                  <>
+                                    <Modal
+                                      btnColor="primary"
+                                      centered={true}
+                                      classBtn="w-100 button-ticket"
+                                      buttonTitle="Ver tickets"
+                                      title={`Tickets`}
+                                    >
+                                      <div className="row">
+                                        {element.rifa_tickets
+                                          .sort(
+                                            (a, b) =>
+                                              a.ticket_nro - b.ticket_nro
+                                          )
+                                          .map((ticket) => {
+                                            return (
+                                              <div className="col-lg-4 col-xs-12">
+                                                <a
+                                                  className="ticket-open"
+                                                  href={`https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`}
+                                                  target="_blank"
+                                                  rel="noreferrer"
+                                                >
+                                                  <div className="card mb-2 mt-2 ms-1 me-1">
+                                                    <div className="card-body">
+                                                      <h5 className="card-title">
+                                                        {ticket.ticket_nro}
+                                                      </h5>
+                                                      <p className="card-text">
+                                                        {element.numbers}<br/>
+                                                        {ticket.sign}
+                                                        <p className="text-muted mt-1">
+                                                          {ticket.serial}
+                                                        </p>
+                                                      </p>
+                                                      {ticket.is_sold ===
+                                                      true ? (
+                                                        <p className="ribbon">
+                                                          Vendido
+                                                        </p>
+                                                      ) : null}
+                                                    </div>
+                                                  </div>
+                                                </a>
+                                              </div>
+                                            );
+                                          })}
+                                      </div>
+                                    </Modal>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Modal
+                                      btnColor="primary"
+                                      centered={true}
+                                      classBtn="w-100 button-ticket"
+                                      buttonTitle="Enviar a APP"
+                                      title={`Enviar a APP`}
+                                    >
+                                      <div className="row">
+                                        {element.rifa_tickets
+                                          .sort(
+                                            (a, b) =>
+                                              a.ticket_nro - b.ticket_nro
+                                          )
+                                          .map((ticket) => {
+                                            return (
+                                              <div className="col-lg-4 col-xs-12">
+                                                <div className="card mb-2 mt-2 ms-1 me-1">
+                                                  <div className="card-body">
+                                                    <h5 className="card-title">
+                                                      {ticket.ticket_nro}
+                                                    </h5>
+                                                    <p className="card-text">
+                                                      {ticket.sign}
+                                                      <p className="text-muted mt-1">
+                                                        {ticket.serial}
+                                                      </p>
+                                                    </p>
+                                                    {ticket.is_sold === true ? (
+                                                      <p className="ribbon">
+                                                        Vendido
+                                                      </p>
+                                                    ) : null}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                      </div>
+                                      <button
+                                        className="btn btn-success w-100 w-100"
+                                        onClick={() => {
+                                          sendToApp(element.id);
+                                        }}
+                                      >
+                                        Confirmar
+                                      </button>
+                                    </Modal>
+                                  </>
+                                )}
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

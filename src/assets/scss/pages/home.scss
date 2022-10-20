@@ -2,6 +2,18 @@ $expired: rgba(246, 78, 96, 0.125);
 $totals: rgba(41, 98, 255, 0.125);
 $active: rgba(11, 183, 175, 0.125);
 
+.addrifas {
+  margin-left: calc(100% - 15vw);
+  width: 15vw;
+}
+
+@media only screen and (max-width: 808px) {
+  .addrifas {
+    margin: 0 0 10px 0;
+    width: 100%;
+  }
+}
+
 %status-card {
   border-radius: 5px;
   margin-bottom: 23px;
