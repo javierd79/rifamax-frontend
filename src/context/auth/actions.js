@@ -40,4 +40,5 @@ export async function logout(dispatch) {
   localStorage.removeItem('user');
   localStorage.removeItem('token');
   localStorage.removeItem('role');
+  localStorage.removeItem('exp');
 }

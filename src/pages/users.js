@@ -159,6 +159,7 @@ function Users() {
               <div className="form-group">
                 <label htmlFor="username">Nombre general</label>
                 <Field
+                  autocomplete="off"
                   type="text"
                   name="username"
                   id="username"
@@ -171,6 +172,7 @@ function Users() {
               <div className="form-group">
                 <label htmlFor="cedula">Cedula/RIF</label>
                 <Field
+                  autocomplete="off"
                   type="text"
                   name="cedula"
                   id="cedula"
@@ -183,6 +185,7 @@ function Users() {
               <div className="form-group">
                 <label htmlFor="email">Correo</label>
                 <Field
+                  autocomplete="off"
                   type="email"
                   name="email"
                   id="email"
@@ -195,6 +198,7 @@ function Users() {
               <div className="form-group">
                 <label htmlFor="password">Contraseña</label>
                 <Field
+                  autocomplete="off"
                   type="password"
                   name="password"
                   id="password"
@@ -209,6 +213,7 @@ function Users() {
                   Confirmar contraseña
                 </label>
                 <Field
+                  autocomplete="off"
                   type="password"
                   name="password_confirmation"
                   id="password_confirmation"
@@ -314,6 +319,7 @@ function Users() {
                   <>
                     <label htmlFor="phone">Telefono</label>
                     <Field
+                      autocomplete="off"
                       type="text"
                       name="phone"
                       id="phone"
@@ -327,6 +333,7 @@ function Users() {
                         <>
                           <label htmlFor="agency_id">Agencia</label>
                           <Field 
+                            autocomplete="off"
                             as="select"
                             name="agency_id"
                             id="agency_id"

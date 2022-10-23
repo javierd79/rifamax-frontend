@@ -28,6 +28,7 @@ const Riferos = () => {
   const URL = 'https://rifa-max.com';
 
   const handleLogout = () => {
+
     logout(dispatch);
     window.location.href = "/login";
   };
@@ -123,6 +124,7 @@ const Riferos = () => {
               <div className="form-group">
                 <label htmlFor="name">Nombre</label>
                 <Field
+                  autocomplete="off"
                   type="text"
                   name="name"
                   id="name"
@@ -135,6 +137,7 @@ const Riferos = () => {
               <div className="form-group">
                 <label htmlFor="username">Nombre Agencia</label>
                 <Field
+                  autocomplete="off"
                   type="text"
                   name="username"
                   id="username"
@@ -147,6 +150,7 @@ const Riferos = () => {
               <div className="form-group">
                 <label htmlFor="cedula">Cedula/RIF</label>
                 <Field
+                  autocomplete="off"
                   type="text"
                   name="cedula"
                   id="cedula"
@@ -159,6 +163,7 @@ const Riferos = () => {
               <div className="form-group">
                 <label htmlFor="email">Correo</label>
                 <Field
+                  autocomplete="off"
                   type="email"
                   name="email"
                   id="email"
@@ -171,6 +176,7 @@ const Riferos = () => {
               <div className="form-group">
                 <label htmlFor="password">Contraseña</label>
                 <Field
+                  autocomplete="off"
                   type="password"
                   name="password"
                   id="password"
@@ -185,6 +191,7 @@ const Riferos = () => {
                   Confirmar contraseña
                 </label>
                 <Field
+                  autocomplete="off"
                   type="password"
                   name="password_confirmation"
                   id="password_confirmation"
