@@ -26,6 +26,7 @@ function Home() {
   const [riferos, setRiferos] = useState([]);
   const [users, setUsers] = useState([]);
   const [checkState, setCheckState] = useState(false);
+  const [money, setMoney] = useState("$");
 
   const yesterday = () => {
     let today = new Date();
@@ -50,17 +51,13 @@ function Home() {
       .required("Campo requerido")
       .min(100, "El número debe ser mayor a 100")
       .max(1000, "El número debe ser menor a 1000"),
-    expired: Yup.date()
-      .required("Campo requerido")
-      .min(yesterday(), "La fecha debe ser mayor a la actual"),
     rifero_id: Yup.number()
       .required("Campo requerido")
       .min(1, "El número debe ser mayor a 1")
       .max(100, "El número debe ser menor a 100"),
     price: Yup.number()
       .required("Campo requerido")
-      .min(1, "El número debe ser mayor a 1")
-      .max(1000, "El número debe ser menor a 1000"),
+      .min(1, "El número debe ser mayor a 1"),
     money: Yup.string().required("Campo requerido"),
   });
 
@@ -279,7 +276,6 @@ function Home() {
                       year: null,
                       loteria: "ZULIA 7A",
                       numbers: "",
-                      expired: "",
                       rifero_id: Number("0"),
                       price: "",
                       money: "$",
@@ -291,7 +287,7 @@ function Home() {
                   >
                     <Form>
                       <div className="row">
-                        <div className="col-6">
+                        <div className="col-12">
                           <FormGroup>
                             <label htmlFor="rifDate">Fecha de la rifa</label>
                             <Field
@@ -307,45 +303,6 @@ function Home() {
                             />
                           </FormGroup>
                         </div>
-                        <div className="col-6">
-                          <FormGroup>
-                            <label htmlFor="expired">Fecha de cierre</label>
-                            <Field
-                              className="form-control"
-                              name="expired"
-                              placeholder="Fecha de expiracion"
-                              type="date"
-                            />
-                            <ErrorMessage
-                              className="field-error text-danger"
-                              name="expired"
-                              component="div"
-                            />
-                          </FormGroup>
-                        </div>
-                      </div>
-                      <div className="col-12">
-                        <FormGroup>
-                          <label htmlFor="money">Moneda</label>
-                          <Field
-                            as="select"
-                            type="string"
-                            className="form-control"
-                            name="money"
-                            placeholder="Moneda"
-                          >
-                            {monedas.map((money, index) => (
-                              <option key={index} value={money.denomination}>
-                                {money.name ?? "Error"}
-                              </option>
-                            ))}
-                          </Field>
-                          <ErrorMessage
-                            className="field-error text-danger"
-                            name="money"
-                            component="div"
-                          />
-                        </FormGroup>
                       </div>
                       <div className="row">
                         <div className="col-6">
@@ -494,6 +451,32 @@ function Home() {
                           </FormGroup>
                         </div>
                       </div>
+                      <div className="col-12">
+                        <FormGroup>
+                          <label htmlFor="money">Moneda</label>
+                          <Field
+                            as="select"
+                            type="string"
+                            className="form-control"
+                            name="money"
+                            placeholder="Moneda"
+                          >
+                            {monedas.map((money, index) => (
+                              <option
+                                key={index}
+                                value={money.denomination}
+                              >
+                                {money.name ?? "Error"}
+                              </option>
+                            ))}
+                          </Field>
+                          <ErrorMessage
+                            className="field-error text-danger"
+                            name="money"
+                            component="div"
+                          />
+                        </FormGroup>
+                      </div>
                       <div className="row">
                         <div className="col-6">
                           <FormGroup>
@@ -517,7 +500,7 @@ function Home() {
                             <Field
                               className="form-control"
                               name="price"
-                              placeholder="Precio en $"
+                              placeholder={`Precio`}
                               type="number"
                             />
                             <ErrorMessage
@@ -585,7 +568,6 @@ function Home() {
                             year: null,
                             loteria: "ZULIA 7A",
                             numbers: "",
-                            expired: "",
                             rifero_id: Number("0"),
                             price: "",
                             money: "$",
@@ -597,7 +579,7 @@ function Home() {
                         >
                           <Form>
                             <div className="row">
-                              <div className="col-6">
+                              <div className="col-12">
                                 <FormGroup>
                                   <label htmlFor="rifDate">
                                     Fecha de la rifa
@@ -615,50 +597,6 @@ function Home() {
                                   />
                                 </FormGroup>
                               </div>
-                              <div className="col-6">
-                                <FormGroup>
-                                  <label htmlFor="expired">
-                                    Fecha de cierre
-                                  </label>
-                                  <Field
-                                    className="form-control"
-                                    name="expired"
-                                    placeholder="Fecha de expiracion"
-                                    type="date"
-                                  />
-                                  <ErrorMessage
-                                    className="field-error text-danger"
-                                    name="expired"
-                                    component="div"
-                                  />
-                                </FormGroup>
-                              </div>
-                            </div>
-                            <div className="col-12">
-                              <FormGroup>
-                                <label htmlFor="money">Moneda</label>
-                                <Field
-                                  as="select"
-                                  type="string"
-                                  className="form-control"
-                                  name="money"
-                                  placeholder="Moneda"
-                                >
-                                  {monedas.map((money, index) => (
-                                    <option
-                                      key={index}
-                                      value={money.denomination}
-                                    >
-                                      {money.name ?? "Error"}
-                                    </option>
-                                  ))}
-                                </Field>
-                                <ErrorMessage
-                                  className="field-error text-danger"
-                                  name="money"
-                                  component="div"
-                                />
-                              </FormGroup>
                             </div>
                             <div className="row">
                               <div className="col-6">
@@ -809,6 +747,31 @@ function Home() {
                                 </FormGroup>
                               </div>
                             </div>
+                            <div className="col-12">
+                              <FormGroup>
+                                <label htmlFor="money">Moneda</label>
+                                <Field
+                                  as="select"
+                                  type="string"
+                                  className="form-control"
+                                  name="money"
+                                >
+                                  {monedas.map((money, index) => (
+                                    <option
+                                      key={index}
+                                      value={money.denomination}
+                                    >
+                                      {money.name ?? "Error"}
+                                    </option>
+                                  ))}
+                                </Field>
+                                <ErrorMessage
+                                  className="field-error text-danger"
+                                  name="money"
+                                  component="div"
+                                />
+                              </FormGroup>
+                            </div>
                             <div className="row">
                               <div className="col-6">
                                 <FormGroup>
@@ -832,7 +795,7 @@ function Home() {
                                   <Field
                                     className="form-control"
                                     name="price"
-                                    placeholder="Precio en $"
+                                    placeholder={`Precio`}
                                     type="number"
                                   />
                                   <ErrorMessage
@@ -900,7 +863,11 @@ function Home() {
                                   >
                                     {element.id}
                                   </span>{" "}
-                                  {`Premio: ${Number(element.awardSign) ? `${element.awardSign}${element.money}` : `${element.awardSign}`}`}
+                                  {`Premio: ${
+                                    Number(element.awardSign)
+                                      ? `${element.awardSign}$`
+                                      : `${element.awardSign}`
+                                  }`}
                                 </div>
                                 <div className="col-6 col-xs-12 text-start rifD">
                                   {element.user.name}
@@ -933,10 +900,10 @@ function Home() {
                                       <p className="text-center">
                                         <strong>
                                           {element.numbers} - SIGNO <br />
-                                          PRECIO: {element.price}$
+                                          {`PRECIO: ${element.price}${element.money}`}
                                         </strong>
                                       </p>
-                                      <hr/>
+                                      <hr />
                                       <div className="row">
                                         <div className="col-6">
                                           <p className="card-text text-start">
@@ -945,7 +912,11 @@ function Home() {
                                         </div>
                                         <div className="col-6">
                                           <p className="card-text text-end">
-                                            <strong>{Number(element.awardSign) ? `${element.awardSign}${element.money}` : `${element.awardSign}`}</strong>
+                                            <strong>
+                                              {Number(element.awardSign)
+                                                ? `${element.awardSign}$`
+                                                : `${element.awardSign}`}
+                                            </strong>
                                           </p>
                                         </div>
                                         {element.plate !== null ? (
@@ -984,12 +955,14 @@ function Home() {
                                         <div className="col-6">
                                           <p className="card-text text-end">
                                             <strong>
-                                              {Number(element.awardNoSign) ? `${element.awardNoSign}${element.money}` : `${element.awardNoSign}`}
+                                              {Number(element.awardNoSign)
+                                                ? `${element.awardNoSign}$`
+                                                : `${element.awardNoSign}`}
                                             </strong>
                                           </p>
                                         </div>
                                       </div>
-                                      <hr/>
+                                      <hr />
                                       <div className="row">
                                         <div className="col-10">
                                           <p className="card-text text-start">

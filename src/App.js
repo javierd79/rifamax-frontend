@@ -10,7 +10,7 @@ let logoutUserAutomatic;
 function App() {
 
   function automatize(){
-    logoutUserAutomatic = setInterval(verifyLogout, 12000);
+    logoutUserAutomatic = setInterval(verifyLogout, 1000);
   }
   
   const dispatch = useAuthDispatch();

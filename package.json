@@ -54,7 +54,7 @@
     ]
   },
   "devDependencies": {
-    "dotenv": "^16.0.2",
+    "dotenv": "^16.0.3",
     "react-select": "^5.4.0",
     "sass": "^1.54.8"
   }
