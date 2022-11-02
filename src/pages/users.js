@@ -12,6 +12,8 @@ import Modal from "../components/modal";
 import * as Yup from "yup";
 import { Formik, Form, Field, validateYupSchema } from "formik";
 import Switch from "react-js-switch";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Users() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +36,11 @@ function Users() {
   //   setSteps(steps - 1);
   // };
 
+  const showToastMessage = (param) => {
+    toast.error(param, {
+        position: toast.POSITION.BOTTOM_RIGHT
+    });
+  };
   const nextStep = () => {
     setSteps(steps + 1);
   };
@@ -78,7 +85,7 @@ function Users() {
   });
 
   const joinForm = Yup.object().shape({
-    phone: Yup.string().required("Requerido"),
+    phone: Yup.string().matches(/^([0-9])*$/, "Ingrese un numero valido").required("Requerido"),
   });
 
   const userDetails = useAuthState();
@@ -88,7 +95,6 @@ function Users() {
   const roleSelect = [
     { value: "Admin", label: "Admin" },
     { value: "Taquilla", label: "Taquilla" },
-    { value: "Agencia", label: "Agencia" },
   ];
 
   const handleLogout = () => {
@@ -135,11 +141,14 @@ function Users() {
               headers: {
                 Authorization: `Bearer ${userDetails.token}`,
               },
+            }).then((res) => {
+                setSubmitting(false);
+                setOption(values.role.toString());
+                qualify(values.role.toString());
+                nextStep();
+            }).catch((err) => {
+                showToastMessage(err.response.data.errors[0]);
             });
-            setSubmitting(false);
-            setOption(values.role.toString());
-            qualify(values.role.toString());
-            nextStep();
           }}
         >
           {({ errors, touched, isSubmitting }) => (
@@ -619,6 +628,7 @@ function Users() {
             </div>
           )}
         </div>
+      <ToastContainer />
       </div>
     </>
   );

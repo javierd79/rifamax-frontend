@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import { FormGroup, PopoverBody } from "reactstrap";
-import { Popover, PopoverHeader } from "@chakra-ui/react";
+import { IconButton, Popover, PopoverHeader } from "@chakra-ui/react";
 import { useAuthState, useAuthDispatch, logout } from "../context/auth";
 import "../assets/scss/pages/home.scss";
 import Header from "../components/header";
@@ -14,6 +14,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import Modal from "../components/modal";
 import Switch from "react-js-switch";
 import RifaMaxLogo from "../assets/images/ticket.png";
+import Moment from "moment";
 
 // import Modal from '../components/modal';
 // import RifaGenerator from "../components/rifaGenerator";
@@ -59,6 +60,12 @@ function Home() {
       .required("Campo requerido")
       .min(1, "El número debe ser mayor a 1"),
     money: Yup.string().required("Campo requerido"),
+  });
+
+  const pinSchema = Yup.object().shape({
+    pin1: Yup.string().required("Campo requerido"),
+    pin2: Yup.string().required("Campo requerido"),
+    pin3: Yup.string().required("Campo requerido"),
   });
 
   // let config = {
@@ -118,6 +125,19 @@ function Home() {
           },
         }
       )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {});
+  };
+
+  const putPin = (pin, id) => {
+    axios
+      .put(`https://rifa-max.com/api/v1/rifas/pin/${id}`, pin, {
+        headers: {
+          Authorization: `Bearer ${userDetails.token}`,
+        },
+      })
       .then((res) => {
         window.location.reload();
       })
@@ -274,7 +294,7 @@ function Home() {
                       awardNoSign: "",
                       plate: null,
                       year: null,
-                      loteria: "ZULIA 7A",
+                      loteria: "ZULIA 7A 7:05PM",
                       numbers: "",
                       rifero_id: Number("0"),
                       price: "",
@@ -462,10 +482,7 @@ function Home() {
                             placeholder="Moneda"
                           >
                             {monedas.map((money, index) => (
-                              <option
-                                key={index}
-                                value={money.denomination}
-                              >
+                              <option key={index} value={money.denomination}>
                                 {money.name ?? "Error"}
                               </option>
                             ))}
@@ -566,7 +583,7 @@ function Home() {
                             awardNoSign: "",
                             plate: null,
                             year: null,
-                            loteria: "ZULIA 7A",
+                            loteria: "ZULIA 7A 7:05PM",
                             numbers: "",
                             rifero_id: Number("0"),
                             price: "",
@@ -851,7 +868,7 @@ function Home() {
                                 className="accordion-title"
                                 onClick={handleAccordion.bind(this, index)}
                               >
-                                <div className="col-6 col-xs-12">
+                                <div className="col-lg-6 col-xs-12">
                                   <span
                                     style={{
                                       border: "2px",
@@ -869,7 +886,7 @@ function Home() {
                                       : `${element.awardSign}`
                                   }`}
                                 </div>
-                                <div className="col-6 col-xs-12 text-start rifD">
+                                <div className="col-lg-6 col-xs-12 text-start rifD">
                                   {element.user.name}
                                 </div>
                                 <p className="text subtitle text-end">
@@ -964,22 +981,22 @@ function Home() {
                                       </div>
                                       <hr />
                                       <div className="row">
-                                        <div className="col-10">
+                                        <div className="col-7">
                                           <p className="card-text text-start">
                                             SERIE NUMERO:
                                           </p>
                                         </div>
-                                        <div className="col-2">
+                                        <div className="col-5">
                                           <p className="card-text text-end">
                                             {element.id}
                                           </p>
                                         </div>
-                                        <div className="col-6">
+                                        <div className="col-4">
                                           <p className="card-text text-start">
                                             LOTERIA:
                                           </p>
                                         </div>
-                                        <div className="col-6">
+                                        <div className="col-8">
                                           <p className="card-text text-end">
                                             {element.loteria}
                                           </p>
@@ -991,11 +1008,16 @@ function Home() {
                                         </div>
                                         <div className="col-6">
                                           <p className="card-text text-end">
+                                            {Moment(element.rifDate).format(
+                                              "DD/MM/YYYY"
+                                            )}
+                                          </p>
+                                          {/* <p className="card-text text-end">
                                             {element.created_at.substring(
                                               0,
                                               10
                                             )}
-                                          </p>
+                                          </p> */}
                                         </div>
                                         <div className="col-6">
                                           <p className="card-text text-start">
@@ -1017,7 +1039,9 @@ function Home() {
                                         </div>
                                         <div className="col-6">
                                           <p className="card-text text-end">
-                                            {element.expired.substring(0, 10)}
+                                            {Moment(element.expired).format(
+                                              "DD/MM/YYYY"
+                                            )}
                                           </p>
                                         </div>
                                         <div className="col-4">
@@ -1049,55 +1073,175 @@ function Home() {
                                   </div>
                                   {element.is_send === true ? (
                                     <>
-                                      <Modal
-                                        btnColor="primary"
-                                        centered={true}
-                                        classBtn="w-100 button-ticket"
-                                        buttonTitle="Ver tickets"
-                                        title={`Tickets`}
-                                      >
-                                        <div className="row">
-                                          {element.rifa_tickets
-                                            .sort(
-                                              (a, b) =>
-                                                a.ticket_nro - b.ticket_nro
-                                            )
-                                            .map((ticket) => {
-                                              return (
-                                                <div className="col-lg-4 col-xs-12">
-                                                  <a
-                                                    className="ticket-open"
-                                                    href={`https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                  >
-                                                    <div className="card mb-2 mt-2 ms-1 me-1">
-                                                      <div className="card-body">
-                                                        <h5 className="card-title">
-                                                          {ticket.ticket_nro}
-                                                        </h5>
-                                                        <p className="card-text">
-                                                          {element.numbers}
-                                                          <br />
-                                                          {ticket.sign}
-                                                          <p className="text-muted mt-1">
-                                                            {ticket.serial}
-                                                          </p>
-                                                        </p>
-                                                        {ticket.is_sold ===
-                                                        true ? (
-                                                          <p className="ribbon">
-                                                            Vendido
-                                                          </p>
-                                                        ) : null}
-                                                      </div>
+                                      <div className="row">
+                                        <div className="col-6">
+                                          <Modal
+                                            btnColor="primary"
+                                            centered={true}
+                                            classBtn="w-100 button-ticket"
+                                            buttonTitle="Ver tickets"
+                                            title={`Tickets`}
+                                          >
+                                            <div className="row">
+                                              {element.rifa_tickets
+                                                .sort(
+                                                  (a, b) =>
+                                                    a.ticket_nro - b.ticket_nro
+                                                )
+                                                .map((ticket) => {
+                                                  return (
+                                                    <div className="col-lg-4 col-xs-12">
+                                                      <a
+                                                        className="ticket-open"
+                                                        href={`https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                      >
+                                                        <div className="card mb-2 mt-2 ms-1 me-1">
+                                                          <div className="card-body">
+                                                            <h5 className="card-title">
+                                                              {
+                                                                ticket.ticket_nro
+                                                              }
+                                                            </h5>
+                                                            <p className="card-text">
+                                                              {element.numbers}
+                                                              <br />
+                                                              {ticket.sign}
+                                                              <p className="text-muted mt-1">
+                                                                {ticket.serial}
+                                                              </p>
+                                                            </p>
+                                                            {ticket.is_sold ===
+                                                            true ? (
+                                                              <p className="ribbon">
+                                                                Vendido
+                                                              </p>
+                                                            ) : null}
+                                                          </div>
+                                                        </div>
+                                                      </a>
                                                     </div>
-                                                  </a>
-                                                </div>
-                                              );
-                                            })}
+                                                  );
+                                                })}
+                                            </div>
+                                          </Modal>
                                         </div>
-                                      </Modal>
+                                        <div className="col-6">
+                                          {element.pin === null ? (
+                                            <Modal
+                                              btnColor="success"
+                                              centered={true}
+                                              classBtn="w-100 button-pin"
+                                              buttonTitle="Agregar Pin"
+                                              title={`Agregar pin`}
+                                            >
+                                              <div className="container">
+                                                <div className="row">
+                                                  <div className="col-12 mb-4">
+                                                    <p className="card-text">
+                                                      Agregue el pin de
+                                                      seguridad
+                                                    </p>
+                                                  </div>
+                                                  <Formik
+                                                    initialValues={{
+                                                      pin1: "",
+                                                      pin2: "",
+                                                      pin3: "",
+                                                    }}
+                                                    validationSchema={
+                                                      pinSchema
+                                                    }
+                                                    onSubmit={(values) => {
+                                                      let pin =
+                                                        values.pin1 +
+                                                        "-" +
+                                                        values.pin2 +
+                                                        "-" +
+                                                        values.pin3;
+                                                      putPin(
+                                                        { pin },
+                                                        element.id
+                                                      );
+                                                    }}
+                                                  >
+                                                    <Form>
+                                                      <div className="col-12">
+                                                        <FormGroup>
+                                                          <label htmlFor="pin1">
+                                                            Pin
+                                                          </label>
+                                                          <Field
+                                                            className="form-control"
+                                                            name="pin1"
+                                                            placeholder="11"
+                                                            type="number"
+                                                          />
+                                                          <ErrorMessage
+                                                            className="field-error text-danger"
+                                                            name="pin1"
+                                                            component="div"
+                                                          />
+                                                        </FormGroup>
+                                                      </div>
+                                                      <div className="col-12">
+                                                        <FormGroup>
+                                                          <Field
+                                                            className="form-control"
+                                                            name="pin2"
+                                                            placeholder="22"
+                                                            type="number"
+                                                          />
+                                                          <ErrorMessage
+                                                            className="field-error text-danger"
+                                                            name="pin2"
+                                                            component="div"
+                                                          />
+                                                        </FormGroup>
+                                                      </div>
+                                                      <div className="col-12">
+                                                        <FormGroup>
+                                                          <Field
+                                                            className="form-control"
+                                                            name="pin3"
+                                                            placeholder="33"
+                                                            type="number"
+                                                          />
+                                                          <ErrorMessage
+                                                            className="field-error text-danger"
+                                                            name="pin3"
+                                                            component="div"
+                                                          />
+                                                        </FormGroup>
+                                                      </div>
+                                                      <button
+                                                        className="btn btn-success w-100"
+                                                        type="submit"
+                                                      >
+                                                        Ingresar PIN
+                                                      </button>
+                                                    </Form>
+                                                  </Formik>
+                                                </div>
+                                              </div>
+                                            </Modal>
+                                          ) : (
+                                            <Modal
+                                              btnColor="success"
+                                              centered={true}
+                                              classBtn="w-100 button-pin"
+                                              buttonTitle="Ver Pin"
+                                              title={`Pin de seguridad`}
+                                            >
+                                              <p className="card-text">
+                                                El pin de seguridad es:{" "}
+                                                <strong>{element.pin}</strong>
+                                              </p>
+                                            </Modal>
+                                          )}
+                                        </div>
+                                      </div>
                                     </>
                                   ) : (
                                     <>
@@ -1167,7 +1311,7 @@ function Home() {
                 <div className="accordion">
                   <div className="accordion-item">
                     <hr />
-                    <h3 className="not-found">No hay rifas activas</h3>
+                    <h3 className="not-found">Cargando rifas...</h3>
                     <hr />
                   </div>
                 </div>

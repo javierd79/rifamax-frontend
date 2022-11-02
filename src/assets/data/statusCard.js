@@ -5,7 +5,6 @@ import { useAuthState } from '../../context/auth'
 export const StatusCard = () => {
   const [rifasActives, setRifasActives] = useState(0)
   const [rifasExpired, setRifasExpired] = useState(0)
-  const [rifasTotal, setRifasTotal] = useState(0)
 
   const userDetails = useAuthState()
   
@@ -32,17 +31,6 @@ export const StatusCard = () => {
       .catch(err => {
         console.log(err)
       })
-    axios.get('https://rifa-max.com/api/v1/rifas', {
-      headers: {
-        Authorization: `Bearer ${userDetails.token}`
-      }
-    })
-      .then(res => {
-        setRifasTotal(res.data.length)
-      })
-      .catch(err => {
-        console.log(err)
-      })
   }, [userDetails.token])
 
   return (
@@ -55,7 +43,7 @@ export const StatusCard = () => {
                 <p className="dot color-primary">.</p>
               </div>
               <div className="ms-3">
-                <h5 className="mb-0 font-weight-bold dot">{rifasTotal}</h5>
+                <h5 className="mb-0 font-weight-bold dot">{rifasActives + rifasExpired}</h5>
                 <small className="text-muted dot">Rifas Totales</small>
               </div>
             </div>

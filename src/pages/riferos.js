@@ -11,6 +11,8 @@ import "../assets/scss/index.scss";
 import axios from 'axios';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from "formik";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Riferos = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +28,12 @@ const Riferos = () => {
   const dispatch = useAuthDispatch();
 
   const URL = 'https://rifa-max.com';
+
+  const showToastMessage = (param) => {
+    toast.error(param, {
+        position: toast.POSITION.BOTTOM_RIGHT
+    });
+  };
 
   const handleLogout = () => {
 
@@ -89,7 +97,7 @@ const Riferos = () => {
   });
 
   const joinForm = Yup.object().shape({
-    phone: Yup.string().required("Requerido"),
+    phone: Yup.string().matches(/^([0-9])*$/, 'Ingrese un numero de telefono valido').required("Requerido"),
   });
   
   const RegisterUser = () => {
@@ -113,10 +121,13 @@ const Riferos = () => {
               headers: {
                 Authorization: `Bearer ${userDetails.token}`,
               },
-            });
-            setSubmitting(false);
-            setOption('Rifero');
-            nextStep();
+            }).then(res => {
+              setSubmitting(false);
+              setOption('Rifero');
+              nextStep();
+            }).catch(err => {
+              showToastMessage(err.response.data.errors[0]);
+            })
           }}
         >
           {({ errors, touched, isSubmitting }) => (
@@ -161,9 +172,9 @@ const Riferos = () => {
                 ) : null}
               </div>
               <div className="form-group">
-                <label htmlFor="email">Correo</label>
+                <label autoComplete="off" htmlFor="email">Correo</label>
                 <Field
-                  autocomplete="off"
+                  autoComplete="off"Field
                   type="email"
                   name="email"
                   id="email"
@@ -174,10 +185,10 @@ const Riferos = () => {
                 ) : null}
               </div>
               <div className="form-group">
-                <label htmlFor="password">Contraseña</label>
+                <label autoComplete="off" htmlFor="password">Contraseña</label>
                 <Field
-                  autocomplete="off"
-                  type="password"
+                  autoComplete="off"
+                  type="text"
                   name="password"
                   id="password"
                   className="form-control"
@@ -192,7 +203,7 @@ const Riferos = () => {
                 </label>
                 <Field
                   autocomplete="off"
-                  type="password"
+                  type="text"
                   name="password_confirmation"
                   id="password_confirmation"
                   className="form-control"
@@ -391,6 +402,7 @@ const Riferos = () => {
                             <th scope="col">Correo</th>
                             <th scope="col">Cedula</th>
                             <th scope="col">Rol</th>
+                            {/* <th scope="col">Acciones</th> */}
                           </tr>
                         </thead>
                         <tbody>
@@ -405,6 +417,11 @@ const Riferos = () => {
                               <td className="body-item">{user.user.email}</td>
                               <td className="body-item">{user.user.cedula}</td>
                               <td className="body-item">Rifero</td>
+                              {/* <td className="body-item">
+                                <button className="btn btn-primary">
+                                  Ver
+                                </button>
+                              </td> */}
                             </tr>
                           ))}
                         </tbody>
@@ -424,6 +441,7 @@ const Riferos = () => {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </div>
     </>
   );
