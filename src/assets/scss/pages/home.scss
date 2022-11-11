@@ -130,6 +130,7 @@ $active: rgba(11, 183, 175, 0.125);
     margin: 0 auto;
     background-color: #eef5f9;
 
+
     .accordion-item {
       background-color: #eef5f9;
       margin-bottom: 0;
@@ -148,7 +149,7 @@ $active: rgba(11, 183, 175, 0.125);
         text-align: start;
         padding: 20px;
         border-radius: 0;
-        cursor: pointer;
+        // cursor: pointer;
 
         div {
           font-size: 16px;
@@ -160,7 +161,7 @@ $active: rgba(11, 183, 175, 0.125);
           border-radius: 50%;
           height: 10px;
           width: 10px;
-          justify-content: start;
+          justify-content: center;
           box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
           transform: scale(1);
           animation: pulse 2s infinite;
@@ -180,11 +181,29 @@ $active: rgba(11, 183, 175, 0.125);
         }
       }
 
-      .accordion-content {
+      .accordion-content-close {
         background:#f6f9fa;
-        background-origin: cover;
-        background-repeat: repeat;
-        background-position: center;
+        padding: 10px 20px;
+        margin: 0 0;
+        transform: scaleY(1);
+        transform-origin: top;
+        transition: transform .3s ease-in-out;
+        animation-direction: normal;
+        animation-fill-mode: forwards;
+        animation-duration: .3s;
+        animation-timing-function: ease-in-out;
+        animation-name: accordionClose;
+        overflow: hidden;
+
+        .card {
+          margin-left: calc(50% - 9em);
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
+          border-radius: 6px 6px 0 0;
+        }
+      }
+
+      .accordion-content-open {
+        background:#f6f9fa;
         padding: 10px 20px;
         margin: 0 0;
         transform: scaleY(0);
@@ -201,24 +220,16 @@ $active: rgba(11, 183, 175, 0.125);
           box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
           border-radius: 6px 6px 0 0;
         }
-
       }
     }
   }
 }
 
 .button-ticket {
-  max-width: 9rem;
-  margin-left: calc(100% - 8.2rem);
+  max-width: 18rem;
+  margin-left: calc(50% - 9em);
   margin-top:-7.9px!important;
-  border-radius: 0 0 0 6px; 
-}
-
-.button-pin {
-  max-width: 9rem;
-  margin-left: calc(0% - 0.8rem);
-  margin-top:-7.9px!important;
-  border-radius: 0 0 6px 0; 
+  border-radius: 0 0 6px 6px; 
 }
 
 @keyframes accordionOpen {
@@ -227,6 +238,26 @@ $active: rgba(11, 183, 175, 0.125);
   }
   100% {
     transform: scaleY(1);
+  }
+}
+
+@keyframes accordionClose {
+  0% {
+    transform: scaleY(1);
+    height: 642.844px;
+  }
+  25% {
+    height: 421.422px;
+  }
+  50% {
+    height: 200px;
+  }
+  75% {
+    height: 100.422px;
+  }
+  100% {
+    transform: scaleY(0);
+    height: 0;
   }
 }
 

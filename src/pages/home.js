@@ -15,6 +15,8 @@ import Modal from "../components/modal";
 import Switch from "react-js-switch";
 import RifaMaxLogo from "../assets/images/ticket.png";
 import Moment from "moment";
+import { ToastContainer, toast } from "react-toastify";
+import Users from "./users";
 
 // import Modal from '../components/modal';
 // import RifaGenerator from "../components/rifaGenerator";
@@ -36,6 +38,18 @@ function Home() {
     return yesterday;
   };
 
+  const showToastMessage = (param) => {
+    toast.success(param, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
+
+  const showToastErrorMessage = (param) => {
+    toast.error(param, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
+
   const formSchema = Yup.object().shape({
     rifDate: Yup.date()
       .required("Campo requerido")
@@ -50,7 +64,7 @@ function Home() {
     loteria: Yup.string().required("Campo requerido"),
     numbers: Yup.number()
       .required("Campo requerido")
-      .min(100, "El número debe ser mayor a 100")
+      .min(1, "El número debe ser mayor a 100")
       .max(1000, "El número debe ser menor a 1000"),
     rifero_id: Yup.number()
       .required("Campo requerido")
@@ -100,6 +114,51 @@ function Home() {
   ];
 
   const userDetails = useAuthState();
+
+  const checkValidate = (param, id) => {
+    if (param === true) {
+      axios.put(
+        `https://rifa-max.com/api/v1/rifas/${id}`, {
+          verify: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userDetails.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {});
+    } else {
+      axios.put(
+        `https://rifa-max.com/api/v1/rifas/${id}`, {
+          verify: false,
+          pin: null,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userDetails.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {});
+    }
+  }
+
+  const formatInt = (param) => {
+    if (param < 10) {
+      return `00${param}`
+    } else if (param < 100) {
+      return `0${param}`
+    } else {
+      return param
+    }
+  }
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -152,9 +211,12 @@ function Home() {
         },
       })
       .then((res) => {
+        showToastMessage("Rifa creada exitosamente");
         window.location.reload();
       })
-      .catch((err) => {});
+      .catch((err) => {
+        showToastErrorMessage("Error al crear rifas");
+      });
   };
 
   useEffect(() => {
@@ -177,6 +239,7 @@ function Home() {
       })
       .then((res) => {
         setRiferos([...res.data]);
+        console.log(res.data);
       })
       .catch((err) => {});
     axios
@@ -540,7 +603,7 @@ function Home() {
                           <option value="">Seleccione un Rifero</option>
                           {riferos.map((user, index) => (
                             <option key={index} value={Number(user.id)}>
-                              {user.user.name ?? "Sin nombre"}
+                              {user?.user?.name ?? "Sin nombre"}
                             </option>
                           ))}
                         </Field>
@@ -864,11 +927,8 @@ function Home() {
                         return (
                           <div className="accordion" key={index}>
                             <div className="accordion-item">
-                              <div
-                                className="accordion-title"
-                                onClick={handleAccordion.bind(this, index)}
-                              >
-                                <div className="col-lg-6 col-xs-12">
+                              <div className="accordion-title">
+                                <div className="col-xs-12 col-4">
                                   <span
                                     style={{
                                       border: "2px",
@@ -886,20 +946,235 @@ function Home() {
                                       : `${element.awardSign}`
                                   }`}
                                 </div>
-                                <div className="col-lg-6 col-xs-12 text-start rifD">
+                                <div className="col-xs-12 col-4 text-center rifD">
                                   {element.user.name}
                                 </div>
                                 <p className="text subtitle text-end">
                                   {element.name}
                                 </p>
-                                {isActive === index ? (
-                                  <div className="icon">-</div>
+                                {element.is_send === false ? (
+                                  <>
+                                    <Modal
+                                      btnColor="success"
+                                      centered={true}
+                                      classBtn="btn btn-sm"
+                                      buttonTitle="Enviar a APP"
+                                      title={`Enviar a APP`}
+                                    >
+                                      <div className="row">
+                                        {element.rifa_tickets
+                                          .sort(
+                                            (a, b) =>
+                                              a.ticket_nro - b.ticket_nro
+                                          )
+                                          .map((ticket) => {
+                                            return (
+                                              <div className="col-lg-4 col-xs-12">
+                                                <div className="card mb-2 mt-2 ms-1 me-1">
+                                                  <div className="card-body">
+                                                    <h5 className="card-title">
+                                                      {ticket.ticket_nro}
+                                                    </h5>
+                                                    <p className="card-text">
+                                                      {ticket.sign}
+                                                      <p className="text-muted mt-1">
+                                                        {ticket.serial}
+                                                      </p>
+                                                    </p>
+                                                    {ticket.is_sold === true ? (
+                                                      <p className="ribbon">
+                                                        Vendido
+                                                      </p>
+                                                    ) : null}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                      </div>
+                                      <button
+                                        className="btn btn-success w-100 w-100"
+                                        onClick={() => {
+                                          sendToApp(element.id);
+                                        }}
+                                      >
+                                        Confirmar
+                                      </button>
+                                    </Modal>
+                                  </>
                                 ) : (
-                                  <div className="icon">+</div>
+                                  <>
+                                  {
+                                    element.pin === null ? (
+                                      <Modal
+                                      btnColor="primary"
+                                      centered={true}
+                                      classBtn="btn-sm"
+                                      buttonTitle="Agregar Pin"
+                                      title={`Agregar pin`}
+                                    >
+                                      <div className="container">
+                                        <div className="row">
+                                          <div className="col-12 mb-4">
+                                            <p className="card-text">
+                                              Agregue el pin de seguridad
+                                            </p>
+                                          </div>
+                                          <Formik
+                                            initialValues={{
+                                              pin1: "",
+                                              pin2: "",
+                                              pin3: "",
+                                            }}
+                                            validationSchema={pinSchema}
+                                            onSubmit={(values) => {
+                                              let pin =
+                                                values.pin1 +
+                                                "-" +
+                                                values.pin2 +
+                                                "-" +
+                                                values.pin3;
+                                              putPin({ pin }, element.id);
+                                            }}
+                                          >
+                                            <Form>
+                                              <div className="col-12">
+                                                <FormGroup>
+                                                  <label htmlFor="pin1">
+                                                    Pin
+                                                  </label>
+                                                  <Field
+                                                    className="form-control"
+                                                    name="pin1"
+                                                    placeholder="11"
+                                                    type="number"
+                                                  />
+                                                  <ErrorMessage
+                                                    className="field-error text-danger"
+                                                    name="pin1"
+                                                    component="div"
+                                                  />
+                                                </FormGroup>
+                                              </div>
+                                              <div className="col-12">
+                                                <FormGroup>
+                                                  <Field
+                                                    className="form-control"
+                                                    name="pin2"
+                                                    placeholder="22"
+                                                    type="number"
+                                                  />
+                                                  <ErrorMessage
+                                                    className="field-error text-danger"
+                                                    name="pin2"
+                                                    component="div"
+                                                  />
+                                                </FormGroup>
+                                              </div>
+                                              <div className="col-12">
+                                                <FormGroup>
+                                                  <Field
+                                                    className="form-control"
+                                                    name="pin3"
+                                                    placeholder="33"
+                                                    type="number"
+                                                  />
+                                                  <ErrorMessage
+                                                    className="field-error text-danger"
+                                                    name="pin3"
+                                                    component="div"
+                                                  />
+                                                </FormGroup>
+                                              </div>
+                                              <button
+                                                className="btn btn-success w-100"
+                                                type="submit"
+                                              >
+                                                Ingresar PIN
+                                              </button>
+                                            </Form>
+                                          </Formik>
+                                        </div>
+                                      </div>
+                                    </Modal>
+                                    ) : (
+                                      <>
+                                        <Modal 
+                                          btnColor="success"
+                                          centered={true}
+                                          classBtn="btn-sm"
+                                          buttonTitle="Completado"
+                                          title={`Ver pin`}
+                                        >
+                                          <h2 className="text-center">{element.pin}</h2>
+                                        </Modal>
+                                        {
+                                          userDetails.user.role === "Admin" ? (
+                                          <>
+                                            {
+                                              element.verify === false ? (
+                                                <Modal
+                                                  btnColor="warning"
+                                                  centered={true}
+                                                  classBtn="btn-sm"
+                                                  buttonTitle="Verificar"
+                                                  title={`Verificar`}
+                                                >
+                                                  <div className="container">
+                                                    <div className="row">
+                                                      <div className="col-12 mb-4">
+                                                        <p className="card-text">
+                                                          Verifique el pin de seguridad: <strong>{element.pin}</strong>
+                                                        </p>
+                                                      </div>
+                                                      <div className="col-6">
+                                                        <button
+                                                          className="btn btn-success w-100"
+                                                          onClick={() => {
+                                                            checkValidate(true, element.id);
+                                                          }}
+                                                        >
+                                                          Verificar
+                                                        </button>
+                                                      </div>
+                                                      <div className="col-6">
+                                                        <button
+                                                          className="btn btn-danger w-100"
+                                                          onClick={() => {
+                                                            checkValidate(false, element.id);
+                                                          }}
+                                                        >
+                                                          Reiniciar PIN
+                                                        </button>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </Modal>
+                                              ) : (
+                                                <button
+                                                  className="btn btn-success btn-sm"
+                                                >
+                                                  ✓
+                                                </button>
+                                              )
+                                            }
+                                          </>
+                                          ) : null
+                                        }
+                                      </>
+                                    )
+                                  }
+                                  </>
                                 )}
+                                <button
+                                  className="btn btn-sm btn-primary"
+                                  onClick={handleAccordion.bind(this, index)}
+                                >
+                                  ▽
+                                </button>
                               </div>
                               {isActive === index ? (
-                                <div className="accordion-content">
+                                <div className="accordion-content-open">
                                   <div
                                     className="card mb-2"
                                     style={{
@@ -916,7 +1191,7 @@ function Home() {
                                       <br />
                                       <p className="text-center">
                                         <strong>
-                                          {element.numbers} - SIGNO <br />
+                                          {formatInt(element.numbers)} - SIGNO <br />
                                           {`PRECIO: ${element.price}${element.money}`}
                                         </strong>
                                       </p>
@@ -1074,7 +1349,7 @@ function Home() {
                                   {element.is_send === true ? (
                                     <>
                                       <div className="row">
-                                        <div className="col-6">
+                                        <div className="col-12">
                                           <Modal
                                             btnColor="primary"
                                             centered={true}
@@ -1105,7 +1380,7 @@ function Home() {
                                                               }
                                                             </h5>
                                                             <p className="card-text">
-                                                              {element.numbers}
+                                                              {formatInt(element.numbers)}
                                                               <br />
                                                               {ticket.sign}
                                                               <p className="text-muted mt-1">
@@ -1127,7 +1402,7 @@ function Home() {
                                             </div>
                                           </Modal>
                                         </div>
-                                        <div className="col-6">
+                                        {/* <div className="col-6">
                                           {element.pin === null ? (
                                             <Modal
                                               btnColor="success"
@@ -1150,9 +1425,7 @@ function Home() {
                                                       pin2: "",
                                                       pin3: "",
                                                     }}
-                                                    validationSchema={
-                                                      pinSchema
-                                                    }
+                                                    validationSchema={pinSchema}
                                                     onSubmit={(values) => {
                                                       let pin =
                                                         values.pin1 +
@@ -1240,7 +1513,7 @@ function Home() {
                                               </p>
                                             </Modal>
                                           )}
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </>
                                   ) : (
@@ -1293,16 +1566,198 @@ function Home() {
                                           Confirmar
                                         </button>
                                       </Modal>
+                                      <ToastContainer />
                                     </>
                                   )}
                                 </div>
-                              ) : null}
+                              ) : (
+                                <>
+                                  <div className="accordion-content-close close">
+                                    <div
+                                      className="card mb-2"
+                                      style={{
+                                        maxWidth: "18rem",
+                                        minWidth: "2rem",
+                                      }}
+                                    >
+                                      <div className="card-body">
+                                        <img
+                                          src={RifaMaxLogo}
+                                          alt="Logo"
+                                          className="img-fluid"
+                                        />
+                                        <br />
+                                        <p className="text-center">
+                                          <strong>
+                                            {formatInt(element.numbers)} - SIGNO <br />
+                                            {`PRECIO: ${element.price}${element.money}`}
+                                          </strong>
+                                        </p>
+                                        <hr />
+                                        <div className="row">
+                                          <div className="col-6">
+                                            <p className="card-text text-start">
+                                              <strong>PREMIO:</strong>
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-end">
+                                              <strong>
+                                                {Number(element.awardSign)
+                                                  ? `${element.awardSign}$`
+                                                  : `${element.awardSign}`}
+                                              </strong>
+                                            </p>
+                                          </div>
+                                          {element.plate !== null ? (
+                                            <>
+                                              <div className="col-6">
+                                                <p className="card-text text-start">
+                                                  <strong>PLACA:</strong>
+                                                </p>
+                                              </div>
+                                              <div className="col-6">
+                                                <p className="card-text text-end">
+                                                  <strong>
+                                                    {element.plate}
+                                                  </strong>
+                                                </p>
+                                              </div>
+                                            </>
+                                          ) : null}
+                                          {element.year !== null ? (
+                                            <>
+                                              <div className="col-6">
+                                                <p className="card-text text-start">
+                                                  <strong>MODELO:</strong>
+                                                </p>
+                                              </div>
+                                              <div className="col-6">
+                                                <p className="card-text text-end">
+                                                  <strong>
+                                                    {element.year}
+                                                  </strong>
+                                                </p>
+                                              </div>
+                                            </>
+                                          ) : null}
+                                          <div className="col-6">
+                                            <p className="card-text text-start">
+                                              <strong>SIN SIGNO:</strong>
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-end">
+                                              <strong>
+                                                {Number(element.awardNoSign)
+                                                  ? `${element.awardNoSign}$`
+                                                  : `${element.awardNoSign}`}
+                                              </strong>
+                                            </p>
+                                          </div>
+                                        </div>
+                                        <hr />
+                                        <div className="row">
+                                          <div className="col-7">
+                                            <p className="card-text text-start">
+                                              SERIE NUMERO:
+                                            </p>
+                                          </div>
+                                          <div className="col-5">
+                                            <p className="card-text text-end">
+                                              {element.id}
+                                            </p>
+                                          </div>
+                                          <div className="col-4">
+                                            <p className="card-text text-start">
+                                              LOTERIA:
+                                            </p>
+                                          </div>
+                                          <div className="col-8">
+                                            <p className="card-text text-end">
+                                              {element.loteria}
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-start">
+                                              FECHA:
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-end">
+                                              {Moment(element.rifDate).format(
+                                                "DD/MM/YYYY"
+                                              )}
+                                            </p>
+                                            {/* <p className="card-text text-end">
+                                            {element.created_at.substring(
+                                              0,
+                                              10
+                                            )}
+                                          </p> */}
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-start">
+                                              HORA:
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-end">
+                                              {element.created_at.substring(
+                                                11,
+                                                19
+                                              )}
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-start">
+                                              CADUCA:
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-end">
+                                              {Moment(element.expired).format(
+                                                "DD/MM/YYYY"
+                                              )}
+                                            </p>
+                                          </div>
+                                          <div className="col-4">
+                                            <p className="card-text text-start">
+                                              RIFERO:
+                                            </p>
+                                          </div>
+                                          <div className="col-8">
+                                            <p className="card-text text-end">
+                                              {element.user.name}
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-start">
+                                              TELEFONO:
+                                            </p>
+                                          </div>
+                                          <div className="col-6">
+                                            <p className="card-text text-end">
+                                              {element.rifero.phone}
+                                            </p>
+                                          </div>
+                                        </div>
+                                        <p className="subtitle text-muted mt-4 text-center">
+                                          Esto es una representacion de como
+                                          luciran los tickets
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </>
+                              )}
                             </div>
                           </div>
                         );
                       })}
                   </div>
                 </div>
+                <ToastContainer />
               </div>
             )
           ) : (
@@ -1320,6 +1775,7 @@ function Home() {
           )}
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

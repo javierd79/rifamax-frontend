@@ -25,7 +25,7 @@ function Users() {
   // const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState([]);
   const [userPhone, setUserPhone] = useState([]);
-  const [agency, setAgency] = useState(null);
+  const [agency, setAgency] = useState(1);
   const [control, setControl] = useState(null);
 
   let setCode = 0;
@@ -337,7 +337,7 @@ function Users() {
                     {errors.phone && touched.phone ? (
                       <div className="text-danger">{errors.phone}</div>
                     ) : null}
-                    { 
+                    {/* { 
                       option === "Taquilla" ? (
                         <>
                           <label htmlFor="agency_id">Agencia</label>
@@ -367,7 +367,7 @@ function Users() {
                           ) : null}
                         </>
                       ) : null
-                    }
+                    } */}
                   </>
                 ) : null}
               </div>
