@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { loginUser, useAuthState, useAuthDispatch } from '../context/auth';
 import "../assets/scss/pages/login.scss";
-import RifaMaxLogo from '../assets/images/LogoRifaMax.png'
+import RifaMaxLogo from '../assets/images/ticket.png'
 
 function Login(props) {
   const [email, setEmail] = useState('');
