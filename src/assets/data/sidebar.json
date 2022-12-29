@@ -9,6 +9,11 @@
       "id": 2,
       "name": "Usuarios",
       "path": "/users"
+    },
+    {
+      "id": 3,
+      "name": "Rifas de Moto",
+      "path": "/rifas/motos"
     }
   ],
   "agencia": [

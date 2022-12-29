@@ -7,7 +7,7 @@ const AuthRouter = ({ component: Component, path, isPrivate, ...rest }) => {
   const userDetails = useAuthState();
 
   const permissions = {
-    Admin: ['/', '/users'],
+    Admin: ['/', '/users', '/rifas/motos'],
     Rifero: ['/'],
     Taquilla: ['/', '/riferos'],
     Agencia: ['/'],
