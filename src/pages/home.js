@@ -80,6 +80,7 @@ function Home() {
     pin1: Yup.string().required("Campo requerido"),
     pin2: Yup.string().required("Campo requerido"),
     pin3: Yup.string().required("Campo requerido"),
+    pin4: Yup.string()
   });
 
   // let config = {
@@ -1025,6 +1026,7 @@ function Home() {
                                               pin1: "",
                                               pin2: "",
                                               pin3: "",
+                                              pin4: "",
                                             }}
                                             validationSchema={pinSchema}
                                             onSubmit={(values) => {
@@ -1034,7 +1036,19 @@ function Home() {
                                                 values.pin2 +
                                                 "-" +
                                                 values.pin3;
-                                              putPin({ pin }, element.id);
+                                                
+                                              let pin2 =
+                                                values.pin1 +
+                                                "-" +
+                                                values.pin2 +
+                                                "-" +
+                                                values.pin3 +
+                                                "-" +
+                                                values.pin4;
+
+                                              values.pin4 === "" ? putPin({ pin }, element.id)
+                                              : putPin({ pin: pin2 }, element.id)
+                                              
                                             }}
                                           >
                                             <Form>
@@ -1082,6 +1096,21 @@ function Home() {
                                                   <ErrorMessage
                                                     className="field-error text-danger"
                                                     name="pin3"
+                                                    component="div"
+                                                  />
+                                                </FormGroup>
+                                              </div>
+                                              <div className="col-12">
+                                                <FormGroup>
+                                                  <Field
+                                                    className="form-control"
+                                                    name="pin4"
+                                                    placeholder="(opcional)"
+                                                    type="number"
+                                                  />
+                                                  <ErrorMessage
+                                                    className="field-error text-danger"
+                                                    name="pin4"
                                                     component="div"
                                                   />
                                                 </FormGroup>
